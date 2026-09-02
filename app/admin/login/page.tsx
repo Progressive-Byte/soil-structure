@@ -9,7 +9,7 @@ import { adminFetch, setToken, getToken } from "../_lib/adminApi";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ username: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
