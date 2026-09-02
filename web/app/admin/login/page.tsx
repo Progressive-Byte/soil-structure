@@ -36,12 +36,6 @@ export default function AdminLoginPage() {
     }
   }
 
-  // Already logged in — skip the form.
-  if (typeof window !== "undefined" && getToken()) {
-    router.replace("/admin/projects");
-    return null;
-  }
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-bone">
       <Container className="max-w-md">
