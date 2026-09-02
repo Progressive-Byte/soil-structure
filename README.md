@@ -124,4 +124,4 @@ the Node.js + MongoDB API later:
 `updatedAt`). The JSON in `/data` doubles as seed data.
 
 Suggested MongoDB collections: `projects`, `services`, `testimonials`, `team`,
-`jobs`, `insights`, plus a `siteConfig` document for nav/footer/contact.
+plus a `siteConfig` document for nav/footer/contact.
