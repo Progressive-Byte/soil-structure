@@ -29,13 +29,9 @@ export interface ImageAsset {
 /*  Projects                                                                    */
 /* -------------------------------------------------------------------------- */
 
-export type ProjectSector =
-  | "Higher Education"
-  | "Infrastructure"
-  | "Healthcare"
-  | "Civic"
-  | "Commercial"
-  | "Residential";
+/** Sectors are admin-defined free text now (managed via the Projects admin
+ * panel), not a fixed set — see server/models/Project.js. */
+export type ProjectSector = string;
 
 export interface ProjectStat {
   label: string;
