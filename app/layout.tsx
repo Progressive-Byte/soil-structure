@@ -45,6 +45,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <Header nav={config.nav} />
+        <Suspense fallback={null}>
+          <RouteProgress />
+        </Suspense>
         <main id="main" className="flex-1">
           {children}
         </main>
