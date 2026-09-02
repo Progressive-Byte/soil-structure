@@ -9,8 +9,8 @@ type PageHeaderProps = {
 
 /**
  * Consistent interior-page hero on the dark ink tone, reused across Projects,
- * Services, About, Careers, Insights and Contact. (Interior page layouts are
- * not in the Figma; this matches the landing page's system — see README.)
+ * Services, About and Contact. (Interior page layouts are not in the Figma;
+ * this matches the landing page's system — see README.)
  */
 export function PageHeader({ eyebrow, title, intro }: PageHeaderProps) {
   return (
