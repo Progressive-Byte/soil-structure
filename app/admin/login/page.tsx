@@ -52,13 +52,14 @@ export default function AdminLoginPage() {
               </p>
             )}
             <InputField
-              label="Username"
-              name="username"
+              label="Email"
+              name="email"
+              type="email"
               required
-              autoComplete="username"
+              autoComplete="email"
               autoFocus
-              value={form.username}
-              onChange={(e) => setForm((f) => ({ ...f, username: e.target.value }))}
+              value={form.email}
+              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
             />
             <InputField
               label="Password"
