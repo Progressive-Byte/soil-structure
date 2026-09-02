@@ -1,8 +1,6 @@
 // Loads .env before any other module reads process.env — must be the first
-// line imported by index.js and every standalone script (e.g. scripts/seed.js).
-import dotenv from "dotenv";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
+// line required by index.js and every standalone script (e.g. scripts/seed.js).
+const dotenv = require("dotenv");
+const path = require("path");
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: join(__dirname, ".env") });
+dotenv.config({ path: path.join(__dirname, ".env") });
