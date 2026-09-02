@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Archivo, Instrument_Sans } from "next/font/google";
-import "../../styles/globals.css";
+import "../../../styles/globals.css";
 import { Header } from "@/components/sections/Header";
 import { Footer } from "@/components/sections/Footer";
 import { RouteProgress } from "@/components/ui/RouteProgress";
