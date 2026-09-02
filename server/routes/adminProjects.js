@@ -7,6 +7,15 @@ const { uniqueSlug } = require("../utils/slug");
 const router = express.Router();
 router.use(protect);
 
+// Matches impact-reports' sort options: recent|oldest|az|za. Falls back to
+// the manual `order` field (what the "Order" column shows) when unset.
+const SORT_OPTIONS = {
+  recent: { createdAt: -1 },
+  oldest: { createdAt: 1 },
+  az: { title: 1 },
+  za: { title: -1 },
+};
+
 function validateProjectPayload(body, { partial = false } = {}) {
   const required = ["title", "sector", "summary", "description"];
   for (const field of required) {
