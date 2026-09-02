@@ -124,8 +124,8 @@ export default async function ProjectDetailPage({ params }: Params) {
       </Section>
 
       {otherProjects.length > 0 && (
-        <Section className="pt-0">
-          <div className="flex flex-wrap items-end justify-between gap-6 border-t border-line pt-16 md:pt-22">
+        <Section flush className="pb-16 md:pb-22 lg:pb-30">
+          <div className="flex flex-wrap items-end justify-between gap-6 border-t border-line pt-16 md:pt-22 lg:pt-30">
             <div>
               <SectionEyebrow>Keep exploring</SectionEyebrow>
               <h2 className="mt-5 font-heading text-display-sm font-bold tracking-tight md:text-display-md">
