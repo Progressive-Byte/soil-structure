@@ -39,10 +39,10 @@ run `npm run build` — it type-checks and lints, so a clean build is the bar fo
   currently `structuredClone`s a JSON import and wraps it in a Promise; the
   doc comment there shows the exact `fetch()` replacement for when the real
   API exists. Change `read()` here, not the callers.
-- `lib/data/*.ts` (`projects.ts`, `services.ts`, `team.ts`, `jobs.ts`,
-  `insights.ts`, `company.ts`) — one file per content type, each exposing
-  async getters (`getProjects`, `getProjectBySlug`, `getProjectsBySector`,
-  etc.). Pages/components call these, never the JSON files directly.
+- `lib/data/*.ts` (`projects.ts`, `services.ts`, `team.ts`, `testimonials.ts`,
+  `company.ts`) — one file per content type, each exposing async getters
+  (`getProjects`, `getProjectBySlug`, `getProjectsBySector`, etc.).
+  Pages/components call these, never the JSON files directly.
 - `lib/api/contact.ts` — contact form validation (`validateContactForm`) and
   submission (`submitContactForm`); the real backend call is a marked
   `TODO(backend)` inside `submitContactForm`.
