@@ -1,0 +1,46 @@
+[
+  {
+    "_id": "65f1c0000000000000000301",
+    "quote": "Placeholder testimonial. Sample text standing in for a client quote about working with the practice, its responsiveness, technical depth and the value of having ground and structure handled by one team. Replace with a real quote before launch.",
+    "authorName": "Alex Morgan",
+    "authorRole": "Principal Architect",
+    "company": "Northline Studio",
+    "featured": true,
+    "order": 1,
+    "createdAt": "2024-01-10T09:00:00.000Z",
+    "updatedAt": "2024-01-10T09:00:00.000Z"
+  },
+  {
+    "_id": "65f1c0000000000000000302",
+    "quote": "Placeholder testimonial. Sample text standing in for a second client quote, ideally from a developer or project manager, covering programme certainty and commercial outcomes.",
+    "authorName": "Priya Shah",
+    "authorRole": "Development Director",
+    "company": "Harbour Point",
+    "featured": true,
+    "order": 2,
+    "createdAt": "2024-01-12T09:00:00.000Z",
+    "updatedAt": "2024-01-12T09:00:00.000Z"
+  },
+  {
+    "_id": "65f1c0000000000000000303",
+    "quote": "Placeholder testimonial. A shorter third quote sits well here — one or two sentences from a contractor or repeat client. Replace with real copy.",
+    "authorName": "Daniel Reyes",
+    "authorRole": "Project Manager",
+    "company": "Meridian Construction",
+    "featured": true,
+    "order": 3,
+    "createdAt": "2024-01-15T09:00:00.000Z",
+    "updatedAt": "2024-01-15T09:00:00.000Z"
+  },
+  {
+    "_id": "65f1c0000000000000000304",
+    "quote": "Placeholder testimonial. A fourth quote used on the full testimonials page — space for a longer reflection on collaboration across the whole project lifecycle.",
+    "authorName": "Sarah Bennett",
+    "authorRole": "Estates Manager",
+    "company": "Riverbend State University",
+    "featured": false,
+    "order": 4,
+    "createdAt": "2024-02-01T09:00:00.000Z",
+    "updatedAt": "2024-02-01T09:00:00.000Z"
+  }
+]

@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --header-height: 5rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Offset in-page anchor targets so they clear the sticky header. */
+    scroll-padding-top: var(--header-height);
+  }
+
+  body {
+    @apply bg-bone text-ink font-body antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+    /* Balanced line breaks give large headings a more editorial feel. */
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Visible, consistent focus ring for keyboard users. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-lime-600 ring-offset-2 ring-offset-bone;
+  }
+
+  ::selection {
+    @apply bg-lime text-ink;
+  }
+}
+
+@layer components {
+  /* Reusable centered content well.
+     Laptop (default up to 2xl): 1200px. Large desktop (2xl, ≥1440px): 1400px. */
+  .container-page {
+    @apply mx-auto w-full max-w-container px-6 md:px-8 2xl:max-w-container-wide;
+  }
+
+  /* Small uppercase eyebrow label used above section headings. */
+  .eyebrow {
+    @apply inline-flex items-center gap-2.5 text-eyebrow font-semibold uppercase;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply inline-block h-1.5 w-1.5 rounded-full bg-lime-600 motion-safe:animate-dot-pulse;
+  }
+}
+
+@layer utilities {
+  /* Utility to clamp text to N lines (used in card excerpts). */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}

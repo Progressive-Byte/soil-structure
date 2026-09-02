@@ -1,0 +1,70 @@
+[
+  {
+    "_id": "65f1e0000000000000000501",
+    "slug": "senior-geotechnical-engineer",
+    "title": "Senior Geotechnical Engineer",
+    "department": "Geotechnical",
+    "location": "Riverbend, ST",
+    "type": "Full-time",
+    "summary": "Lead ground investigation programmes and foundation strategy on multidisciplinary projects.",
+    "responsibilities": [
+      "Plan and supervise site investigation programmes",
+      "Develop ground models and interpretive reports",
+      "Design shallow and deep foundation solutions",
+      "Mentor graduate and assistant engineers"
+    ],
+    "requirements": [
+      "Chartered (or near-chartered) geotechnical engineer",
+      "8+ years of relevant experience",
+      "Strong grounding in soil mechanics and foundation design",
+      "Excellent written and verbal communication"
+    ],
+    "createdAt": "2024-05-01T09:00:00.000Z",
+    "updatedAt": "2024-05-01T09:00:00.000Z"
+  },
+  {
+    "_id": "65f1e0000000000000000502",
+    "slug": "structural-engineer",
+    "title": "Structural Engineer",
+    "department": "Structural",
+    "location": "Harbour Point, ST",
+    "type": "Full-time",
+    "summary": "Design efficient, buildable structures across concrete, steel and timber from concept to completion.",
+    "responsibilities": [
+      "Produce scheme and detailed structural designs",
+      "Carry out analysis and prepare calculations",
+      "Coordinate with geotechnical and architectural teams",
+      "Support delivery on site"
+    ],
+    "requirements": [
+      "Degree in civil/structural engineering",
+      "4+ years of design-office experience",
+      "Proficiency with mainstream analysis software",
+      "Working towards chartership"
+    ],
+    "createdAt": "2024-06-10T09:00:00.000Z",
+    "updatedAt": "2024-06-10T09:00:00.000Z"
+  },
+  {
+    "_id": "65f1e0000000000000000503",
+    "slug": "graduate-engineer",
+    "title": "Graduate Engineer (Geotechnical/Structural)",
+    "department": "Early Careers",
+    "location": "Multiple offices",
+    "type": "Full-time",
+    "summary": "Join our structured graduate programme with rotations across geotechnical and structural teams.",
+    "responsibilities": [
+      "Support live projects across disciplines",
+      "Assist with site work and reporting",
+      "Develop toward professional qualification",
+      "Contribute to a shared ground-to-frame model"
+    ],
+    "requirements": [
+      "Recent or expected degree in a relevant engineering discipline",
+      "Curiosity about both ground and structure",
+      "Strong analytical and teamwork skills"
+    ],
+    "createdAt": "2024-07-01T09:00:00.000Z",
+    "updatedAt": "2024-07-01T09:00:00.000Z"
+  }
+]

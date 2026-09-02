@@ -1,0 +1,62 @@
+[
+  {
+    "_id": "65f1f0000000000000000601",
+    "slug": "why-ground-and-frame-belong-together",
+    "title": "Why the ground and the frame belong on the same drawing",
+    "excerpt": "Placeholder article. Treating soil and structure as one system removes late surprises and produces leaner foundations.",
+    "body": [
+      "Placeholder copy. Most projects still hand the ground and the frame between separate consultants, and the seams between them are where assumptions hide. This article argues for a single team, a single model and a single conversation from the first borehole.",
+      "Placeholder copy. When foundation design responds to the structure it carries — and the structure responds to what the ground can offer — the result is fewer revisions and a more efficient scheme. Replace this text with the real article before launch."
+    ],
+    "category": "Practice",
+    "author": "Morgan Hale",
+    "publishedAt": "2024-08-12T09:00:00.000Z",
+    "readingMinutes": 5,
+    "coverImage": {
+      "src": "/images/about-campus.jpg",
+      "alt": "Campus building at dusk",
+      "width": 1200,
+      "height": 800
+    }
+  },
+  {
+    "_id": "65f1f0000000000000000602",
+    "slug": "reading-difficult-ground",
+    "title": "Reading difficult ground: what a good investigation buys you",
+    "excerpt": "Placeholder article. A well-targeted site investigation is the cheapest risk reduction on the whole project.",
+    "body": [
+      "Placeholder copy. A ground investigation planned around the structure answers the questions the design actually needs, rather than gathering data for its own sake.",
+      "Placeholder copy. This piece walks through how we scope boreholes, in-situ testing and laboratory work to de-risk foundation decisions early. Replace this text with the real article before launch."
+    ],
+    "category": "Geotechnical",
+    "author": "Elena Ford",
+    "publishedAt": "2024-06-30T09:00:00.000Z",
+    "readingMinutes": 6,
+    "coverImage": {
+      "src": "/images/services/geotechnical-investigation.jpg",
+      "alt": "Building entrance canopy at dusk",
+      "width": 1200,
+      "height": 800
+    }
+  },
+  {
+    "_id": "65f1f0000000000000000603",
+    "slug": "value-engineering-without-losing-value",
+    "title": "Value engineering without losing the value",
+    "excerpt": "Placeholder article. Done early and collaboratively, value engineering protects both budget and design intent.",
+    "body": [
+      "Placeholder copy. Value engineering has a bad reputation when it arrives late as a cost-cutting exercise. Brought in early, it is simply good design.",
+      "Placeholder copy. We describe how sharing one model across disciplines lets us test options against cost, programme and buildability together. Replace this text with the real article before launch."
+    ],
+    "category": "Structural",
+    "author": "James Okoro",
+    "publishedAt": "2024-05-05T09:00:00.000Z",
+    "readingMinutes": 4,
+    "coverImage": {
+      "src": "/images/services/structural-engineering.jpg",
+      "alt": "Engineers reviewing drawings on site",
+      "width": 1200,
+      "height": 800
+    }
+  }
+]
