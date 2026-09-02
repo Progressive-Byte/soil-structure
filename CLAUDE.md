@@ -51,12 +51,12 @@ When adding a new content type: add a JSON fixture in `/data`, a matching
 interface in `types/index.ts` extending `BaseDocument`, and a getter file in
 `/lib/data` that calls `read()` — following the pattern in `lib/data/projects.ts`.
 
-**Routing.** `app/` uses the Next.js App Router. List pages
-(`projects/`, `services/`, `insights/`, `careers/`) each pair with a
-`[slug]/` detail route; `projects/` and `insights/` also have `loading.tsx`
-skeleton states (the 600ms artificial delay in `submitContactForm` and the
-`read()` Promise wrapping exist partly to exercise these). `sitemap.ts` and
-`robots.ts` are generated from the same data layer.
+**Routing.** `app/` uses the Next.js App Router. List pages (`projects/`,
+`services/`) each pair with a `[slug]/` detail route; `projects/` also has a
+`loading.tsx` skeleton state (the 600ms artificial delay in
+`submitContactForm` and the `read()` Promise wrapping exist partly to
+exercise these). `sitemap.ts` and `robots.ts` are generated from the same
+data layer.
 
 **Components split by role**, not by page:
 - `components/ui/` — generic primitives (Button, Container, Section, Field,
