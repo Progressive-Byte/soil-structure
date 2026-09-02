@@ -113,8 +113,6 @@ images, projects, services, etc., **edit the JSON in `/data/`.**
 | Services | `data/services.json` |
 | Testimonials | `data/testimonials.json` |
 | Team / leadership | `data/team.json` |
-| Job openings | `data/jobs.json` |
-| Insights / articles | `data/insights.json` |
 | Hero stats (25+, 400+…) | `data/stats.json` |
 | Value-approach steps | `data/process.json` |
 | Nav links, footer links, address, phone, email, socials | `data/site.json` |
