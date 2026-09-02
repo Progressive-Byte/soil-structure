@@ -8,15 +8,19 @@ import type { Config } from "tailwindcss";
  * bg-lime) rather than arbitrary values like bg-[#f3f0e7].
  */
 const config: Config = {
-  // One shared config for both apps (frontend/ and admin/) — each has its own
-  // thin tailwind.config.ts that re-exports this file.
+  // One shared config for all three apps (frontend/web, frontend/admin,
+  // frontend/login) — each has its own thin tailwind.config.ts that
+  // re-exports this file.
   content: [
-    "./frontend/app/**/*.{ts,tsx}",
-    "./frontend/components/**/*.{ts,tsx}",
-    "./frontend/lib/**/*.{ts,tsx}",
-    "./admin/app/**/*.{ts,tsx}",
-    "./admin/components/**/*.{ts,tsx}",
-    "./admin/lib/**/*.{ts,tsx}",
+    "./frontend/web/app/**/*.{ts,tsx}",
+    "./frontend/web/components/**/*.{ts,tsx}",
+    "./frontend/web/lib/**/*.{ts,tsx}",
+    "./frontend/admin/app/**/*.{ts,tsx}",
+    "./frontend/admin/components/**/*.{ts,tsx}",
+    "./frontend/admin/lib/**/*.{ts,tsx}",
+    "./frontend/login/app/**/*.{ts,tsx}",
+    "./frontend/login/components/**/*.{ts,tsx}",
+    "./frontend/login/lib/**/*.{ts,tsx}",
   ],
   theme: {
     // Breakpoints matching the Figma frames: mobile (default) / tablet / desktop.
