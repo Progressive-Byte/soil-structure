@@ -31,7 +31,6 @@
       "heading": "Connect",
       "links": [
         { "label": "Testimonials", "href": "/about#testimonials" },
-        { "label": "Insights", "href": "/insights" },
         { "label": "Contact Us", "href": "/contact" }
       ]
     }
