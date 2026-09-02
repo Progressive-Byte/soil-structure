@@ -38,16 +38,19 @@ export default async function ProjectDetailPage({ params }: Params) {
   const allServices = await getServices();
   const services = allServices.filter((s) => project.services.includes(s.slug));
 
+  const allProjects = await getProjects();
+  const otherProjects = allProjects.filter((p) => p.slug !== project.slug).slice(0, 3);
+
   return (
     <>
       <div className="bg-ink text-bone">
         <Container className="py-12 md:py-16">
-          <Link href="/projects" className="text-sm text-muted-dark hover:text-bone">
-            ← Back to projects
-          </Link>
-          <Tag variant="solid" className="mt-6">
-            {project.sector}
-          </Tag>
+          <div className="flex flex-wrap items-center gap-4">
+            <Link href="/projects" className="text-sm text-muted-dark hover:text-bone">
+              ← Back to projects
+            </Link>
+            <Tag variant="solid">{project.sector}</Tag>
+          </div>
           <h1 className="mt-4 max-w-3xl font-heading text-display-sm font-bold tracking-tight md:text-display-lg">
             {project.title}
           </h1>
@@ -55,16 +58,18 @@ export default async function ProjectDetailPage({ params }: Params) {
         </Container>
       </div>
 
-      <div className="relative aspect-[21/9] w-full overflow-hidden bg-ink">
-        <Image
-          src={project.coverImage.src}
-          alt={project.coverImage.alt}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-      </div>
+      <Container className="py-8 md:py-12">
+        <div className="relative aspect-[21/9] w-full overflow-hidden rounded-image shadow-card">
+          <Image
+            src={project.coverImage.src}
+            alt={project.coverImage.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
+      </Container>
 
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr] lg:gap-16">
