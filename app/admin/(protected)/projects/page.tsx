@@ -1,36 +1,58 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { adminFetch } from "../../_lib/adminApi";
-import type { Project } from "@/types";
-
-type PaginationMeta = {
-  page: number;
-  limit: number;
-  total: number;
-  pages: number;
-  hasPrev: boolean;
-  hasNext: boolean;
-};
+import type { PaginationMeta, Project } from "@/types";
 
 const PAGE_SIZE = 10;
 
-export default function AdminProjectsPage() {
+const SORT_OPTIONS = [
+  { value: "", label: "Manual order" },
+  { value: "recent", label: "Newest first" },
+  { value: "oldest", label: "Oldest first" },
+  { value: "az", label: "Title A–Z" },
+  { value: "za", label: "Title Z–A" },
+];
+
+const controlClasses =
+  "rounded-lg border border-line bg-bone-50 px-4 py-2 text-sm text-ink placeholder:text-muted-light focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600";
+
+function ProjectsListInner() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const page = Math.max(1, Number(searchParams.get("page")) || 1);
+  const query = searchParams.get("q") ?? "";
+  const sort = searchParams.get("sort") ?? "";
+
   const [projects, setProjects] = useState<Project[]>([]);
   const [meta, setMeta] = useState<PaginationMeta | null>(null);
-  const [page, setPage] = useState(1);
-  const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
+
+  // Keeps search/sort/page all in the URL — same query-string-driven pattern
+  // impact-reports uses for its admin list (shareable/bookmarkable, survives
+  // a refresh).
+  function updateParams(next: Record<string, string | null>) {
+    const params = new URLSearchParams(searchParams.toString());
+    for (const [key, value] of Object.entries(next)) {
+      if (value) params.set(key, value);
+      else params.delete(key);
+    }
+    router.replace(`${pathname}?${params.toString()}`);
+  }
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     const params = new URLSearchParams({ page: String(page), limit: String(PAGE_SIZE) });
     if (query) params.set("q", query);
+    if (sort) params.set("sort", sort);
 
     adminFetch<{ projects: Project[]; meta: PaginationMeta }>(`/admin/projects?${params}`)
       .then((data) => {
@@ -45,7 +67,7 @@ export default function AdminProjectsPage() {
     return () => {
       cancelled = true;
     };
-  }, [page, query]);
+  }, [page, query, sort]);
 
   async function handleDelete(id: string) {
     try {
@@ -66,17 +88,26 @@ export default function AdminProjectsPage() {
         </Button>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6 flex flex-wrap items-center gap-4">
         <input
           type="search"
           placeholder="Search by title…"
-          value={query}
-          onChange={(e) => {
-            setPage(1);
-            setQuery(e.target.value);
-          }}
-          className="w-full max-w-sm rounded-lg border border-line bg-bone-50 px-4 py-2 text-sm text-ink placeholder:text-muted-light focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600"
+          defaultValue={query}
+          onChange={(e) => updateParams({ q: e.target.value || null, page: null })}
+          className={`w-full max-w-sm ${controlClasses}`}
         />
+        <select
+          value={sort}
+          onChange={(e) => updateParams({ sort: e.target.value || null, page: null })}
+          className={controlClasses}
+          aria-label="Sort projects"
+        >
+          {SORT_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
       </div>
 
       {error && (
@@ -166,14 +197,14 @@ export default function AdminProjectsPage() {
           </p>
           <div className="flex gap-2">
             <button
-              onClick={() => setPage((p) => p - 1)}
+              onClick={() => updateParams({ page: String(page - 1) })}
               disabled={!meta.hasPrev}
               className="rounded-lg border border-line px-3 py-1.5 font-medium text-ink disabled:opacity-40"
             >
               Previous
             </button>
             <button
-              onClick={() => setPage((p) => p + 1)}
+              onClick={() => updateParams({ page: String(page + 1) })}
               disabled={!meta.hasNext}
               className="rounded-lg border border-line px-3 py-1.5 font-medium text-ink disabled:opacity-40"
             >
@@ -183,5 +214,13 @@ export default function AdminProjectsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function AdminProjectsPage() {
+  return (
+    <Suspense fallback={null}>
+      <ProjectsListInner />
+    </Suspense>
   );
 }
