@@ -4,11 +4,11 @@
   "private": true,
   "description": "Soil & Structure — geotechnical and structural engineering consultancy website, with a Node/Express + MongoDB API for the Projects admin panel.",
   "scripts": {
-    "dev": "cd frontend && next dev",
-    "build": "cd frontend && next build",
-    "start": "cd frontend && next start",
-    "lint": "cd frontend && next lint",
-    "typecheck": "cd frontend && tsc --noEmit",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
 
     "server": "node server/index.js",
     "server:dev": "nodemon server/index.js",
