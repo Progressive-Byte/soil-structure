@@ -31,7 +31,7 @@ function validateProjectPayload(body, { partial = false } = {}) {
   return null;
 }
 
-// GET /api/admin/projects?page=&limit=&q=
+// GET /api/admin/projects?page=&limit=&q=&sort=recent|oldest|az|za
 router.get("/", async (req, res) => {
   try {
     const { page, limit, skip } = parsePagination(req.query, { defaultLimit: 10, maxLimit: 100 });
@@ -39,8 +39,9 @@ router.get("/", async (req, res) => {
     if (req.query.q) {
       filter.title = { $regex: String(req.query.q), $options: "i" };
     }
+    const sortSpec = SORT_OPTIONS[req.query.sort] || { order: 1, createdAt: -1 };
     const [projects, total] = await Promise.all([
-      Project.find(filter).sort({ order: 1, createdAt: -1 }).skip(skip).limit(limit),
+      Project.find(filter).sort(sortSpec).skip(skip).limit(limit),
       Project.countDocuments(filter),
     ]);
     res.json({ projects, meta: buildMeta({ page, limit, total }) });
