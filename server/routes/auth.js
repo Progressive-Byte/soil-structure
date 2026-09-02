@@ -7,24 +7,27 @@ const router = express.Router();
 // Static single-admin login — credentials live in server/.env, compared
 // directly (no Admin collection, per the project's simplified auth scope).
 router.post("/login", (req, res) => {
-  const { username, password } = req.body || {};
-  if (!username || !password) {
-    return res.status(400).json({ message: "Username and password are required" });
+  const { email, password } = req.body || {};
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
   }
 
-  if (username !== process.env.ADMIN_USERNAME || password !== process.env.ADMIN_PASSWORD) {
+  if (
+    email.toLowerCase() !== String(process.env.ADMIN_EMAIL).toLowerCase() ||
+    password !== process.env.ADMIN_PASSWORD
+  ) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  const token = jwt.sign({ role: "admin", username }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ role: "admin", email }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || "12h",
   });
 
-  res.json({ token, admin: { username } });
+  res.json({ token, admin: { email } });
 });
 
 router.get("/me", protect, (req, res) => {
-  res.json({ admin: { username: req.admin.username } });
+  res.json({ admin: { email: req.admin.email } });
 });
 
 module.exports = router;
