@@ -74,8 +74,6 @@ app/                 Pages & routes (Next.js App Router)
   projects/          /projects list + [slug] detail + loading state
   services/          /services list + [slug] detail
   about/             /about
-  careers/           /careers list + [slug] detail
-  insights/          /insights list + [slug] article + loading state
   contact/           /contact (form)
   terms/ privacy/    Legal placeholder pages
   not-found.tsx      404 page
