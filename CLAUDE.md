@@ -4,18 +4,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Soil & Structure — a marketing/content website for a geotechnical and structural
-engineering consultancy. Next.js 14 (App Router) + TypeScript + Tailwind CSS,
-currently in a **static content phase**: all content is served from JSON
-fixtures in `/data` through an async data layer in `/lib/data`, so swapping in
-a real Node.js + MongoDB API later requires editing only that layer.
+Soil & Structure — a marketing site for a geotechnical and structural
+engineering consultancy, plus an admin panel for managing its Projects.
+Next.js 14 (App Router) + TypeScript + Tailwind CSS at the repo root, backed
+by a separate Node/Express + MongoDB API in `server/`.
 
-For full detail beyond this file, read **README.md** (backend integration plan,
-tech stack, env vars) and **PROJECT_GUIDE.md** (file-by-file edit map, design
-token guide, animation reference, troubleshooting).
+**Projects are dynamic** (stored in MongoDB, managed through the admin panel
+at `/admin`); every other content type (services, team, testimonials, site
+config, stats, process steps) is still static, authored directly as
+TypeScript constants in `lib/data/*.ts` — there is no `/data` JSON directory.
+
+For further detail, see **README.md** (tech stack, env vars) and
+**PROJECT_GUIDE.md** (file-by-file edit map, design token guide, animation
+reference, troubleshooting).
 
 ## Commands
 
+Frontend (run from the repo root):
 ```bash
 npm run dev        # dev server at http://localhost:3000
 npm run build      # production build — also type-checks and lints
@@ -24,70 +29,135 @@ npm run lint       # ESLint (next/core-web-vitals config)
 npm run typecheck  # tsc --noEmit
 ```
 
-There is no test runner configured in this repo. Before finishing a session,
-run `npm run build` — it type-checks and lints, so a clean build is the bar for
-"done."
+Backend (the Express API in `server/`, port 4000):
+```bash
+npm run server:dev  # nodemon server/index.js
+npm run server      # node server/index.js
+```
+
+Run both at once: `npm run dev:all`. There is no test runner configured —
+before finishing a session, run `npm run build`, which type-checks and lints.
 
 ## Architecture
 
-**Data layer is the single swap point.** Nothing outside `/lib/data` and
-`/lib/api` should know that content currently comes from local JSON:
+**Two halves, one `.env`.** The root `.env` (copy from `.env.example`) is
+loaded by both: Next.js reads it natively (it lives next to `next.config.mjs`
+and `package.json`), and `server/bootstrap.js` loads it explicitly via
+`dotenv`. `NEXT_PUBLIC_API_URL` is the frontend's only link to the backend —
+everything else backend-related (`MONGODB_URI`, `JWT_SECRET`, `ADMIN_EMAIL`/
+`ADMIN_PASSWORD`, `CORS_ORIGIN`, `CLOUDINARY_*`) is read only by `server/`.
 
-- `data/*.json` — mock content, shaped like MongoDB documents (every type in
-  `types/index.ts` extends `BaseDocument` with `_id`/`createdAt`/`updatedAt`).
-- `lib/data/_client.ts` — the `read()` primitive every getter calls. It
-  currently `structuredClone`s a JSON import and wraps it in a Promise; the
-  doc comment there shows the exact `fetch()` replacement for when the real
-  API exists. Change `read()` here, not the callers.
-- `lib/data/*.ts` (`projects.ts`, `services.ts`, `team.ts`, `testimonials.ts`,
-  `company.ts`) — one file per content type, each exposing async getters
-  (`getProjects`, `getProjectBySlug`, `getProjectsBySector`, etc.).
-  Pages/components call these, never the JSON files directly.
-- `lib/api/contact.ts` — contact form validation (`validateContactForm`) and
-  submission (`submitContactForm`); the real backend call is a marked
-  `TODO(backend)` inside `submitContactForm`.
+### Frontend data layer
 
-When adding a new content type: add a JSON fixture in `/data`, a matching
-interface in `types/index.ts` extending `BaseDocument`, and a getter file in
-`/lib/data` that calls `read()` — following the pattern in `lib/data/projects.ts`.
+- `lib/data/projects.ts` — the one dynamic content type. Every getter
+  (`getProjects`, `getFeaturedProjects`, `getProjectBySlug`,
+  `getProjectsBySector`, `getProjectSectors`, `getPaginatedProjects`) calls
+  `fetchAPI()` (in `lib/data/_client.ts`) against the Express API's
+  `/public/projects*` routes, `cache: "no-store"` so admin edits show up
+  immediately.
+- `lib/data/{services,team,testimonials,company}.ts` — static content,
+  authored as typed array/object constants directly in these files (no JSON,
+  no fetch). Each still returns a Promise (via `_client.ts`'s `read()`, a thin
+  `structuredClone`-and-resolve wrapper) so call sites are uniform with the
+  dynamic getters above.
+- `lib/api/contact.ts` — contact form validation + a stubbed submit handler
+  (`TODO(backend)` marks where a real endpoint would go — not built yet).
 
-**Routing.** `app/` uses the Next.js App Router. List pages (`projects/`,
-`services/`) each pair with a `[slug]/` detail route; `projects/` also has a
-`loading.tsx` skeleton state (the 600ms artificial delay in
-`submitContactForm` and the `read()` Promise wrapping exist partly to
-exercise these). `sitemap.ts` and `robots.ts` are generated from the same
-data layer.
+When adding a new **static** content type, follow the pattern in
+`lib/data/services.ts` (typed constant + `read()`), not `data/*.json` — that
+directory doesn't exist anymore. When extending **Projects**, the schema lives
+in `server/models/Project.js` and the shape is mirrored in `types/index.ts`'s
+`Project` interface — keep them in sync.
 
-**Components split by role**, not by page:
-- `components/ui/` — generic primitives (Button, Container, Section, Field,
-  Reveal, Skeleton, Tag, StatItem, …), reused across pages.
-- `components/sections/` — page-specific blocks (Header, Footer, Hero,
-  ServicesGrid, SelectedWork, Testimonials, ContactForm, PageHeader, …),
-  each usually mapped to one content type from `/lib/data`.
+### Routing (`app/`)
 
-**Design tokens live in `tailwind.config.ts`**, extracted from the source
-Figma file ("S&S Landing Page — Warm (Bone + Lime)"). Components must use
-token classes (`bg-bone`, `text-ink`, `bg-lime`, `bg-muted`, `border-line`,
-`text-display-lg`, `rounded-card`, etc.) rather than arbitrary Tailwind values
-— this keeps the palette/type-scale/radius centrally editable.
+Two top-level groups under `app/`, both part of the same single Next.js app
+(one build, one port):
+- `app/(site)/` — the public marketing site (home, about, projects, services,
+  contact, terms, privacy). Its `layout.tsx` renders the Header/Footer/
+  `RouteProgress` chrome. `app/layout.tsx` (the true root, outside the group)
+  is deliberately minimal — just `<html>`/`<body>`/fonts — specifically so
+  `/admin/*` (a sibling segment, not inside `(site)`) doesn't inherit the
+  public site's header/footer.
+- `app/admin/` — the Projects admin panel. `login/` is the public login page;
+  everything under `(protected)/` is gated by that group's `layout.tsx`,
+  which checks for a token in `localStorage` on mount and redirects to
+  `/admin/login` if missing (real enforcement is server-side — see below).
+  `app/admin/_lib/adminApi.ts` is the fetch wrapper every admin page uses:
+  it injects the bearer token and clears it on a 401.
 
-⚠️ **Editing `tailwind.config.ts` requires a dev server restart** — Tailwind
-config is not hot-reloaded and will otherwise 500 briefly. Editing JSON, TSX,
-or `styles/globals.css` does not require a restart.
+`app/(site)/projects/page.tsx` and `app/admin/(protected)/projects/page.tsx`
+both use query-string state (`?q=`, `?page=`, `?sort=`) rather than component
+state — the public list via the Server Component's `searchParams` prop, the
+admin list via `useSearchParams`/`router.replace` (wrapped in `Suspense`,
+which `useSearchParams` requires). `sitemap.ts` and `robots.ts` sit outside
+the `(site)` group at the true `app/` root (Next.js special-cases these).
 
-Fonts are wired via `next/font` in `app/layout.tsx` (Archivo for headings,
-Instrument Sans for body) into the `--font-heading`/`--font-body` CSS
-variables that `fontFamily.heading`/`fontFamily.body` in the Tailwind config
-consume.
+### Backend (`server/`, plain CommonJS — no `"type": "module"` in package.json)
+
+- `server/index.js` — Express app: CORS (multi-origin via comma-separated
+  `CORS_ORIGIN`), `express.json()`, mounts the routers below, one generic
+  error handler, listens on `PORT`.
+- `server/config/db.js` — `mongoose.connect()`, exits the process on failure
+  (fail-fast, no retry loop).
+- `server/models/Project.js` — the only Mongoose model. `toJSON` transform
+  reshapes `_id`/`createdAt`/`updatedAt` to match `types/index.ts`'s `Project`
+  exactly, so the frontend needs zero mapping.
+- `server/middleware/auth.js` — `protect()` just verifies the JWT; there's no
+  `Admin` collection to look up (see auth below).
+- `server/routes/auth.js` — `POST /api/auth/login`, `GET /api/auth/me`.
+- `server/routes/publicProjects.js` — `GET /api/public/projects` (no
+  `page`/`limit` → returns everything, used by the homepage/sitemap/sector
+  filter; pass `page`/`limit` → paginated with a `meta` block, used by the
+  public `/projects` list) and `GET /api/public/projects/:slug`.
+- `server/routes/adminProjects.js` — protected CRUD: paginated `GET /`
+  (`page`, `limit`, `q` search, `sort` = `recent`/`oldest`/`az`/`za`, default
+  is the manual `order` field), `GET /sectors` (distinct values, feeds the
+  admin form's category-suggestion dropdown), `GET/POST/PUT/DELETE /:id`.
+- `server/routes/upload.js` — protected, `multer` + `multer-storage-cloudinary`
+  (`cloudinary@1.x` — pinned to v1 because `multer-storage-cloudinary@4` peer-
+  depends on it; the `.v2` promise API is still used). Only the resulting
+  Cloudinary URL is ever persisted, never a file path.
+- `server/utils/pagination.js` — `parsePagination`/`buildMeta`, shared by both
+  the admin and public paginated routes; response shape is always
+  `{ page, limit, total, pages, hasPrev, hasNext }` (mirrored in
+  `types/index.ts` as `PaginationMeta`).
+- `server/utils/slug.js` — `toSlug`/`uniqueSlug` (appends `-2`, `-3`, … on
+  collision). The admin form auto-fills the slug from the title (in both
+  create and edit) until the admin manually edits the slug field themselves.
+
+### Admin auth is intentionally minimal
+
+One static credential pair in `.env` (`ADMIN_EMAIL`/`ADMIN_PASSWORD`) —
+**not** a database-backed `Admin` collection, no roles, no invites. Login
+compares the submitted email/password directly against those env vars and
+signs a JWT (`role: "admin"`); `protect()` just verifies the JWT's signature
+and role claim. The admin UI stores that JWT in `localStorage` (both the
+login page and the protected-route guard live in the same single Next.js app
+and origin, so this is simpler than a cookie).
+
+### Design tokens
+
+`tailwind.config.ts` holds the full palette/type-scale/radius extracted from
+the source Figma file ("S&S Landing Page — Warm (Bone + Lime)") — use its
+token classes (`bg-bone`, `text-ink`, `bg-lime`, `border-line`,
+`text-display-lg`, `rounded-card`, …) rather than arbitrary values.
+⚠️ Editing `tailwind.config.ts` requires a dev server restart (not
+hot-reloaded); editing `.tsx`/`.ts` or `styles/globals.css` does not.
+
+Fonts are wired via `next/font` in `app/(site)/layout.tsx` (Archivo/Instrument
+Sans) into `--font-heading`/`--font-body`. The admin panel and login page
+intentionally do **not** load these — they use system fonts, since they're a
+utilitarian tool, not part of the branded site.
 
 **Animations are dependency-free** (CSS keyframes in `tailwind.config.ts` +
-`components/ui/Reveal.tsx`'s IntersectionObserver), and respect
-`prefers-reduced-motion` via Tailwind's `motion-safe:`/`motion-reduce:`
-variants — don't reach for an animation library.
+`components/ui/Reveal.tsx`'s IntersectionObserver), respecting
+`prefers-reduced-motion` via `motion-safe:`/`motion-reduce:` — don't reach for
+an animation library.
 
-## Environment
-
-`.env.local` (git-ignored, copy from `.env.example`) provides
-`NEXT_PUBLIC_SITE_URL` (used in SEO metadata/sitemap via `lib/seo.ts`) and
-`NEXT_PUBLIC_API_URL` (unused today, read by `lib/data/_client.ts` for the
-future API).
+**Components split by role**: `components/ui/` (generic primitives — Button,
+Container, Field, Section, Reveal, Tag, StatItem, …) vs.
+`components/sections/` (page-specific blocks — Header, Footer, Hero,
+ServicesGrid, ProjectCard, ContactForm, …). The admin panel does **not** reuse
+`components/sections/*` (those are public-site-specific) but does reuse
+`components/ui/*` directly.
