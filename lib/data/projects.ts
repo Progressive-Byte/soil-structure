@@ -1,10 +1,20 @@
-import type { Project, ProjectSector } from "@/types";
+import type { PaginationMeta, Project, ProjectSector } from "@/types";
 import { fetchAPI } from "./_client";
 
 /** All projects, ordered by their `order` field (the API already sorts this way). */
 export async function getProjects(): Promise<Project[]> {
   const { projects } = await fetchAPI<{ projects: Project[] }>("/public/projects");
   return projects;
+}
+
+/** One page of projects, for the /projects list page's query-string pagination. */
+export async function getPaginatedProjects(
+  page = 1,
+  limit = 9,
+): Promise<{ projects: Project[]; meta: PaginationMeta }> {
+  return fetchAPI<{ projects: Project[]; meta: PaginationMeta }>(
+    `/public/projects?page=${page}&limit=${limit}`,
+  );
 }
 
 /** Featured projects for the home "Selected work" grid. */
