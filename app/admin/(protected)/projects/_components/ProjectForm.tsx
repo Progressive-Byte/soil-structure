@@ -80,12 +80,19 @@ export function ProjectForm({ initial, onSubmit, submitLabel }: ProjectFormProps
         }
       : emptyValues,
   );
-  const [slugTouched, setSlugTouched] = useState(Boolean(initial));
+  // Starts false even when editing — the slug keeps following the title
+  // until the admin manually edits the slug field themselves.
+  const [slugTouched, setSlugTouched] = useState(false);
   const [services, setServices] = useState<Service[]>([]);
   const [sectors, setSectors] = useState<string[]>([]);
+  const [sectorMenuOpen, setSectorMenuOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [uploading, setUploading] = useState<string | null>(null);
+
+  const sectorSuggestions = sectors.filter(
+    (s) => s !== values.sector && s.toLowerCase().includes(values.sector.toLowerCase()),
+  );
 
   useEffect(() => {
     getServices().then(setServices);
