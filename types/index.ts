@@ -114,41 +114,6 @@ export interface TeamMember extends BaseDocument {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Insights (blog / articles)                                                  */
-/* -------------------------------------------------------------------------- */
-
-export interface Insight extends BaseDocument {
-  slug: string;
-  title: string;
-  excerpt: string;
-  /** Body as plain paragraphs for the static phase. */
-  body: string[];
-  category: string;
-  author: string;
-  /** ISO date the article was published. */
-  publishedAt: string;
-  readingMinutes: number;
-  coverImage?: ImageAsset;
-}
-
-/* -------------------------------------------------------------------------- */
-/*  Careers                                                                     */
-/* -------------------------------------------------------------------------- */
-
-export type JobType = "Full-time" | "Part-time" | "Contract" | "Internship";
-
-export interface Job extends BaseDocument {
-  slug: string;
-  title: string;
-  department: string;
-  location: string;
-  type: JobType;
-  summary: string;
-  responsibilities: string[];
-  requirements: string[];
-}
-
-/* -------------------------------------------------------------------------- */
 /*  Company stats                                                               */
 /* -------------------------------------------------------------------------- */
 
