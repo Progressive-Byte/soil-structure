@@ -179,3 +179,16 @@ export interface FormResult {
   /** Field-level validation errors, keyed by field name. */
   errors?: Partial<Record<keyof ContactFormData, string>>;
 }
+
+/* -------------------------------------------------------------------------- */
+/*  Pagination                                                                  */
+/* -------------------------------------------------------------------------- */
+
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  pages: number;
+  hasPrev: boolean;
+  hasNext: boolean;
+}
