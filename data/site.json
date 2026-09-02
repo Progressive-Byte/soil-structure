@@ -15,9 +15,7 @@
         { "label": "Home", "href": "/" },
         { "label": "About", "href": "/about" },
         { "label": "Leadership", "href": "/about#leadership" },
-        { "label": "Culture", "href": "/careers#culture" },
-        { "label": "Community", "href": "/about#community" },
-        { "label": "Careers", "href": "/careers" }
+        { "label": "Community", "href": "/about#community" }
       ]
     },
     {
