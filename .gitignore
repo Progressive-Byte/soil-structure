@@ -6,7 +6,7 @@ node_modules
 # testing
 coverage/
 
-# next.js (lives in web/, but unanchored so it matches there)
+# next.js
 .next/
 out/
 
