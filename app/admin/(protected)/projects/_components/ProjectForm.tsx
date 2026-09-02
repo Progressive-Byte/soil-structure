@@ -213,25 +213,42 @@ export function ProjectForm({ initial, onSubmit, submitLabel }: ProjectFormProps
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <div className="flex flex-col gap-2">
+        <div className="relative flex flex-col gap-2">
           <label htmlFor="sector" className="text-sm font-semibold text-ink">
             Sector / category<span className="ml-0.5 text-lime-600">*</span>
           </label>
           <input
             id="sector"
             name="sector"
-            list="sector-options"
             required
-            placeholder="e.g. Healthcare"
+            autoComplete="off"
+            placeholder="e.g. Healthcare — type a new one or pick an existing category"
             value={values.sector}
             onChange={(e) => updateField("sector", e.target.value)}
+            onFocus={() => setSectorMenuOpen(true)}
+            // Delay so a click on a suggestion below registers before the blur closes the menu.
+            onBlur={() => setTimeout(() => setSectorMenuOpen(false), 150)}
             className={inputClasses}
           />
-          <datalist id="sector-options">
-            {sectors.map((s) => (
-              <option key={s} value={s} />
-            ))}
-          </datalist>
+          {sectorMenuOpen && sectorSuggestions.length > 0 && (
+            <ul className="absolute top-full z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-line bg-bone-50 shadow-card">
+              {sectorSuggestions.map((s) => (
+                <li key={s}>
+                  <button
+                    type="button"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => {
+                      updateField("sector", s);
+                      setSectorMenuOpen(false);
+                    }}
+                    className="block w-full px-4 py-2 text-left text-sm text-ink hover:bg-bone-200"
+                  >
+                    {s}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
         <InputField
           label="Location"
