@@ -14,11 +14,9 @@ import { buildMetadata } from "@/lib/seo";
 
 type Params = { params: { slug: string } };
 
-// Pre-render every project page at build time.
-export async function generateStaticParams() {
-  const projects = await getProjects();
-  return projects.map((project) => ({ slug: project.slug }));
-}
+// Projects are admin-managed and live in MongoDB now, so this renders
+// dynamically per request rather than being pre-rendered at build time —
+// an edit or a new project shows up immediately, with no rebuild needed.
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const project = await getProjectBySlug(params.slug);
