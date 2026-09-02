@@ -123,6 +123,32 @@ export default async function ProjectDetailPage({ params }: Params) {
         </div>
       </Section>
 
+      {otherProjects.length > 0 && (
+        <Section className="pt-0">
+          <div className="flex flex-wrap items-end justify-between gap-6 border-t border-line pt-16 md:pt-22">
+            <div>
+              <SectionEyebrow>Keep exploring</SectionEyebrow>
+              <h2 className="mt-5 font-heading text-display-sm font-bold tracking-tight md:text-display-md">
+                More projects
+              </h2>
+            </div>
+            <Link
+              href="/projects"
+              className="text-sm font-medium text-muted transition-colors hover:text-ink"
+            >
+              View all projects →
+            </Link>
+          </div>
+          <ul className="mt-12 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+            {otherProjects.map((other) => (
+              <li key={other._id}>
+                <ProjectCard project={other} />
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
+
       <CtaBand />
     </>
   );
