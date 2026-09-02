@@ -97,7 +97,7 @@ export default async function ProjectDetailPage({ params }: Params) {
             )}
           </div>
 
-          <aside className="lg:border-l lg:border-line lg:pl-10">
+          <aside className="rounded-card border border-line bg-bone-50 p-6 md:p-8">
             <h2 className="text-eyebrow font-semibold uppercase text-muted">Project facts</h2>
             <dl className="mt-5 divide-y divide-line">
               <div className="flex justify-between gap-4 py-3">
