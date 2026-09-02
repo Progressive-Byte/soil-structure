@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import path from "path";
 
 /**
  * Design tokens extracted from the Figma file
@@ -10,18 +11,20 @@ import type { Config } from "tailwindcss";
 const config: Config = {
   // One shared config for all three apps (frontend/web, frontend/admin,
   // frontend/login) — each has its own thin tailwind.config.ts that
-  // re-exports this file.
+  // re-exports this file. Tailwind resolves `content` globs relative to the
+  // current working directory (whichever app is actually building), not
+  // relative to this file — so these must be absolute paths, built from this
+  // file's own location, or the two other apps' content never matches once
+  // you `cd` into a given app to build it.
   content: [
-    "./frontend/web/app/**/*.{ts,tsx}",
-    "./frontend/web/components/**/*.{ts,tsx}",
-    "./frontend/web/lib/**/*.{ts,tsx}",
-    "./frontend/admin/app/**/*.{ts,tsx}",
-    "./frontend/admin/components/**/*.{ts,tsx}",
-    "./frontend/admin/lib/**/*.{ts,tsx}",
-    "./frontend/login/app/**/*.{ts,tsx}",
-    "./frontend/login/components/**/*.{ts,tsx}",
-    "./frontend/login/lib/**/*.{ts,tsx}",
-  ],
+    "app/**/*.{ts,tsx}",
+    "components/**/*.{ts,tsx}",
+    "lib/**/*.{ts,tsx}",
+  ].flatMap((glob) =>
+    ["frontend/web", "frontend/admin", "frontend/login"].map((dir) =>
+      path.join(__dirname, dir, glob),
+    ),
+  ),
   theme: {
     // Breakpoints matching the Figma frames: mobile (default) / tablet / desktop.
     screens: {
