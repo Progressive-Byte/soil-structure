@@ -6,8 +6,6 @@
     { "label": "Projects", "href": "/projects" },
     { "label": "Services", "href": "/services" },
     { "label": "About", "href": "/about" },
-    { "label": "Careers", "href": "/careers" },
-    { "label": "Insights", "href": "/insights" },
     { "label": "Contact", "href": "/contact" }
   ],
   "footerColumns": [
