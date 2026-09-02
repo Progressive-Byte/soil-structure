@@ -1,18 +1,18 @@
 # dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.js
 
 # testing
-/coverage
+coverage/
 
-# next.js
-/.next/
-/out/
+# next.js (lives in web/, but unanchored so it matches there)
+.next/
+out/
 
 # production
-/build
-/dist
+build/
+dist/
 
 # misc
 .DS_Store
