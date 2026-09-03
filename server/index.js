@@ -7,6 +7,7 @@ const authRoutes = require("./routes/auth");
 const adminProjectsRoutes = require("./routes/adminProjects");
 const publicProjectsRoutes = require("./routes/publicProjects");
 const uploadRoutes = require("./routes/upload");
+const contactRoutes = require("./routes/contact");
 
 connectDB();
 
