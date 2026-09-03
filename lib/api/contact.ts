@@ -1,4 +1,5 @@
 import type { ContactFormData, FormResult } from "@/types";
+import { API_BASE } from "@/lib/data/_client";
 
 /**
  * Validate the contact form. Pure function so it can run on the server (in the
@@ -25,20 +26,12 @@ export function validateContactForm(data: ContactFormData): FormResult["errors"]
 }
 
 /**
- * Single submission handler for the contact form.
- *
- * TODO(backend): Replace the mocked success below with a real call to the
- * Node.js API, e.g.:
- *
- *   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contact`, {
- *     method: "POST",
- *     headers: { "Content-Type": "application/json" },
- *     body: JSON.stringify(data),
- *   });
- *   if (!res.ok) return { ok: false, message: "Something went wrong. Please try again." };
- *
- * This is the ONLY place the form talks to a backend — the form component does
- * not need to change when the endpoint is wired up.
+ * Single submission handler for the contact form. Validates client-side first
+ * to short-circuit obviously-bad input, then posts to the Express API's
+ * `/contact` route (server/routes/contact.js), which re-validates and sends
+ * the message on via SMTP. This is the ONLY place the form talks to the
+ * backend — the form component does not need to change when the endpoint
+ * changes.
  */
 export async function submitContactForm(data: ContactFormData): Promise<FormResult> {
   const errors = validateContactForm(data);
@@ -46,12 +39,30 @@ export async function submitContactForm(data: ContactFormData): Promise<FormResu
     return { ok: false, message: "Please correct the highlighted fields.", errors };
   }
 
-  // Simulate network latency so loading states are exercised in the static phase.
-  await new Promise((resolve) => setTimeout(resolve, 600));
+  try {
+    const res = await fetch(`${API_BASE}/contact`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const body = await res.json().catch(() => null);
 
-  // TODO(backend): send `data` to the real endpoint here.
-  return {
-    ok: true,
-    message: "Thanks — your message has been received. We'll be in touch shortly.",
-  };
+    if (!res.ok) {
+      return {
+        ok: false,
+        message: body?.message ?? "Something went wrong. Please try again.",
+        errors: body?.errors,
+      };
+    }
+
+    return {
+      ok: true,
+      message: body?.message ?? "Thanks — your message has been received. We'll be in touch shortly.",
+    };
+  } catch {
+    return {
+      ok: false,
+      message: "Couldn't reach the server. Please check your connection and try again.",
+    };
+  }
 }
