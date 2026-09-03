@@ -3,7 +3,6 @@ import { PageHeader } from "@/components/sections/PageHeader";
 import { Section } from "@/components/ui/Section";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { getSiteConfig } from "@/lib/data/company";
-import { getProjectSectors } from "@/lib/data/projects";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
