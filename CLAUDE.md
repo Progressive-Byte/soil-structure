@@ -14,9 +14,9 @@ at `/admin`); every other content type (services, team, testimonials, site
 config, stats, process steps) is still static, authored directly as
 TypeScript constants in `lib/data/*.ts` — there is no `/data` JSON directory.
 
-For further detail, see **README.md** (tech stack, env vars) and
-**PROJECT_GUIDE.md** (file-by-file edit map, design token guide, animation
-reference, troubleshooting).
+There is no README.md or other supplementary doc in this repo — this file is
+the only source of project-level guidance; see `.env.example` for the full
+list of env vars.
 
 ## Commands
 
