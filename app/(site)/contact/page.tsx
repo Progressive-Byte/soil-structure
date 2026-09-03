@@ -30,7 +30,7 @@ export default async function ContactPage() {
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
           <div>
-            <ContactForm />
+            <ContactForm projectTypes={projectTypes} />
           </div>
           <aside className="lg:border-l lg:border-line lg:pl-10">
             <h2 className="text-eyebrow font-semibold uppercase text-muted">Get in touch</h2>
