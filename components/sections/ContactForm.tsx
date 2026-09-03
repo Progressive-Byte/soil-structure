@@ -104,10 +104,18 @@ export function ContactForm({ projectTypes = [] }: { projectTypes?: string[] }) 
         <InputField
           label="Project type"
           name="projectType"
+          list={projectTypes.length ? "project-types" : undefined}
           placeholder="e.g. Higher Education, Healthcare"
           value={form.projectType}
           onChange={update("projectType")}
         />
+        {projectTypes.length > 0 && (
+          <datalist id="project-types">
+            {projectTypes.map((type) => (
+              <option key={type} value={type} />
+            ))}
+          </datalist>
+        )}
       </div>
 
       <TextareaField
