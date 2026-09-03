@@ -19,7 +19,7 @@ const emptyForm: ContactFormData = {
  * single handler in /lib/api/contact.ts — this component does not talk to the
  * backend directly, so it doesn't change if the API changes.
  */
-export function ContactForm({ projectTypes = [] }: { projectTypes?: string[] }) {
+export function ContactForm() {
   const [form, setForm] = useState<ContactFormData>(emptyForm);
   const [result, setResult] = useState<FormResult | null>(null);
   const [submitting, setSubmitting] = useState(false);
