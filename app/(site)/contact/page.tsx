@@ -13,11 +13,8 @@ export const metadata: Metadata = buildMetadata({
 });
 
 // This page layout is not in the Figma; it reuses the landing page's system.
-export default async function ContactPage() {
+export default function ContactPage() {
   const config = getSiteConfig();
-  // "Project type" suggestions come from the actual sectors in use across
-  // the (dynamic, MongoDB-backed) Projects — not a hardcoded list.
-  const projectTypes = await getProjectSectors();
 
   return (
     <>
