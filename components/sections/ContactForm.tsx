@@ -16,10 +16,10 @@ const emptyForm: ContactFormData = {
 
 /**
  * Contact form UI + client-side validation. Submissions are routed through the
- * single stub handler in /lib/api/contact.ts — this component does not talk to
- * a backend directly, so it needs no changes when the API is wired up.
+ * single handler in /lib/api/contact.ts — this component does not talk to the
+ * backend directly, so it doesn't change if the API changes.
  */
-export function ContactForm() {
+export function ContactForm({ projectTypes = [] }: { projectTypes?: string[] }) {
   const [form, setForm] = useState<ContactFormData>(emptyForm);
   const [result, setResult] = useState<FormResult | null>(null);
   const [submitting, setSubmitting] = useState(false);
