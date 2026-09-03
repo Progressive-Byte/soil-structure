@@ -23,6 +23,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin/projects", adminProjectsRoutes);
 app.use("/api/public/projects", publicProjectsRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/contact", contactRoutes);
 
 app.get("/api/health", (_req, res) => res.json({ status: "ok", timestamp: new Date() }));
 
