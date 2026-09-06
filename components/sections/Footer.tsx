@@ -1,92 +1,86 @@
 import Image from "next/image";
 import Link from "next/link";
-import { SocialIcon } from "@/components/ui/SocialIcon";
+import { Container } from "@/components/ui/Container";
 import type { SiteConfig } from "@/types";
 
 type FooterProps = {
   config: SiteConfig;
 };
 
-/** Dark site footer: brand + contact, three link columns, social, legal bar. */
+/** Dark rounded footer card: brand + contact, three link columns, legal bar. */
 export function Footer({ config }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-ink text-bone">
-      <div className="container-page pb-16 pt-[50px] md:pb-20">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
-          {/* Brand + contact */}
-          <div>
-            <Link
-              href="/"
-              aria-label="Soil & Structure — home"
-              className="inline-flex rounded-[10px] bg-white p-[5px]"
-            >
-              <Image
-                src="/images/brand/logo.png"
-                alt="Soil & Structure"
-                width={225}
-                height={160}
-                className="h-16 w-auto"
-              />
-            </Link>
-            <address className="mt-6 space-y-1 not-italic text-sm text-muted-dark">
-              {config.contact.addressLines.map((line) => (
-                <div key={line}>{line}</div>
-              ))}
-              <div className="pt-2">
-                <a href={`tel:${config.contact.phone.replace(/[^\d+]/g, "")}`} className="hover:text-bone">
+    <footer className="bg-bone pb-6 md:pb-10">
+      <Container>
+        <div className="rounded-[1.75rem] bg-ink px-6 py-12 text-bone md:px-12 md:py-16">
+          <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-12">
+            {/* Brand + contact */}
+            <div>
+              <Link href="/" aria-label="Soil and Structure — home" className="inline-flex">
+                <Image
+                  src="/images/brand/logo-soil-structure-reversed.png"
+                  alt="Soil and Structure"
+                  width={779}
+                  height={208}
+                  className="h-11 w-auto"
+                />
+              </Link>
+              <address className="mt-6 space-y-1 not-italic text-sm text-muted-dark">
+                {config.contact.addressLines.map((line) => (
+                  <div key={line}>{line}</div>
+                ))}
+              </address>
+              <div className="mt-5 space-y-1 text-sm">
+                <a
+                  href={`tel:${config.contact.phone.replace(/[^\d+]/g, "")}`}
+                  className="block font-semibold text-bone hover:text-lime"
+                >
                   {config.contact.phone}
                 </a>
-              </div>
-              <div>
-                <a href={`mailto:${config.contact.email}`} className="hover:text-bone">
+                <a
+                  href={`mailto:${config.contact.email}`}
+                  className="block text-muted-dark hover:text-bone"
+                >
                   {config.contact.email}
                 </a>
               </div>
-            </address>
-            <div className="mt-6 flex gap-3">
-              {config.social.map((link) => (
-                <SocialIcon key={link.platform} link={link} tone="bone" />
-              ))}
+            </div>
+
+            {/* Link columns */}
+            {config.footerColumns.map((column) => (
+              <nav key={column.heading} aria-label={column.heading}>
+                <h2 className="text-eyebrow font-semibold uppercase text-lime">{column.heading}</h2>
+                <ul className="mt-5 space-y-3">
+                  {column.links.map((link) => (
+                    <li key={link.href + link.label}>
+                      <Link href={link.href} className="text-sm text-bone/85 hover:text-lime">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
+
+          {/* Legal bar */}
+          <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-line-dark pt-6 text-xs text-muted-dark md:flex-row md:items-center">
+            <p>
+              © {year} {config.name}. All rights reserved.
+            </p>
+            <div className="flex gap-8">
+              <Link href="/privacy" className="hover:text-bone">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="hover:text-bone">
+                Terms of Use
+              </Link>
             </div>
           </div>
-
-          {/* Link columns */}
-          {config.footerColumns.map((column) => (
-            <nav key={column.heading} aria-label={column.heading}>
-              <h2 className="text-eyebrow font-semibold uppercase text-muted-dark">
-                {column.heading}
-              </h2>
-              <ul className="mt-4 space-y-3">
-                {column.links.map((link) => (
-                  <li key={link.href + link.label}>
-                    <Link href={link.href} className="text-sm text-bone/85 hover:text-lime">
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
         </div>
-      </div>
-
-      <div className="border-t border-line-dark">
-        <div className="container-page flex flex-col items-center justify-between gap-3 py-6 text-xs text-muted-dark md:flex-row">
-          <p>
-            Copyright © {year} {config.name}. All rights reserved.
-          </p>
-          <div className="flex gap-6">
-            <Link href="/terms" className="hover:text-bone">
-              Terms of Use
-            </Link>
-            <Link href="/privacy" className="hover:text-bone">
-              Privacy Policy
-            </Link>
-          </div>
-        </div>
-      </div>
+      </Container>
     </footer>
   );
 }

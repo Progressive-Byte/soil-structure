@@ -1,41 +1,89 @@
-import { Section } from "@/components/ui/Section";
-import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
+import Image from "next/image";
+import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { Reveal } from "@/components/ui/Reveal";
-import { ProjectCard } from "./ProjectCard";
+import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import type { Project } from "@/types";
 
 type SelectedWorkProps = {
-  projects: Project[];
+  /** Optional featured projects from the API; the first one is showcased. */
+  projects?: Project[];
 };
 
-/** Dark "Different ground. Different answers." — featured project grid. */
-export function SelectedWork({ projects }: SelectedWorkProps) {
-  return (
-    <Section tone="ink">
-      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-        <div>
-          <SectionEyebrow tone="bone">Selected work</SectionEyebrow>
-          <h2 className="mt-5 max-w-2xl font-heading text-display-sm font-bold tracking-tight md:text-display-md">
-            Different ground. Different answers.
-          </h2>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-dark md:text-lg">
-            Placeholder copy about the range of sectors served and the value
-            delivered on each project.
-          </p>
-        </div>
-        <Button href="/projects" variant="outline-light" withArrow className="self-start md:self-end">
-          More Projects
-        </Button>
-      </div>
+/** Static fallback shown until a featured project is published via the admin. */
+const fallback = {
+  title: "Ground Improvement at Matarbari Road Project",
+  summary:
+    "Ground improvement works carried out on the Matarbari road scheme, applying stabilised earth solutions and vertical drainage to prepare soft ground for embankment loading.",
+  client: "Roads and Highways Department (RHD)",
+  discipline: "Geotechnical — Ground Improvement",
+  image: {
+    src: "/images/projects/matarbari-road-project.jpg",
+    alt: "Two engineers in hard hats reviewing plans inside a large industrial hall",
+  },
+  href: "/projects",
+};
 
-      <div className="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-        {projects.map((project, i) => (
-          <Reveal key={project._id} delay={i * 90}>
-            <ProjectCard project={project} tone="ink" />
-          </Reveal>
-        ))}
-      </div>
-    </Section>
+/**
+ * "Project experience" — a dark rounded card with the featured project image on
+ * the left and its details on the right.
+ */
+export function SelectedWork({ projects }: SelectedWorkProps) {
+  const project = projects?.[0];
+  const data = project
+    ? {
+        title: project.title,
+        summary: project.summary,
+        client: project.client,
+        discipline: project.sector,
+        image: project.coverImage,
+        href: `/projects/${project.slug}`,
+      }
+    : fallback;
+
+  return (
+    <section className="bg-bone py-6 md:py-10">
+      <Container>
+        <div className="overflow-hidden rounded-[1.75rem] bg-ink text-bone lg:grid lg:grid-cols-2">
+          {/* Image */}
+          <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[540px]">
+            <Image
+              src={data.image.src}
+              alt={data.image.alt}
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
+          </div>
+
+          {/* Details */}
+          <div className="flex flex-col justify-center p-8 md:p-12 lg:p-16">
+            <SectionEyebrow tone="bone">Project experience</SectionEyebrow>
+            <h2 className="mt-5 font-heading text-2xl font-bold tracking-tight md:text-3xl lg:text-display-sm">
+              {data.title}
+            </h2>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-dark">
+              {data.summary}
+            </p>
+
+            <dl className="mt-8 grid grid-cols-1 gap-6 border-t border-line-dark pt-6 sm:grid-cols-2">
+              <div>
+                <dt className="text-eyebrow font-semibold uppercase text-muted-dark">Client</dt>
+                <dd className="mt-2 font-medium text-bone">{data.client}</dd>
+              </div>
+              <div>
+                <dt className="text-eyebrow font-semibold uppercase text-muted-dark">Discipline</dt>
+                <dd className="mt-2 font-medium text-bone">{data.discipline}</dd>
+              </div>
+            </dl>
+
+            <div className="mt-8">
+              <Button href={data.href} variant="lime">
+                All Projects
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
   );
 }

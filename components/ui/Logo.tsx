@@ -9,21 +9,21 @@ type LogoProps = {
 };
 
 /**
- * Brand lockup — the supplied logo PNG (gradient shield above the
- * "Soil & Structure" wordmark, 288×205). Rendered as-is; width scales from the
- * chosen height to preserve the original proportions.
+ * Brand lockup — the "SOIL and STRUCTURE" horizontal logo (lime rounded-square
+ * monogram + wordmark, 659×176). Rendered as-is; width scales from the chosen
+ * height to preserve the original proportions.
  */
-export function Logo({ className, height = 44 }: LogoProps) {
+export function Logo({ className, height = 40 }: LogoProps) {
   return (
     <Link
       href="/"
-      aria-label="Soil & Structure — home"
-      className={cn("inline-flex items-center rounded-[10px] bg-white p-[5px]", className)}
+      aria-label="Soil and Structure — home"
+      className={cn("inline-flex items-center", className)}
     >
       <Image
-        src="/images/brand/logo.png"
-        alt="Soil & Structure"
-        width={Math.round((288 / 205) * height)}
+        src="/images/brand/logo-soil-structure.png"
+        alt="Soil and Structure"
+        width={Math.round((659 / 176) * height)}
         height={height}
         priority
         className="w-auto"

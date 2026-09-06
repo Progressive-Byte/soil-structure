@@ -36,3 +36,4 @@ next-env.d.ts
 
 # design source (Figma exports — kept locally, not needed to run the site)
 /Claude Design/
+/My Design/

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { InputField, TextareaField } from "@/components/ui/Field";
+import { InputField, TextareaField, SelectField } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
 import { submitContactForm } from "@/lib/api/contact";
 import type { ContactFormData, FormResult } from "@/types";
@@ -10,14 +10,27 @@ const emptyForm: ContactFormData = {
   name: "",
   email: "",
   company: "",
+  phone: "",
   projectType: "",
   message: "",
 };
 
+const serviceOptions = [
+  "Structural Design",
+  "Geotechnical Design",
+  "Water Resources Engineering",
+  "Environmental Engineering",
+  "Mechanical / Piping Engineering",
+  "Electrical Engineering",
+  "Architectural Design",
+  "Project & Construction Management",
+  "Quality Assurance & Control",
+  "Other / Not sure yet",
+];
+
 /**
  * Contact form UI + client-side validation. Submissions are routed through the
- * single handler in /lib/api/contact.ts — this component does not talk to the
- * backend directly, so it doesn't change if the API changes.
+ * single handler in /lib/api/contact.ts, which posts to the Express /contact API.
  */
 export function ContactForm() {
   const [form, setForm] = useState<ContactFormData>(emptyForm);
@@ -26,7 +39,7 @@ export function ContactForm() {
 
   const update =
     (field: keyof ContactFormData) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       setForm((prev) => ({ ...prev, [field]: e.target.value }));
     };
 
@@ -40,13 +53,9 @@ export function ContactForm() {
     if (res.ok) setForm(emptyForm);
   }
 
-  // Show the success state in place of the form once submitted successfully.
   if (result?.ok) {
     return (
-      <div
-        role="status"
-        className="rounded-card border border-line bg-bone-50 p-8 text-center"
-      >
+      <div role="status" className="rounded-2xl border border-line bg-white p-8 text-center">
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-lime">
           <svg viewBox="0 0 24 24" className="h-6 w-6 text-ink" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -73,7 +82,7 @@ export function ContactForm() {
 
       <div className="grid gap-5 sm:grid-cols-2">
         <InputField
-          label="Name"
+          label="Full name"
           name="name"
           required
           autoComplete="name"
@@ -81,6 +90,16 @@ export function ContactForm() {
           onChange={update("name")}
           error={result?.errors?.name}
         />
+        <InputField
+          label="Organisation"
+          name="company"
+          autoComplete="organization"
+          value={form.company}
+          onChange={update("company")}
+        />
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
         <InputField
           label="Email"
           name="email"
@@ -91,39 +110,44 @@ export function ContactForm() {
           onChange={update("email")}
           error={result?.errors?.email}
         />
+        <InputField
+          label="Phone"
+          name="phone"
+          type="tel"
+          autoComplete="tel"
+          value={form.phone}
+          onChange={update("phone")}
+        />
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <InputField
-          label="Company"
-          name="company"
-          autoComplete="organization"
-          value={form.company}
-          onChange={update("company")}
-        />
-        <InputField
-          label="Project type"
-          name="projectType"
-          placeholder="e.g. Higher Education, Healthcare"
-          value={form.projectType}
-          onChange={update("projectType")}
-        />
-      </div>
+      <SelectField
+        label="Service required"
+        name="projectType"
+        placeholder="Select a service…"
+        options={serviceOptions}
+        value={form.projectType}
+        onChange={update("projectType")}
+      />
 
       <TextareaField
-        label="About your project"
+        label="Project details"
         name="message"
         required
-        placeholder="Tell us about your site and what you're planning to build."
+        rows={5}
+        placeholder="Tell us about your site, structure or schedule…"
         value={form.message}
         onChange={update("message")}
         error={result?.errors?.message}
       />
 
       <div>
-        <Button type="submit" variant="lime" size="lg" disabled={submitting}>
-          {submitting ? "Sending…" : "Send message"}
-        </Button>
+        <button
+          type="submit"
+          disabled={submitting}
+          className="inline-flex items-center justify-center rounded-pill bg-ink px-7 py-3.5 text-sm font-semibold text-lime transition-colors duration-200 hover:bg-ink-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {submitting ? "Sending…" : "Send Message"}
+        </button>
       </div>
     </form>
   );

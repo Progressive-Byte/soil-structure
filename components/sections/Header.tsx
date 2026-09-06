@@ -68,7 +68,7 @@ export function Header({ nav }: HeaderProps) {
 
         <div className="hidden lg:block">
           <Button href="/contact" variant="lime" size="md">
-            Talk to an Engineer
+            Request a Consultation
           </Button>
         </div>
 
@@ -122,7 +122,7 @@ export function Header({ nav }: HeaderProps) {
             ))}
             <li className="pt-3">
               <Button href="/contact" variant="lime" size="lg" className="w-full">
-                Talk to an Engineer
+                Request a Consultation
               </Button>
             </li>
           </ul>

@@ -2,47 +2,43 @@ import type { CompanyStat, ProcessStep, SiteConfig } from "@/types";
 import { read } from "./_client";
 
 const stats: CompanyStat[] = [
-  { value: "25+", label: "Years in practice" },
-  { value: "400+", label: "Projects delivered" },
-  { value: "60", label: "Engineers and geologists" },
-  { value: "12", label: "Offices" },
+  { value: "2017", label: "Year founded" },
+  { value: "25+", label: "Years accumulated experience" },
+  { value: "8", label: "Disciplines under one roof" },
+  { value: "12", label: "Service areas" },
 ];
 
 const processSteps: ProcessStep[] = [
   {
     number: "01",
-    title: "Site Investigation",
+    title: "On time, on budget",
     description:
-      "We start below the surface, building a ground model from desk study and intrusive site work before the frame is fixed.",
+      "A commitment to delivering services on schedule and within budget is what has kept clients coming back since our first year.",
   },
   {
     number: "02",
-    title: "Concept & Collaboration",
+    title: "Most work is repeat or referred",
     description:
-      "Ground model, structural concept and budget move together, with the client and wider design team involved early and often.",
+      "Most of our assignments are repeat business or come through referrals — the clearest measure we have of whether we are doing this well.",
   },
   {
     number: "03",
-    title: "Value Engineering",
+    title: "Technical ability first",
     description:
-      "We test options against cost, programme and buildability, matching the foundation solution to the structure it carries.",
-  },
-  {
-    number: "04",
-    title: "Design Delivery",
-    description:
-      "Coordinated drawings and analysis carry the scheme from concept to completion, with support on site through construction.",
+      "Superior customer service is more than desirable, but it cannot replace technical ability and experience. Investment in training and professional development is a high priority.",
   },
 ];
 
 const siteConfig: SiteConfig = {
   name: "Soil & Structure",
-  tagline: "Geotechnical and structural engineering consultants",
+  tagline: "Multidisciplinary engineering consultants · Dhaka, Bangladesh",
   nav: [
     { label: "Home", href: "/" },
-    { label: "Projects", href: "/projects" },
     { label: "Services", href: "/services" },
+    { label: "Projects", href: "/projects" },
     { label: "About", href: "/about" },
+    { label: "Mission & Values", href: "/mission-values" },
+    { label: "Team", href: "/team" },
     { label: "Contact", href: "/contact" },
   ],
   footerColumns: [
@@ -50,25 +46,34 @@ const siteConfig: SiteConfig = {
       heading: "Company",
       links: [
         { label: "Home", href: "/" },
-        { label: "About", href: "/about" },
-        { label: "Leadership", href: "/about#leadership" },
-        { label: "Community", href: "/about#community" },
-      ],
-    },
-    {
-      heading: "Our Work",
-      links: [
+        { label: "About Us", href: "/about" },
+        { label: "Mission & Values", href: "/mission-values" },
+        { label: "Our Team", href: "/team" },
         { label: "Projects", href: "/projects" },
-        { label: "Services", href: "/services" },
-        { label: "Sectors", href: "/projects#sectors" },
-        { label: "Awards", href: "/about#awards" },
+        { label: "Contact", href: "/contact" },
       ],
     },
     {
-      heading: "Connect",
+      heading: "Services",
       links: [
-        { label: "Testimonials", href: "/about#testimonials" },
-        { label: "Contact Us", href: "/contact" },
+        { label: "Architectural Design", href: "/services/architectural-design" },
+        { label: "Structural Design", href: "/services/structural-design" },
+        { label: "Geotechnical Design", href: "/services/geotechnical-design" },
+        { label: "Water Resources", href: "/services/water-resources-engineering" },
+        { label: "Environmental", href: "/services/environmental-engineering" },
+        { label: "Mechanical, Electrical & Piping", href: "/services/mechanical-electrical-piping" },
+        { label: "Project & Construction Management", href: "/services/project-construction-management" },
+      ],
+    },
+    {
+      heading: "Disciplines",
+      links: [
+        { label: "Structural", href: "/services/structural-design" },
+        { label: "Geotechnical", href: "/services/geotechnical-design" },
+        { label: "Architectural", href: "/services/architectural-design" },
+        { label: "Electrical", href: "/services/mechanical-electrical-piping" },
+        { label: "Mechanical", href: "/services/mechanical-electrical-piping" },
+        { label: "Water Resources", href: "/services/water-resources-engineering" },
       ],
     },
   ],
@@ -77,9 +82,9 @@ const siteConfig: SiteConfig = {
     { platform: "facebook", href: "https://www.facebook.com", label: "Soil & Structure on Facebook" },
   ],
   contact: {
-    addressLines: ["1200 Riverside Drive, Suite 400", "City, ST 00000"],
-    phone: "(000) 000 0000",
-    email: "hello@soilandstructure.example",
+    addressLines: ["House #431-432, 1st Floor", "Road #6, Mirpur DOHS", "Dhaka 1216, Bangladesh"],
+    phone: "+880 1771 965563",
+    email: "soilandstructure.bd@gmail.com",
   },
 };
 

@@ -8,8 +8,8 @@ type CtaBandProps = {
 
 /** Full-width lime call-to-action band above the footer. */
 export function CtaBand({
-  heading = "What's beneath your next project?",
-  body = "Placeholder call to action. Talk to our engineers about your site and we'll tell you what the ground is likely to ask of your structure.",
+  heading = "We are here to solve your problems.",
+  body = "Tell us about your site, your structure or your schedule. We will tell you how we would approach it.",
 }: CtaBandProps) {
   return (
     <section className="bg-bone pt-4 pb-16 md:pb-24">
@@ -23,7 +23,7 @@ export function CtaBand({
               <p className="mt-4 text-base leading-relaxed text-ink/80 md:text-lg">{body}</p>
             </div>
             <Button href="/contact" variant="dark" size="lg" withArrow className="self-start lg:self-auto">
-              Talk to an Engineer
+              Start a Conversation
             </Button>
           </div>
         </div>

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { StatItem } from "@/components/ui/StatItem";
+import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import type { CompanyStat } from "@/types";
 
 type HeroProps = {
@@ -21,23 +22,16 @@ export function Hero({ eyebrow, stats }: HeroProps) {
         {/* Eyebrow + headline + intro + CTAs */}
         <div className="grid gap-8 pt-10 md:pt-14 lg:grid-cols-[1.5fr_1fr] lg:items-start lg:gap-12">
           <div>
-            <p
-              className="inline-flex items-center gap-2.5 text-eyebrow font-semibold uppercase text-muted motion-safe:animate-rise"
-              style={{ animationDelay: "60ms" }}
-            >
-              <span
-                className="h-1.5 w-1.5 rounded-full bg-lime-600 motion-safe:animate-dot-pulse"
-                aria-hidden="true"
-              />
-              {eyebrow}
-            </p>
+            <div className="motion-safe:animate-rise" style={{ animationDelay: "60ms" }}>
+              <SectionEyebrow>{eyebrow}</SectionEyebrow>
+            </div>
             <h1
-              className="mt-6 font-heading text-display-md font-extrabold tracking-tight text-ink motion-safe:animate-rise md:text-display-lg xl:text-display-xl"
+              className="mt-6 font-heading text-display-sm font-extrabold tracking-tight text-ink motion-safe:animate-rise md:text-display-md lg:text-display-lg"
               style={{ animationDelay: "140ms" }}
             >
-              Solid ground.
+              We are here to
               <br />
-              Sound structures.
+              solve your problems.
             </h1>
           </div>
           <div
@@ -45,18 +39,18 @@ export function Hero({ eyebrow, stats }: HeroProps) {
             style={{ animationDelay: "260ms" }}
           >
             <p className="text-base leading-relaxed text-muted md:text-lg">
-              A multidisciplinary consultancy pairing ground investigation with
-              structural design, so what sits above and what lies below are
-              engineered as one.
+              Formed in 2017 by BUET graduates, we deliver complete engineering
+              services — from feasibility through detailed design to construction
+              management.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button
-                href="/projects"
+                href="/services"
                 variant="dark"
                 withArrow
                 className="motion-safe:animate-btn-pulse"
               >
-                View Our Projects
+                Our Services
               </Button>
               <Button href="/about" variant="outline">
                 About Us
@@ -78,18 +72,18 @@ export function Hero({ eyebrow, stats }: HeroProps) {
             sizes="(max-width: 1200px) 100vw, 1200px"
             className="object-cover"
           />
-          {/* Darken toward the bottom so the stats stay legible over the photo. */}
+          {/* Uniform navy tint keeps the steel frame visible while stats stay legible. */}
           <div
-            className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/10"
+            className="absolute inset-0 bg-ink/65"
             aria-hidden="true"
           />
 
-          <div className="relative flex min-h-[380px] flex-col justify-end p-6 md:min-h-[520px] md:p-10 lg:min-h-[560px]">
+          <div className="relative flex min-h-[380px] flex-col justify-end p-6 md:min-h-[520px] md:p-12 lg:min-h-[560px]">
             <dl className="flex flex-wrap gap-y-8 text-bone">
               {stats.map((stat) => (
                 <div
                   key={stat.label}
-                  className="w-1/2 border-line-dark sm:w-auto sm:border-l sm:px-10 sm:first:border-l-0 sm:first:pl-0"
+                  className="w-1/2 border-line-dark sm:w-auto sm:border-l sm:px-12 sm:first:border-l-0 sm:first:pl-0"
                 >
                   <dt className="sr-only">{stat.label}</dt>
                   <dd>

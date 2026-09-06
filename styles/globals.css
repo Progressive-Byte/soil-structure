@@ -52,14 +52,6 @@
     @apply mx-auto w-full max-w-container px-6 md:px-8 2xl:max-w-container-wide;
   }
 
-  /* Small uppercase eyebrow label used above section headings. */
-  .eyebrow {
-    @apply inline-flex items-center gap-2.5 text-eyebrow font-semibold uppercase;
-  }
-  .eyebrow::before {
-    content: "";
-    @apply inline-block h-1.5 w-1.5 rounded-full bg-lime-600 motion-safe:animate-dot-pulse;
-  }
 }
 
 @layer utilities {

@@ -65,6 +65,13 @@ export interface Project extends BaseDocument {
 /*  Services                                                                    */
 /* -------------------------------------------------------------------------- */
 
+/** A grouped block of capabilities on a service detail page. */
+export interface ServiceSection {
+  heading: string;
+  description?: string;
+  capabilities: string[];
+}
+
 export interface Service extends BaseDocument {
   slug: string;
   /** Zero-padded index shown in the design ("01", "02"…). */
@@ -76,6 +83,12 @@ export interface Service extends BaseDocument {
   description: string;
   /** Bullet list of what the service includes. */
   capabilities: string[];
+  /** Heading for the single "what we deliver" block (defaults to "What we deliver"). */
+  deliverHeading?: string;
+  /** Multiple grouped capability sections (used by consolidated services). */
+  sections?: ServiceSection[];
+  /** Force capability columns for this service's sections (e.g. 2 for MEP/PCM). */
+  sectionColumns?: number;
   image: ImageAsset;
   featured: boolean;
   order: number;
@@ -105,6 +118,10 @@ export interface TeamMember extends BaseDocument {
   /** e.g. "Geotechnical", "Structural", "Leadership". */
   discipline: string;
   bio: string;
+  /** Longer biography paragraphs for the Team page. */
+  bioParagraphs?: string[];
+  /** Software / skill tags shown on the Team page. */
+  skills?: string[];
   photo?: ImageAsset;
   order: number;
 }
@@ -169,6 +186,7 @@ export interface ContactFormData {
   name: string;
   email: string;
   company?: string;
+  phone?: string;
   projectType?: string;
   message: string;
 }

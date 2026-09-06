@@ -1,62 +1,50 @@
 import { Section } from "@/components/ui/Section";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
-import { Button } from "@/components/ui/Button";
-import { Tag } from "@/components/ui/Tag";
+import { Reveal } from "@/components/ui/Reveal";
 import type { ProcessStep } from "@/types";
 
 type ValueApproachProps = {
   steps: ProcessStep[];
 };
 
-const values = ["Integrity", "Open Communications", "Responsiveness"];
-
-/** "Our Value Design Approach" — four numbered steps plus value tags. */
+/**
+ * "Relationships, not transactions." — eyebrow rail + heading + intro across the
+ * top, then the priorities as numbered columns each with their own top rule.
+ */
 export function ValueApproach({ steps }: ValueApproachProps) {
   return (
     <Section>
-      <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-start lg:gap-16">
-        <div>
-          <SectionEyebrow>Our process</SectionEyebrow>
-          <h2 className="mt-5 font-heading text-display-sm font-bold tracking-tight md:text-display-md">
-            Our Value Design Approach
-          </h2>
+      <div className="grid gap-6 lg:grid-cols-[140px_1.5fr_1fr] lg:items-start lg:gap-10">
+        <div className="lg:pt-2">
+          <SectionEyebrow>Our priorities</SectionEyebrow>
         </div>
-        <p className="text-base leading-relaxed text-muted md:text-lg lg:pt-10">
-          <span className="mb-3 block font-medium text-ink">
-            Collaborative from first borehole to final sign off
-          </span>
-          Placeholder copy. We involve clients and the wider design team early and
-          often, which keeps the ground model, the structural concept and the
-          budget moving together rather than in sequence.
+        <h2 className="font-heading text-display-sm font-bold tracking-tight text-ink md:text-display-md">
+          Relationships, not transactions.
+        </h2>
+        <p className="text-base leading-relaxed text-muted md:text-lg lg:pt-2">
+          Since 2017 we have built long-term relationships through a commitment to
+          on-time and on-budget delivery.
         </p>
       </div>
 
-      <ol className="mt-14 grid gap-x-8 gap-y-10 border-t border-line pt-10 sm:grid-cols-2 lg:grid-cols-4">
-        {steps.map((step) => (
-          <li key={step.number}>
-            <span className="font-heading text-4xl font-bold text-ink md:text-5xl">
+      <ol className="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {steps.map((step, i) => (
+          <Reveal
+            as="li"
+            key={step.number}
+            delay={i * 180}
+            className="border-t border-ink/20 pt-6"
+          >
+            <span className="font-heading text-5xl font-bold leading-none text-ink md:text-6xl">
               {step.number}
             </span>
-            <h3 className="mt-4 font-heading text-lg font-bold tracking-tight text-ink">
+            <h3 className="mt-6 font-heading text-lg font-bold tracking-tight text-ink">
               {step.title}
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted">{step.description}</p>
-          </li>
+            <p className="mt-3 text-sm leading-relaxed text-muted">{step.description}</p>
+          </Reveal>
         ))}
       </ol>
-
-      <div className="mt-12 flex flex-col items-start gap-6 border-t border-line pt-8 md:flex-row md:items-center md:justify-between">
-        <ul className="flex flex-wrap gap-3">
-          {values.map((value) => (
-            <li key={value}>
-              <Tag variant="muted">{value}</Tag>
-            </li>
-          ))}
-        </ul>
-        <Button href="/about" variant="outline">
-          Learn More
-        </Button>
-      </div>
     </Section>
   );
 }

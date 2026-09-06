@@ -45,6 +45,7 @@ const config: Config = {
           400: "#D3ED5E",
           300: "#DEF187",
           600: "#B2D22B",
+          700: "#5E7A16", // deep olive — used for icons, links and accents
         },
         // Warm greys for secondary text / borders
         muted: {
