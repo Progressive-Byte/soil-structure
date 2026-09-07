@@ -40,6 +40,14 @@ export default async function ProjectDetailPage({ params }: Params) {
   const allProjects = await getProjects();
   const otherProjects = allProjects.filter((p) => p.slug !== project.slug).slice(0, 3);
 
+  // Wraps around at either end so browsing stays continuous.
+  const currentIndex = allProjects.findIndex((p) => p.slug === project.slug);
+  const hasPrevNext = allProjects.length > 1 && currentIndex !== -1;
+  const previousProject = hasPrevNext
+    ? allProjects[(currentIndex - 1 + allProjects.length) % allProjects.length]
+    : null;
+  const nextProject = hasPrevNext ? allProjects[(currentIndex + 1) % allProjects.length] : null;
+
   return (
     <>
       <div className="bg-ink text-bone">
