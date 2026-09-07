@@ -66,16 +66,7 @@ export default async function ProjectDetailPage({ params }: Params) {
       </div>
 
       <Container className="py-8 md:py-12">
-        <div className="relative aspect-[21/9] w-full overflow-hidden rounded-image shadow-card">
-          <Image
-            src={project.coverImage.src}
-            alt={project.coverImage.alt}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
+        <ProjectGallery images={[project.coverImage, ...project.gallery]} />
       </Container>
 
       <Section>
