@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Container } from "@/components/ui/Container";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/types";
 
