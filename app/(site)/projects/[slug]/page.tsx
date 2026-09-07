@@ -79,15 +79,6 @@ export default async function ProjectDetailPage({ params }: Params) {
         </div>
       </Container>
 
-      {project.gallery.length > 0 && (
-        <Section flush className="pb-16 md:pb-22 lg:pb-30">
-          <h2 className="font-heading text-2xl font-bold tracking-tight">Gallery</h2>
-          <div className="mt-6">
-            <ProjectGallery images={project.gallery} />
-          </div>
-        </Section>
-      )}
-
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr] lg:gap-16">
           <div>
