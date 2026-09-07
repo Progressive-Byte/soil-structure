@@ -338,31 +338,55 @@ export function ProjectForm({ initial, onSubmit, submitLabel }: ProjectFormProps
 
       <div>
         <div className="flex items-center justify-between">
-          <p className="text-sm font-semibold text-ink">Gallery images</p>
+          <p className="text-sm font-semibold text-ink">
+            Gallery images{values.gallery.length > 0 && ` (${values.gallery.length})`}
+          </p>
           <Button type="button" variant="outline" size="md" onClick={addGalleryRow}>
             Add image
           </Button>
         </div>
-        <div className="mt-4 flex flex-col gap-4">
-          {values.gallery.map((image, index) => (
-            <div
-              key={index}
-              className="flex flex-col gap-3 rounded-card border border-line bg-bone-50 p-4 sm:flex-row sm:items-start"
-            >
-              {image.src && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={image.src} alt="" className="h-24 w-36 flex-none rounded-lg object-cover" />
-              )}
-              <div className="flex-1 space-y-3">
+        {values.gallery.length === 0 ? (
+          <p className="mt-4 rounded-card border border-dashed border-line px-4 py-6 text-center text-sm text-muted">
+            No gallery images yet.
+          </p>
+        ) : (
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {values.gallery.map((image, index) => (
+              <div
+                key={index}
+                className="relative flex flex-col gap-2 rounded-card border border-line bg-bone-50 p-3"
+              >
+                <button
+                  type="button"
+                  onClick={() => removeGalleryRow(index)}
+                  aria-label="Remove image"
+                  className="absolute right-2 top-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-ink/70 text-sm font-medium leading-none text-bone hover:bg-red-700"
+                >
+                  ×
+                </button>
+                <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-bone-200">
+                  {image.src ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={image.src} alt="" className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-xs text-muted-light">
+                      No image
+                    </div>
+                  )}
+                </div>
+                <label className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-line px-3 py-1.5 text-xs font-medium text-ink hover:bg-bone-200">
+                  {image.src ? "Replace image" : "Choose file"}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={(e) => handleGalleryUpload(index, e.target.files?.[0])}
+                    className="hidden"
+                  />
+                </label>
+                {uploading === `gallery-${index}` && <p className="text-xs text-muted">Uploading…</p>}
                 <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  onChange={(e) => handleGalleryUpload(index, e.target.files?.[0])}
-                />
-                {uploading === `gallery-${index}` && <p className="text-sm text-muted">Uploading…</p>}
-                <InputField
-                  label="Alt text"
-                  name={`gallery-alt-${index}`}
+                  aria-label={`Alt text for gallery image ${index + 1}`}
+                  placeholder="Alt text"
                   value={image.alt}
                   onChange={(e) => {
                     setValues((v) => {
@@ -371,18 +395,12 @@ export function ProjectForm({ initial, onSubmit, submitLabel }: ProjectFormProps
                       return { ...v, gallery };
                     });
                   }}
+                  className="w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink placeholder:text-muted-light focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600"
                 />
               </div>
-              <button
-                type="button"
-                onClick={() => removeGalleryRow(index)}
-                className="text-sm font-medium text-red-700 hover:underline"
-              >
-                Remove
-              </button>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div>
