@@ -106,6 +106,11 @@ export default async function ProjectDetailPage({ params }: Params) {
           </div>
 
           <aside className="rounded-card border border-line bg-bone-50 p-6 md:p-8">
+            {project.gallery.length > 0 && (
+              <div className="mb-6 border-b border-line pb-6">
+                <ProjectGallery images={project.gallery} />
+              </div>
+            )}
             <h2 className="text-eyebrow font-semibold uppercase text-muted">Project facts</h2>
             <dl className="mt-5 divide-y divide-line">
               <div className="flex justify-between gap-4 py-3">
