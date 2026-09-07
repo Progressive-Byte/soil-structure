@@ -12,7 +12,7 @@ module.exports = {
     },
     {
       name: "soilstructurebd-api",
-      cwd: "/home/soilstructurebd/htdocs/soilstructurebd.com/repo",
+      cwd: "/home/soilstructurebd/htdocs/soilstructurebd.com",
       script: "server/index.js",
       interpreter: NODE_BIN,
       env: { NODE_ENV: "production", PORT: "4000" },
