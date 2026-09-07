@@ -17,7 +17,7 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
             set -e
-            cd ~/htdocs/soilstructurebd.com/repo
+            cd ~/htdocs/soilstructurebd.com
 
             export NVM_DIR="$HOME/.nvm"
             source "$NVM_DIR/nvm.sh"
