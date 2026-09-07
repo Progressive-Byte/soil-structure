@@ -121,6 +121,8 @@ export default async function ProjectDetailPage({ params }: Params) {
         </div>
       </Section>
 
+      <ProjectPrevNext previous={previousProject} next={nextProject} />
+
       {otherProjects.length > 0 && (
         <Section flush className="pb-16 md:pb-22 lg:pb-30">
           <div className="flex flex-wrap items-end justify-between gap-6 border-t border-line pt-16 md:pt-22 lg:pt-30">
