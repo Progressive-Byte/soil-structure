@@ -15,9 +15,13 @@ export function ProjectPrevNext({ previous, next }: ProjectPrevNextProps) {
   if (!previous && !next) return null;
 
   return (
-    <div className="grid divide-y divide-line border-y border-line sm:grid-cols-2 sm:divide-x sm:divide-y-0">
-      <ProjectNavLink project={previous} direction="previous" />
-      <ProjectNavLink project={next} direction="next" />
+    <div className="border-y border-line">
+      <Container className="!px-0 sm:!px-0">
+        <div className="grid divide-y divide-line sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+          <ProjectNavLink project={previous} direction="previous" />
+          <ProjectNavLink project={next} direction="next" />
+        </div>
+      </Container>
     </div>
   );
 }
