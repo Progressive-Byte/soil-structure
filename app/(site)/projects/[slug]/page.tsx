@@ -67,8 +67,28 @@ export default async function ProjectDetailPage({ params }: Params) {
       </div>
 
       <Container className="py-8 md:py-12">
-        <ProjectGallery images={[project.coverImage, ...project.gallery]} />
+        <div className="relative aspect-[21/9] w-full overflow-hidden rounded-image shadow-card">
+          <Image
+            src={project.coverImage.src}
+            alt={project.coverImage.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
       </Container>
+
+      {project.gallery.length > 0 && (
+        <Section flush className="pb-16 md:pb-22 lg:pb-30">
+          <Container>
+            <h2 className="font-heading text-2xl font-bold tracking-tight">Gallery</h2>
+            <div className="mt-6">
+              <ProjectGallery images={project.gallery} />
+            </div>
+          </Container>
+        </Section>
+      )}
 
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr] lg:gap-16">
