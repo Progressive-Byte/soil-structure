@@ -15,12 +15,10 @@ export function ProjectPrevNext({ previous, next }: ProjectPrevNextProps) {
 
   return (
     <div className="border-y border-line">
-      <Container className="!px-0 sm:!px-0">
-        <div className="grid divide-y divide-line sm:grid-cols-2 sm:divide-x sm:divide-y-0">
-          <ProjectNavLink project={previous} direction="previous" />
-          <ProjectNavLink project={next} direction="next" />
-        </div>
-      </Container>
+      <div className="mx-auto w-full max-w-container grid divide-y divide-line sm:grid-cols-2 sm:divide-x sm:divide-y-0 2xl:max-w-container-wide">
+        <ProjectNavLink project={previous} direction="previous" />
+        <ProjectNavLink project={next} direction="next" />
+      </div>
     </div>
   );
 }
