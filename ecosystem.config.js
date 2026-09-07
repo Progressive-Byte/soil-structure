@@ -4,7 +4,7 @@ module.exports = {
   apps: [
     {
       name: "soilstructurebd-web",
-      cwd: "/home/soilstructurebd/htdocs/soilstructurebd.com/repo",
+      cwd: "/home/soilstructurebd/htdocs/soilstructurebd.com",
       script: "node_modules/next/dist/bin/next",
       args: "start -p 2000",
       interpreter: NODE_BIN,
