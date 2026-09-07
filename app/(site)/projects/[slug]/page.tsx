@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
@@ -7,6 +6,8 @@ import { Section } from "@/components/ui/Section";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { Tag } from "@/components/ui/Tag";
 import { ProjectCard } from "@/components/sections/ProjectCard";
+import { ProjectGallery } from "@/components/sections/ProjectGallery";
+import { ProjectPrevNext } from "@/components/sections/ProjectPrevNext";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { getProjects, getProjectBySlug } from "@/lib/data/projects";
 import { getServices } from "@/lib/data/services";
