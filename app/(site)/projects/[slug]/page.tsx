@@ -7,6 +7,8 @@ import { Section } from "@/components/ui/Section";
 import { SectionEyebrow } from "@/components/ui/SectionEyebrow";
 import { Tag } from "@/components/ui/Tag";
 import { ProjectCard } from "@/components/sections/ProjectCard";
+import { ProjectGallery } from "@/components/sections/ProjectGallery";
+import { ProjectPrevNext } from "@/components/sections/ProjectPrevNext";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { getProjects, getProjectBySlug } from "@/lib/data/projects";
 import { getServices } from "@/lib/data/services";
@@ -38,6 +40,14 @@ export default async function ProjectDetailPage({ params }: Params) {
 
   const allProjects = await getProjects();
   const otherProjects = allProjects.filter((p) => p.slug !== project.slug).slice(0, 3);
+
+  // Wraps around at either end so browsing stays continuous.
+  const currentIndex = allProjects.findIndex((p) => p.slug === project.slug);
+  const hasPrevNext = allProjects.length > 1 && currentIndex !== -1;
+  const previousProject = hasPrevNext
+    ? allProjects[(currentIndex - 1 + allProjects.length) % allProjects.length]
+    : null;
+  const nextProject = hasPrevNext ? allProjects[(currentIndex + 1) % allProjects.length] : null;
 
   return (
     <>
@@ -96,6 +106,11 @@ export default async function ProjectDetailPage({ params }: Params) {
           </div>
 
           <aside className="rounded-card border border-line bg-bone-50 p-6 md:p-8">
+            {project.gallery.length > 0 && (
+              <div className="mb-6 border-b border-line pb-6">
+                <ProjectGallery images={project.gallery} />
+              </div>
+            )}
             <h2 className="text-eyebrow font-semibold uppercase text-muted">Project facts</h2>
             <dl className="mt-5 divide-y divide-line">
               <div className="flex justify-between gap-4 py-3">
@@ -121,9 +136,11 @@ export default async function ProjectDetailPage({ params }: Params) {
         </div>
       </Section>
 
+      <ProjectPrevNext previous={previousProject} next={nextProject} />
+
       {otherProjects.length > 0 && (
         <Section flush className="pb-16 md:pb-22 lg:pb-30">
-          <div className="flex flex-wrap items-end justify-between gap-6 border-t border-line pt-16 md:pt-22 lg:pt-30">
+          <div className="flex flex-wrap items-end justify-between gap-6 pt-16 md:pt-22 lg:pt-30">
             <div>
               <SectionEyebrow>Keep exploring</SectionEyebrow>
               <h2 className="mt-5 font-heading text-display-sm font-bold tracking-tight md:text-display-md">
