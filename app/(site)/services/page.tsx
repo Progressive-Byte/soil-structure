@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { Container } from "@/components/ui/Container";
-import { StatItem } from "@/components/ui/StatItem";
 import { Reveal } from "@/components/ui/Reveal";
+import { HeroPanel } from "@/components/sections/HeroPanel";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { getServiceAreas } from "@/lib/data/services";
 import { getCompanyStats } from "@/lib/data/company";
@@ -66,55 +65,26 @@ export default async function ServicesPage() {
 
   return (
     <>
-      {/* Heading + stats panel */}
-      <section className="bg-bone pt-10 md:pt-14">
-        <Container>
-          <p className="flex items-center gap-2 text-eyebrow font-semibold uppercase text-muted">
-            <Link href="/" className="hover:text-ink">
+      <HeroPanel
+        eyebrow={
+          <span className="inline-flex items-center gap-2">
+            <Link href="/" className="text-bone/70 transition-colors hover:text-lime">
               Home
             </Link>
-            <span aria-hidden="true">/</span>
-            <span className="text-ink">Services</span>
-          </p>
-
-          <div className="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr] lg:items-start lg:gap-12">
-            <h1 className="font-heading text-display-sm font-bold tracking-tight text-ink md:text-display-md">
-              Twelve service areas across eight disciplines.
-            </h1>
-            <p className="text-base leading-relaxed text-muted md:text-lg lg:pt-2">
-              We offer complete engineering services from project feasibility
-              through to detailed design and construction management.
-            </p>
-          </div>
-
-          <div className="relative mt-10 overflow-hidden rounded-image bg-ink shadow-card-dark">
-            <Image
-              src="/images/hero-steel-frame.jpg"
-              alt="Steel structural frame of a building under construction"
-              fill
-              priority
-              sizes="(max-width: 1400px) 100vw, 1400px"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-ink/65" aria-hidden="true" />
-            <div className="relative flex min-h-[340px] flex-col justify-end p-6 md:min-h-[460px] md:p-10">
-              <dl className="flex flex-wrap gap-y-8 text-bone">
-                {stats.map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="w-1/2 border-line-dark sm:w-auto sm:border-l sm:px-12 sm:first:border-l-0 sm:first:pl-0"
-                  >
-                    <dt className="sr-only">{stat.label}</dt>
-                    <dd>
-                      <StatItem value={stat.value} label={stat.label} />
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </div>
-        </Container>
-      </section>
+            <span aria-hidden="true" className="text-bone/40">
+              /
+            </span>
+            <span>Services</span>
+          </span>
+        }
+        title="Twelve service areas across eight disciplines."
+        intro="We offer complete engineering services from project feasibility through to detailed design and construction management."
+        image={{
+          src: "/images/hero-home.webp",
+          alt: "Modern multi-storey building at dusk reflected in a still pool",
+        }}
+        stats={stats}
+      />
 
       {/* Service-area rows */}
       <section className="bg-bone py-14 md:py-20">
@@ -139,7 +109,7 @@ export default async function ServicesPage() {
                   {area.capabilities.map((cap) => (
                     <li
                       key={cap}
-                      className="flex items-start gap-3 border-b border-line py-3.5 text-sm text-ink"
+                      className="flex items-start gap-3 border-b border-line py-3.5 text-small text-ink"
                     >
                       <span
                         className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-lime-700"
