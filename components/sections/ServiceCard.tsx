@@ -60,7 +60,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
 
       <p className="mt-4 text-base leading-relaxed text-muted">{service.summary}</p>
 
-      <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-lime-700">
+      <span className="mt-6 inline-flex items-center gap-2 text-small font-semibold text-lime-700">
         Learn More
         <svg
           viewBox="0 0 24 24"

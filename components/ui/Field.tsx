@@ -28,7 +28,7 @@ function FieldShell({
       </label>
       {children}
       {error && (
-        <p id={errorId} className="text-sm text-red-700" role="alert">
+        <p id={errorId} className="text-small text-red-700" role="alert">
           {error}
         </p>
       )}

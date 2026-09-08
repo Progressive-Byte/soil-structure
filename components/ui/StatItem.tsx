@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 import type { CompanyStat } from "@/types";
 
 /** Split a stat value like "400+" into its number (400) and suffix ("+"). */
@@ -10,12 +11,25 @@ function parseValue(value: string): { target: number; prefix: string; suffix: st
   return { prefix: match[1], target: Number(match[2]), suffix: match[3] };
 }
 
+/** Colour pairing for the value/label, depending on the backdrop. */
+const tones = {
+  // Stats sitting on the dark hero panel.
+  dark: { value: "text-lime", label: "text-muted-dark" },
+  // Stats sitting on the bone page background (home hero row).
+  light: { value: "text-lime-700", label: "text-muted" },
+} as const;
+
+type StatItemProps = CompanyStat & {
+  /** Which backdrop the stat sits on. Defaults to the dark panel. */
+  tone?: keyof typeof tones;
+};
+
 /**
  * A single headline statistic: large value over a small label. The number
  * counts up from zero the first time it scrolls into view (skipped for
  * reduced-motion users and when the value isn't numeric).
  */
-export function StatItem({ value, label }: CompanyStat) {
+export function StatItem({ value, label, tone = "dark" }: StatItemProps) {
   const { target, prefix, suffix } = parseValue(value);
   const ref = useRef<HTMLDivElement | null>(null);
   const [display, setDisplay] = useState(Number.isNaN(target) ? value : `${prefix}0${suffix}`);
@@ -55,10 +69,17 @@ export function StatItem({ value, label }: CompanyStat) {
 
   return (
     <div ref={ref} className="flex flex-col gap-1">
-      <span className="font-heading text-4xl font-bold leading-none text-lime tabular-nums md:text-5xl">
+      <span
+        className={cn(
+          "font-heading text-4xl font-bold leading-none tabular-nums md:text-5xl",
+          tones[tone].value,
+        )}
+      >
         {display}
       </span>
-      <span className="text-xs uppercase tracking-wide text-muted-dark md:text-sm">{label}</span>
+      <span className={cn("text-lg normal-case tracking-wide", tones[tone].label)}>
+        {label}
+      </span>
     </div>
   );
 }

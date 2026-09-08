@@ -341,7 +341,7 @@ export function ProjectForm({ initial, onSubmit, submitLabel }: ProjectFormProps
           <p className="text-sm font-semibold text-ink">
             Gallery images{values.gallery.length > 0 && ` (${values.gallery.length})`}
           </p>
-          <Button type="button" variant="outline" size="md" onClick={addGalleryRow}>
+          <Button type="button" variant="outline" size="sm" onClick={addGalleryRow}>
             Add image
           </Button>
         </div>
@@ -406,7 +406,7 @@ export function ProjectForm({ initial, onSubmit, submitLabel }: ProjectFormProps
       <div>
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold text-ink">Project facts (stats)</p>
-          <Button type="button" variant="outline" size="md" onClick={addStatRow}>
+          <Button type="button" variant="outline" size="sm" onClick={addStatRow}>
             Add stat
           </Button>
         </div>

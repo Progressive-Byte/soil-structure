@@ -72,7 +72,7 @@ export function ProjectGallery({ images }: ProjectGalleryProps) {
                 <ZoomIcon className="h-6 w-6 text-bone opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
               </span>
               {isLastWithExtra && (
-                <span className="absolute inset-0 flex items-center justify-center bg-ink/60 text-sm font-semibold text-bone">
+                <span className="absolute inset-0 flex items-center justify-center bg-ink/60 text-small font-semibold text-bone">
                   +{extraCount}
                 </span>
               )}
@@ -138,7 +138,7 @@ export function ProjectGallery({ images }: ProjectGalleryProps) {
                 className="object-contain"
               />
             </div>
-            <p className="text-sm text-bone/70">
+            <p className="text-small text-bone/70">
               Image {activeIndex + 1} of {images.length}
             </p>
           </div>

@@ -93,7 +93,7 @@ export default function ContactPage() {
                   </span>
                   <div>
                     <p className="text-eyebrow font-semibold uppercase text-muted-dark">Office</p>
-                    <address className="mt-1 space-y-0.5 not-italic text-sm text-bone">
+                    <address className="mt-1 space-y-0.5 not-italic text-small text-bone">
                       {config.contact.addressLines.map((line) => (
                         <div key={line}>{line}</div>
                       ))}
@@ -106,7 +106,7 @@ export default function ContactPage() {
                   </span>
                   <div>
                     <p className="text-eyebrow font-semibold uppercase text-muted-dark">Phone</p>
-                    <a href={`tel:${tel}`} className="mt-1 block text-sm text-bone hover:text-lime">
+                    <a href={`tel:${tel}`} className="mt-1 block text-small text-bone hover:text-lime">
                       {config.contact.phone}
                     </a>
                   </div>
@@ -119,7 +119,7 @@ export default function ContactPage() {
                     <p className="text-eyebrow font-semibold uppercase text-muted-dark">Email</p>
                     <a
                       href={`mailto:${config.contact.email}`}
-                      className="mt-1 block break-all text-sm text-bone hover:text-lime"
+                      className="mt-1 block break-all text-small text-bone hover:text-lime"
                     >
                       {config.contact.email}
                     </a>

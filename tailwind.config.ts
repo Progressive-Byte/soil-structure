@@ -66,6 +66,10 @@ const config: Config = {
       fontSize: {
         // Type scale extracted from the frames.
         eyebrow: ["0.75rem", { lineHeight: "1rem", letterSpacing: "0.14em" }],
+        // Secondary/supporting copy on the public site — labels, captions, meta
+        // and helper text. 16px for legibility, matching body text; the admin
+        // panel keeps Tailwind's stock text-sm (14px) for its dense forms.
+        small: ["1rem", { lineHeight: "1.6" }],
         "display-sm": ["2.25rem", { lineHeight: "1.05", letterSpacing: "-0.01em" }],
         "display-md": ["3rem", { lineHeight: "1.03", letterSpacing: "-0.015em" }],
         "display-lg": ["4rem", { lineHeight: "1.0", letterSpacing: "-0.02em" }],

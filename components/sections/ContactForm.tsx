@@ -75,7 +75,7 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
       {result && !result.ok && !result.errors && (
-        <p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-800">
+        <p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-small text-red-800">
           {result.message}
         </p>
       )}
@@ -144,7 +144,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center justify-center rounded-pill bg-ink px-7 py-3.5 text-sm font-semibold text-lime transition-colors duration-200 hover:bg-ink-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center justify-center rounded-pill bg-ink px-7 py-3.5 text-small font-semibold text-lime transition-colors duration-200 hover:bg-ink-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {submitting ? "Sending…" : "Send Message"}
         </button>

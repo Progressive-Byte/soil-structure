@@ -41,7 +41,7 @@ export function ValueApproach({ steps }: ValueApproachProps) {
             <h3 className="mt-6 font-heading text-lg font-bold tracking-tight text-ink">
               {step.title}
             </h3>
-            <p className="mt-3 text-sm leading-relaxed text-muted">{step.description}</p>
+            <p className="mt-3 text-small leading-relaxed text-muted">{step.description}</p>
           </Reveal>
         ))}
       </ol>

@@ -83,7 +83,7 @@ function ProjectsListInner() {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="font-heading text-2xl font-bold tracking-tight text-ink">Projects</h1>
-        <Button href="/admin/projects/new" variant="lime">
+        <Button href="/admin/projects/new" variant="lime" size="sm">
           + New project
         </Button>
       </div>
