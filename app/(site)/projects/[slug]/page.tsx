@@ -22,7 +22,9 @@ type Params = { params: { slug: string } };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const project = await getProjectBySlug(params.slug);
-  if (!project) return buildMetadata({ title: "Project not found", path: `/projects/${params.slug}` });
+  // Bail out the same way the page does: returning metadata here instead would
+  // resolve the request successfully and serve the 404 body with a 200 status.
+  if (!project) notFound();
   return buildMetadata({
     title: project.title,
     description: project.summary,
@@ -54,7 +56,7 @@ export default async function ProjectDetailPage({ params }: Params) {
       <div className="bg-ink text-bone">
         <Container className="py-12 md:py-16">
           <div className="flex flex-wrap items-center gap-4">
-            <Link href="/projects" className="text-sm text-muted-dark hover:text-bone">
+            <Link href="/projects" className="text-small text-muted-dark hover:text-bone">
               ← Back to projects
             </Link>
             <Tag variant="solid">{project.sector}</Tag>
@@ -149,7 +151,7 @@ export default async function ProjectDetailPage({ params }: Params) {
             </div>
             <Link
               href="/projects"
-              className="text-sm font-medium text-muted transition-colors hover:text-ink"
+              className="text-small font-medium text-muted transition-colors hover:text-ink"
             >
               View all projects →
             </Link>

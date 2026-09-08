@@ -205,7 +205,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
           {meta.pages > 1 && (
               <nav
                 aria-label="Projects pagination"
-                className="mt-16 flex items-center justify-between border-t border-line pt-8 text-sm"
+                className="mt-16 flex items-center justify-between border-t border-line pt-8 text-small"
               >
                 <p className="text-muted">
                   Page {meta.page} of {meta.pages}
@@ -262,7 +262,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                 <h3 className="mt-6 font-heading text-lg font-bold tracking-tight text-ink">
                   {sector.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{sector.description}</p>
+                <p className="mt-2 text-small leading-relaxed text-muted">{sector.description}</p>
               </Reveal>
             ))}
           </ul>
