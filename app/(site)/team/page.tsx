@@ -87,13 +87,23 @@ export default async function TeamPage() {
               >
                 {/* Identity */}
                 <div>
-                  <span className="flex h-20 w-20 items-center justify-center rounded-full bg-ink font-heading text-2xl font-bold text-lime">
-                    {initials(member.name)}
-                  </span>
+                  {member.photo ? (
+                    <Image
+                      src={member.photo.src}
+                      alt={member.photo.alt}
+                      width={member.photo.width ?? 240}
+                      height={member.photo.height ?? 240}
+                      className="h-20 w-20 rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="flex h-20 w-20 items-center justify-center rounded-full bg-ink font-heading text-2xl font-bold text-lime">
+                      {initials(member.name)}
+                    </span>
+                  )}
                   <h2 className="mt-6 font-heading text-xl font-bold tracking-tight text-ink">
                     {member.name}
                   </h2>
-                  <p className="mt-1 text-sm text-muted">{member.role}</p>
+                  <p className="mt-1 text-small text-muted">{member.role}</p>
                   <span className="mt-4 inline-flex w-fit items-center rounded-full border border-ink/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-lime-700">
                     {member.discipline}
                   </span>
