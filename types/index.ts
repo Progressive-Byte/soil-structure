@@ -152,6 +152,8 @@ export interface ProcessStep {
 export interface NavLink {
   label: string;
   href: string;
+  /** Optional submenu rendered as a dropdown in the header. */
+  children?: NavLink[];
 }
 
 export interface FooterColumn {

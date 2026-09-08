@@ -36,10 +36,14 @@ const siteConfig: SiteConfig = {
     { label: "Home", href: "/" },
     { label: "Services", href: "/services" },
     { label: "Projects", href: "/projects" },
-    { label: "About", href: "/about" },
-    { label: "Mission & Values", href: "/mission-values" },
-    { label: "Team", href: "/team" },
-    { label: "Contact", href: "/contact" },
+    {
+      label: "About",
+      href: "/about",
+      children: [
+        { label: "About Us", href: "/about" },
+        { label: "Our Team", href: "/team" },
+      ],
+    },
   ],
   footerColumns: [
     {
@@ -47,7 +51,7 @@ const siteConfig: SiteConfig = {
       links: [
         { label: "Home", href: "/" },
         { label: "About Us", href: "/about" },
-        { label: "Mission & Values", href: "/mission-values" },
+        { label: "Mission & Values", href: "/about#mission" },
         { label: "Our Team", href: "/team" },
         { label: "Projects", href: "/projects" },
         { label: "Contact", href: "/contact" },
