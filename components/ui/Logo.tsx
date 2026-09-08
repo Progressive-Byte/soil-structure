@@ -9,9 +9,9 @@ type LogoProps = {
 };
 
 /**
- * Brand lockup — the "SOIL and STRUCTURE" horizontal logo (lime rounded-square
- * monogram + wordmark, 659×176). Rendered as-is; width scales from the chosen
- * height to preserve the original proportions.
+ * Brand lockup — the "Soil & Structure" horizontal logo (gradient S shield +
+ * wordmark, 786×132). Rendered as-is; width scales from the chosen height to
+ * preserve the original proportions.
  */
 export function Logo({ className, height = 40 }: LogoProps) {
   return (
@@ -23,7 +23,7 @@ export function Logo({ className, height = 40 }: LogoProps) {
       <Image
         src="/images/brand/logo-soil-structure.png"
         alt="Soil and Structure"
-        width={Math.round((659 / 176) * height)}
+        width={Math.round((786 / 132) * height)}
         height={height}
         priority
         className="w-auto"

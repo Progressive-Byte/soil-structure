@@ -22,17 +22,17 @@ export function Footer({ config }: FooterProps) {
                 <Image
                   src="/images/brand/logo-soil-structure-reversed.png"
                   alt="Soil and Structure"
-                  width={779}
-                  height={208}
+                  width={786}
+                  height={132}
                   className="h-11 w-auto"
                 />
               </Link>
-              <address className="mt-6 space-y-1 not-italic text-sm text-muted-dark">
+              <address className="mt-6 space-y-1 not-italic text-small text-muted-dark">
                 {config.contact.addressLines.map((line) => (
                   <div key={line}>{line}</div>
                 ))}
               </address>
-              <div className="mt-5 space-y-1 text-sm">
+              <div className="mt-5 space-y-1 text-small">
                 <a
                   href={`tel:${config.contact.phone.replace(/[^\d+]/g, "")}`}
                   className="block font-semibold text-bone hover:text-lime"
@@ -55,7 +55,7 @@ export function Footer({ config }: FooterProps) {
                 <ul className="mt-5 space-y-3">
                   {column.links.map((link) => (
                     <li key={link.href + link.label}>
-                      <Link href={link.href} className="text-sm text-bone/85 hover:text-lime">
+                      <Link href={link.href} className="text-small text-bone/85 hover:text-lime">
                         {link.label}
                       </Link>
                     </li>

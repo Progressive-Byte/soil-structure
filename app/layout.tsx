@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: `%s — ${defaults.siteName}`,
   },
   description: defaults.description,
-  icons: { icon: "/images/brand/logo.png" },
+  // Favicons come from app/icon.png and app/apple-icon.png (file convention).
 };
 
 // True root layout — just html/body/fonts. The public site's Header/Footer
