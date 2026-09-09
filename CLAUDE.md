@@ -14,9 +14,10 @@ at `/admin`); every other content type (services, team, testimonials, site
 config, stats, process steps) is still static, authored directly as
 TypeScript constants in `lib/data/*.ts` — there is no `/data` JSON directory.
 
-There is no README.md or other supplementary doc in this repo — this file is
-the only source of project-level guidance; see `.env.example` for the full
-list of env vars.
+There is no README.md. `CONTINUE_HERE.md` is a handoff/setup guide (moving the
+project to a new machine, getting a database running, git push workflow) — read
+it for onboarding steps; this file remains the source of architectural
+guidance. See `.env.example` for the full list of env vars.
 
 ## Commands
 
