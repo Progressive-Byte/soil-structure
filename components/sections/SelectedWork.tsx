@@ -36,7 +36,7 @@ export function SelectedWork({ projects }: SelectedWorkProps) {
         client: project.client,
         discipline: project.sector,
         image: project.coverImage,
-        href: `/projects/${project.slug}`,
+        detailsHref: `/projects/${project.slug}`,
       }
     : fallback;
 
