@@ -56,10 +56,12 @@ type ProjectFormProps = {
   initial?: Project;
   onSubmit: (values: ProjectFormValues) => Promise<void>;
   submitLabel: string;
+  /** Display-order value to pre-fill when creating a new project (ignored when editing). */
+  defaultOrder?: number;
 };
 
 /** Shared create/edit form for the Projects admin panel. */
-export function ProjectForm({ initial, onSubmit, submitLabel }: ProjectFormProps) {
+export function ProjectForm({ initial, onSubmit, submitLabel, defaultOrder }: ProjectFormProps) {
   const [values, setValues] = useState<ProjectFormValues>(() =>
     initial
       ? {
@@ -78,7 +80,7 @@ export function ProjectForm({ initial, onSubmit, submitLabel }: ProjectFormProps
           featured: initial.featured,
           order: initial.order,
         }
-      : emptyValues,
+      : { ...emptyValues, order: defaultOrder ?? emptyValues.order },
   );
   // Starts false even when editing — the slug keeps following the title
   // until the admin manually edits the slug field themselves.
