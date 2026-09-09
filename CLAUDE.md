@@ -61,8 +61,10 @@ everything else backend-related (`MONGODB_URI`, `JWT_SECRET`, `ADMIN_EMAIL`/
   no fetch). Each still returns a Promise (via `_client.ts`'s `read()`, a thin
   `structuredClone`-and-resolve wrapper) so call sites are uniform with the
   dynamic getters above.
-- `lib/api/contact.ts` — contact form validation + a stubbed submit handler
-  (`TODO(backend)` marks where a real endpoint would go — not built yet).
+- `lib/api/contact.ts` — validates client-side, then posts to the Express
+  API's `POST /api/contact` (`server/routes/contact.js`), which re-validates
+  and sends the message via SMTP (`server/config/mailer.js`, `nodemailer`) to
+  `CONTACT_TO_EMAIL`. Point `SMTP_*` at a Mailtrap sandbox in dev.
 
 When adding a new **static** content type, follow the pattern in
 `lib/data/services.ts` (typed constant + `read()`), not `data/*.json` — that
