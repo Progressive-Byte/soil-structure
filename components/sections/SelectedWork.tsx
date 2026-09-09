@@ -76,10 +76,15 @@ export function SelectedWork({ projects }: SelectedWorkProps) {
               </div>
             </dl>
 
-            <div className="mt-8">
-              <Button href={data.href} variant="lime">
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Button href="/projects" variant="lime">
                 All Projects
               </Button>
+              {project && (
+                <Button href={data.detailsHref} variant="outline-light">
+                  See Details
+                </Button>
+              )}
             </div>
           </div>
         </div>
