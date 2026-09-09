@@ -20,7 +20,7 @@ const fallback = {
     src: "/images/projects/matarbari-road-project.jpg",
     alt: "Two engineers in hard hats reviewing plans inside a large industrial hall",
   },
-  href: "/projects",
+  detailsHref: "/projects",
 };
 
 /**
