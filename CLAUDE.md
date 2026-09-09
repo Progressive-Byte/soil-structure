@@ -131,6 +131,10 @@ the `(site)` group at the true `app/` root (Next.js special-cases these).
 - `server/utils/slug.js` — `toSlug`/`uniqueSlug` (appends `-2`, `-3`, … on
   collision). The admin form auto-fills the slug from the title (in both
   create and edit) until the admin manually edits the slug field themselves.
+- `server/routes/contact.js` — `POST /api/contact` (public, unauthenticated):
+  re-validates and emails the submission via `getTransporter()`; the frontend
+  validation in `lib/api/contact.ts` is a UX short-circuit, not the source of
+  truth.
 
 ### Admin auth is intentionally minimal
 
