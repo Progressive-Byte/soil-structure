@@ -136,6 +136,28 @@ the `(site)` group at the true `app/` root (Next.js special-cases these).
   validation in `lib/api/contact.ts` is a UX short-circuit, not the source of
   truth.
 
+### Local database
+
+The backend exits immediately if `MONGODB_URI` doesn't connect (see above), so
+Projects/admin pages need a real database even for local dev:
+- **MongoDB Atlas** — the normal path; any Atlas connection string works.
+- **`scripts/mem-mongo.js`** — an in-memory MongoDB for preview only (data
+  resets when the process stops). It requires `mongodb-memory-server`
+  installed with `--no-save` (deliberately absent from `package.json` — a
+  fresh `npm install` won't bring it back).
+- **`scripts/seed.js`** — POSTs sample projects through the live admin API
+  (logs in with `ADMIN_EMAIL`/`ADMIN_PASSWORD` first) to populate either
+  database. Run with `node scripts/seed.js`.
+
+### Deployment
+
+Pushing to the `deploy` branch (not `master`) triggers
+`.github/workflows/deploy.yml`: it SSHes into the production host, does a hard
+reset to that branch, `npm install && npm run build`, then restarts both PM2
+processes defined in `ecosystem.config.js` (`soilstructurebd-web` running
+`next start`, `soilstructurebd-api` running `server/index.js`). There's no
+staging environment — merging to `deploy` ships straight to production.
+
 ### Admin auth is intentionally minimal
 
 One static credential pair in `.env` (`ADMIN_EMAIL`/`ADMIN_PASSWORD`) —
