@@ -102,7 +102,10 @@ the `(site)` group at the true `app/` root (Next.js special-cases these).
   `CORS_ORIGIN`), `express.json()`, mounts the routers below, one generic
   error handler, listens on `PORT`.
 - `server/config/db.js` — `mongoose.connect()`, exits the process on failure
-  (fail-fast, no retry loop).
+  (fail-fast, no retry loop). `server/config/mailer.js` and
+  `server/config/cloudinary.js` lazily build their respective clients from env
+  on first use, so missing SMTP/Cloudinary config only breaks the feature that
+  needs it, not server startup.
 - `server/models/Project.js` — the only Mongoose model. `toJSON` transform
   reshapes `_id`/`createdAt`/`updatedAt` to match `types/index.ts`'s `Project`
   exactly, so the frontend needs zero mapping.
