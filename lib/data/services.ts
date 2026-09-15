@@ -371,34 +371,6 @@ export interface ServiceArea {
 
 const serviceAreas: ServiceArea[] = [
   {
-    slug: "project-management",
-    title: "Project Management",
-    capabilities: [
-      "Procurement",
-      "Project Scheduling",
-      "Project Management",
-      "Project Cost Estimating",
-      "Business Case Development",
-      "Feasibility and Strategic Studies",
-    ],
-  },
-  {
-    slug: "architectural-design",
-    title: "Architectural Design",
-    capabilities: [
-      "Architectural Concept and Schematic Design",
-      "Space Planning and Functional Layouts",
-      "Design Development and Detailed Drawings",
-      "Industrial and Factory Building Architecture",
-      "Facade Design and Building Envelope Detailing",
-      "Interior Layout and Finishes Specification",
-      "Site Planning and Master Planning",
-      "Building Code and Regulatory Compliance Review",
-      "Working Drawings and Construction Documentation",
-      "3D Modelling, Rendering and Virtual Walk-through",
-    ],
-  },
-  {
     slug: "structural-design",
     title: "Structural Design",
     capabilities: [
@@ -421,6 +393,22 @@ const serviceAreas: ServiceArea[] = [
       "Earth Protection for Excavation Works",
       "Shore Protection System and Diaphragm Wall",
       "Ground Improvement — Stabilised Earth Solution, Vibro-Flotation, Vibro Stone Column, Sand Compaction Pile, Prefabricated Vertical Drains, Deep Soil Mixing",
+    ],
+  },
+  {
+    slug: "architectural-design",
+    title: "Architectural Design",
+    capabilities: [
+      "Architectural Concept and Schematic Design",
+      "Space Planning and Functional Layouts",
+      "Design Development and Detailed Drawings",
+      "Industrial and Factory Building Architecture",
+      "Facade Design and Building Envelope Detailing",
+      "Interior Layout and Finishes Specification",
+      "Site Planning and Master Planning",
+      "Building Code and Regulatory Compliance Review",
+      "Working Drawings and Construction Documentation",
+      "3D Modelling, Rendering and Virtual Walk-through",
     ],
   },
   {
