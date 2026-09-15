@@ -35,6 +35,7 @@ const fallbackFeatured = {
     src: "/images/projects/matarbari-road-project.jpg",
     alt: "Two engineers in hard hats reviewing plans inside a large industrial hall",
   },
+  detailsHref: "/projects",
 };
 
 /** Sectors the practice works in. */
