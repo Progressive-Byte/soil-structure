@@ -116,6 +116,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
         client: firstProject.client,
         scope: firstProject.sector,
         image: firstProject.coverImage,
+        detailsHref: `/projects/${firstProject.slug}`,
       }
     : fallbackFeatured;
 
