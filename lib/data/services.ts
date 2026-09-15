@@ -512,6 +512,18 @@ const serviceAreas: ServiceArea[] = [
       "Commissioning and Start-up Support",
     ],
   },
+  {
+    slug: "project-management",
+    title: "Project Management",
+    capabilities: [
+      "Procurement",
+      "Project Scheduling",
+      "Project Management",
+      "Project Cost Estimating",
+      "Business Case Development",
+      "Feasibility and Strategic Studies",
+    ],
+  },
 ];
 
 /** The full list of twelve service areas shown on the Services page. */
