@@ -175,6 +175,13 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                   <dd className="mt-2 font-medium text-bone">{featured.scope}</dd>
                 </div>
               </dl>
+              {firstProject && (
+                <div className="mt-8">
+                  <Button href={featured.detailsHref} variant="outline-light">
+                    See Details
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </Container>
