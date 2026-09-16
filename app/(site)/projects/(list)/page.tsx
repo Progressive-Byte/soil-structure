@@ -201,11 +201,19 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
         <Container>
           <SectionEyebrow>All projects</SectionEyebrow>
 
+          <Suspense fallback={null}>
+            <ProjectsFilters sectors={sectors} />
+          </Suspense>
+
           {gridProjects.length === 0 ? (
             <div className="mt-10">
               <EmptyState
-                title="More case studies coming soon"
-                description="Published projects appear here automatically. Add them from the admin panel to populate this list."
+                title={isFiltered ? "No projects match your search" : "More case studies coming soon"}
+                description={
+                  isFiltered
+                    ? "Try a different title or category filter."
+                    : "Published projects appear here automatically. Add them from the admin panel to populate this list."
+                }
               />
             </div>
           ) : (
