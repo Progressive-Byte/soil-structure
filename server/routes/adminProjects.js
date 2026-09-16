@@ -39,6 +39,9 @@ router.get("/", async (req, res) => {
     if (req.query.q) {
       filter.title = { $regex: String(req.query.q), $options: "i" };
     }
+    if (req.query.sector) {
+      filter.sector = String(req.query.sector);
+    }
     const sortSpec = SORT_OPTIONS[req.query.sort] || { order: 1, createdAt: -1 };
     const [projects, total] = await Promise.all([
       Project.find(filter).sort(sortSpec).skip(skip).limit(limit),
