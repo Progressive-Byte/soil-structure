@@ -7,14 +7,16 @@ export async function getProjects(): Promise<Project[]> {
   return projects;
 }
 
-/** One page of projects, for the /projects list page's query-string pagination. */
+/** One page of projects, for the /projects list page's query-string pagination/search/filter. */
 export async function getPaginatedProjects(
   page = 1,
   limit = 9,
+  filters: { q?: string; sector?: string } = {},
 ): Promise<{ projects: Project[]; meta: PaginationMeta }> {
-  return fetchAPI<{ projects: Project[]; meta: PaginationMeta }>(
-    `/public/projects?page=${page}&limit=${limit}`,
-  );
+  const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+  if (filters.q) params.set("q", filters.q);
+  if (filters.sector) params.set("sector", filters.sector);
+  return fetchAPI<{ projects: Project[]; meta: PaginationMeta }>(`/public/projects?${params}`);
 }
 
 /** Featured projects for the home "Selected work" grid. */
