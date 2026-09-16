@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
@@ -8,8 +9,9 @@ import { Reveal } from "@/components/ui/Reveal";
 import { ProjectCard } from "@/components/sections/ProjectCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { CtaBand } from "@/components/sections/CtaBand";
-import { getPaginatedProjects } from "@/lib/data/projects";
+import { getPaginatedProjects, getProjectSectors } from "@/lib/data/projects";
 import { buildMetadata } from "@/lib/seo";
+import { ProjectsFilters } from "./_components/ProjectsFilters";
 
 export const metadata: Metadata = buildMetadata({
   title: "Projects",
