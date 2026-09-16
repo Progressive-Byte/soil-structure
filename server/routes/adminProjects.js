@@ -31,7 +31,7 @@ function validateProjectPayload(body, { partial = false } = {}) {
   return null;
 }
 
-// GET /api/admin/projects?page=&limit=&q=&sort=recent|oldest|az|za
+// GET /api/admin/projects?page=&limit=&q=&sector=&sort=recent|oldest|az|za
 router.get("/", async (req, res) => {
   try {
     const { page, limit, skip } = parsePagination(req.query, { defaultLimit: 10, maxLimit: 100 });
