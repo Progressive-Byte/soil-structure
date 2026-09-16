@@ -212,7 +212,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
           <SectionEyebrow>All projects</SectionEyebrow>
 
           <Suspense fallback={null}>
-            <ProjectsFilters sectors={sectors} />
+            <ProjectsFilters sectors={categoryOptions} />
           </Suspense>
 
           {gridProjects.length === 0 ? (
