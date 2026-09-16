@@ -23,7 +23,7 @@ export const metadata: Metadata = buildMetadata({
 const PAGE_SIZE = 9;
 
 type ProjectsPageProps = {
-  searchParams: { page?: string };
+  searchParams: { page?: string; q?: string; sector?: string };
 };
 
 /** Static fallback used for the featured card until a project is published. */
