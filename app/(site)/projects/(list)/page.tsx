@@ -125,8 +125,11 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
     getProjectSectors(),
   ]);
 
-  const firstProject = projects[0];
-  const gridProjects = projects.slice(1);
+  // While searching/filtering, show every match in the grid instead of pulling
+  // one out as "featured" — that read as a broken/unrelated result above an
+  // empty "no matches" grid.
+  const firstProject = isFiltered ? undefined : projects[0];
+  const gridProjects = isFiltered ? projects : projects.slice(1);
 
   const featured = firstProject
     ? {
