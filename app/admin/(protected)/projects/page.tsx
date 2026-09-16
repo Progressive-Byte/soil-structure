@@ -143,7 +143,7 @@ function ProjectsListInner() {
           <thead>
             <tr className="border-b border-line text-xs font-semibold uppercase tracking-wide text-muted">
               <th className="px-4 py-3">Title</th>
-              <th className="px-4 py-3">Sector</th>
+              <th className="px-4 py-3">Category</th>
               <th className="px-4 py-3">Featured</th>
               <th className="px-4 py-3">Order</th>
               <th className="px-4 py-3 text-right">Actions</th>
