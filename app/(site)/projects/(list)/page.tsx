@@ -120,7 +120,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
   const sector = searchParams.sector ?? "";
   const isFiltered = Boolean(q || sector);
   // Dynamic: projects come from the MongoDB-backed API (paginated, search/category-filterable).
-  const [{ projects, meta }, sectors] = await Promise.all([
+  const [{ projects, meta }, categoryOptions] = await Promise.all([
     getPaginatedProjects(page, PAGE_SIZE, { q, sector }),
     getProjectSectors(),
   ]);
