@@ -239,7 +239,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                 <div className="flex gap-3">
                   {meta.hasPrev ? (
                     <Link
-                      href={meta.page - 1 === 1 ? "/projects" : `/projects?page=${meta.page - 1}`}
+                      href={buildPageHref(meta.page - 1, { q, sector })}
                       className="rounded-pill border border-ink/25 px-4 py-2 font-medium text-ink transition-colors hover:border-ink"
                     >
                       Previous
@@ -251,7 +251,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                   )}
                   {meta.hasNext ? (
                     <Link
-                      href={`/projects?page=${meta.page + 1}`}
+                      href={buildPageHref(meta.page + 1, { q, sector })}
                       className="rounded-pill border border-ink/25 px-4 py-2 font-medium text-ink transition-colors hover:border-ink"
                     >
                       Next
