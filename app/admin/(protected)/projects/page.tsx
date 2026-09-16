@@ -28,9 +28,11 @@ function ProjectsListInner() {
   const page = Math.max(1, Number(searchParams.get("page")) || 1);
   const query = searchParams.get("q") ?? "";
   const sort = searchParams.get("sort") ?? "";
+  const sector = searchParams.get("sector") ?? "";
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [meta, setMeta] = useState<PaginationMeta | null>(null);
+  const [sectors, setSectors] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
