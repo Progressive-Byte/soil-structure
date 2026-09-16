@@ -319,8 +319,18 @@ export function ProjectForm({ initial, onSubmit, submitLabel, defaultOrder }: Pr
         </p>
         <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start">
           {values.coverImage.src && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={values.coverImage.src} alt="" className="h-32 w-48 flex-none rounded-lg object-cover" />
+            <div className="relative h-32 w-48 flex-none">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={values.coverImage.src} alt="" className="h-full w-full rounded-lg object-cover" />
+              <button
+                type="button"
+                onClick={removeCoverImage}
+                aria-label="Remove cover image"
+                className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-ink/70 text-sm font-medium leading-none text-bone hover:bg-red-700"
+              >
+                ×
+              </button>
+            </div>
           )}
           <div className="flex-1 space-y-3">
             <input
