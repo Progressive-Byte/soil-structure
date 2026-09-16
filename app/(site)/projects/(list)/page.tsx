@@ -209,6 +209,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
           </div>
         </Container>
       </section>
+      )}
 
       {/* Dynamic projects grid — always shown (projects come from the API) */}
       <section id="all-projects" className="bg-bone py-8 md:py-12">
