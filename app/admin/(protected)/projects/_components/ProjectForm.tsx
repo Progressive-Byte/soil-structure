@@ -157,6 +157,10 @@ export function ProjectForm({ initial, onSubmit, submitLabel, defaultOrder }: Pr
     }
   }
 
+  function removeCoverImage() {
+    setValues((v) => ({ ...v, coverImage: { src: "", alt: "" } }));
+  }
+
   function addGalleryRow() {
     setValues((v) => ({ ...v, gallery: [...v.gallery, { src: "", alt: "" }] }));
   }
