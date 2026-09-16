@@ -2,8 +2,8 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const controlClasses =
-  "w-full rounded-lg border border-line bg-white px-4 py-3 text-ink placeholder:text-muted-light focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600";
+const fieldClasses =
+  "rounded-lg border border-line bg-white text-ink placeholder:text-muted-light focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600";
 
 type ProjectsFiltersProps = {
   sectors: string[];
@@ -30,27 +30,65 @@ export function ProjectsFilters({ sectors }: ProjectsFiltersProps) {
   }
 
   return (
-    <div className="mt-10 flex flex-wrap items-center gap-4">
-      <input
-        type="search"
-        placeholder="Search by title…"
-        defaultValue={query}
-        onChange={(e) => updateParams({ q: e.target.value || null, page: null })}
-        className={`max-w-sm ${controlClasses}`}
-      />
-      <select
-        value={sector}
-        onChange={(e) => updateParams({ sector: e.target.value || null, page: null })}
-        className={`w-auto ${controlClasses}`}
-        aria-label="Filter by category"
-      >
-        <option value="">All categories</option>
-        {sectors.map((s) => (
-          <option key={s} value={s}>
-            {s}
-          </option>
-        ))}
-      </select>
+    <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+      <div className="relative w-full sm:max-w-xs">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.75}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-light"
+        >
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.5-3.5" />
+        </svg>
+        <input
+          type="search"
+          placeholder="Search by title…"
+          defaultValue={query}
+          onChange={(e) => updateParams({ q: e.target.value || null, page: null })}
+          className={`w-full py-3 pl-11 pr-4 ${fieldClasses}`}
+        />
+      </div>
+      <div className="relative w-full sm:w-56">
+        <select
+          value={sector}
+          onChange={(e) => updateParams({ sector: e.target.value || null, page: null })}
+          aria-label="Filter by category"
+          className={`w-full cursor-pointer appearance-none py-3 pl-4 pr-10 ${fieldClasses}`}
+        >
+          <option value="">All categories</option>
+          {sectors.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.75}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-light"
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </div>
+      {(query || sector) && (
+        <button
+          type="button"
+          onClick={() => updateParams({ q: null, sector: null, page: null })}
+          className="text-small font-medium text-muted underline-offset-2 hover:text-ink hover:underline"
+        >
+          Clear filters
+        </button>
+      )}
     </div>
   );
 }
