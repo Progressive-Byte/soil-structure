@@ -50,11 +50,18 @@ function ProjectsListInner() {
   }
 
   useEffect(() => {
+    adminFetch<{ sectors: string[] }>("/admin/projects/sectors")
+      .then((d) => setSectors(d.sectors))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
     let cancelled = false;
     setLoading(true);
     const params = new URLSearchParams({ page: String(page), limit: String(PAGE_SIZE) });
     if (query) params.set("q", query);
     if (sort) params.set("sort", sort);
+    if (sector) params.set("sector", sector);
 
     adminFetch<{ projects: Project[]; meta: PaginationMeta }>(`/admin/projects?${params}`)
       .then((data) => {
@@ -69,7 +76,7 @@ function ProjectsListInner() {
     return () => {
       cancelled = true;
     };
-  }, [page, query, sort]);
+  }, [page, query, sort, sector]);
 
   async function handleDelete(id: string) {
     try {
