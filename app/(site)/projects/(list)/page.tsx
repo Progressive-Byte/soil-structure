@@ -166,7 +166,8 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
         </Container>
       </section>
 
-      {/* Featured project (dynamic, with fallback) */}
+      {/* Featured project (dynamic, with fallback) — hidden while searching/filtering */}
+      {!isFiltered && (
       <section className="bg-bone py-8 md:py-10">
         <Container>
           <div className="overflow-hidden rounded-[1.75rem] bg-ink text-bone lg:grid lg:grid-cols-2">
