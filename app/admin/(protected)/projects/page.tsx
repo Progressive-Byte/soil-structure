@@ -106,6 +106,19 @@ function ProjectsListInner() {
           className={`w-full max-w-sm ${controlClasses}`}
         />
         <select
+          value={sector}
+          onChange={(e) => updateParams({ sector: e.target.value || null, page: null })}
+          className={controlClasses}
+          aria-label="Filter by category"
+        >
+          <option value="">All categories</option>
+          {sectors.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+        <select
           value={sort}
           onChange={(e) => updateParams({ sort: e.target.value || null, page: null })}
           className={controlClasses}
