@@ -106,8 +106,14 @@ function SectorIcon({ slug }: { slug: string }) {
 
 export default async function ProjectsPage({ searchParams }: ProjectsPageProps) {
   const page = Math.max(1, Number(searchParams.page) || 1);
-  // Dynamic: projects come from the MongoDB-backed API (paginated).
-  const { projects, meta } = await getPaginatedProjects(page, PAGE_SIZE);
+  const q = searchParams.q ?? "";
+  const sector = searchParams.sector ?? "";
+  const isFiltered = Boolean(q || sector);
+  // Dynamic: projects come from the MongoDB-backed API (paginated, search/category-filterable).
+  const [{ projects, meta }, sectors] = await Promise.all([
+    getPaginatedProjects(page, PAGE_SIZE, { q, sector }),
+    getProjectSectors(),
+  ]);
 
   const firstProject = projects[0];
   const gridProjects = projects.slice(1);
