@@ -87,6 +87,16 @@ const sectorIcons: Record<string, React.ReactNode> = {
   "environmental-works": <path d="M4 20c0-8 6-14 16-14 0 10-6 16-16 14ZM4 20c4-6 8-8 12-9" />,
 };
 
+/** Builds a /projects pagination link that keeps the current search/category filters. */
+function buildPageHref(page: number, filters: { q?: string; sector?: string }) {
+  const params = new URLSearchParams();
+  if (filters.q) params.set("q", filters.q);
+  if (filters.sector) params.set("sector", filters.sector);
+  if (page > 1) params.set("page", String(page));
+  const qs = params.toString();
+  return qs ? `/projects?${qs}` : "/projects";
+}
+
 function SectorIcon({ slug }: { slug: string }) {
   return (
     <svg
