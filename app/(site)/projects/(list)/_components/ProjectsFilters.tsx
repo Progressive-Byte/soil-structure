@@ -29,66 +29,69 @@ export function ProjectsFilters({ sectors }: ProjectsFiltersProps) {
     router.replace(qs ? `${pathname}?${qs}` : pathname);
   }
 
+  const tabs = ["", ...sectors];
+
   return (
-    <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-      <div className="relative w-full sm:max-w-xs">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={1.75}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-          className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-light"
-        >
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-3.5-3.5" />
-        </svg>
-        <input
-          type="search"
-          placeholder="Search by title…"
-          defaultValue={query}
-          onChange={(e) => updateParams({ q: e.target.value || null, page: null })}
-          className={`w-full py-3 pl-11 pr-4 ${fieldClasses}`}
-        />
+    <div className="mt-10 flex flex-col gap-6">
+      <div
+        role="tablist"
+        aria-label="Filter by category"
+        className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1"
+      >
+        {tabs.map((s) => {
+          const active = sector === s;
+          return (
+            <button
+              key={s || "all"}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              onClick={() => updateParams({ sector: s || null, page: null })}
+              className={`shrink-0 whitespace-nowrap rounded-pill px-5 py-2.5 text-small font-semibold transition-colors ${
+                active
+                  ? "bg-ink text-bone"
+                  : "border border-ink/25 text-ink hover:border-ink hover:bg-ink/5"
+              }`}
+            >
+              {s || "All projects"}
+            </button>
+          );
+        })}
       </div>
-      <div className="relative w-full sm:w-56">
-        <select
-          value={sector}
-          onChange={(e) => updateParams({ sector: e.target.value || null, page: null })}
-          aria-label="Filter by category"
-          className={`w-full cursor-pointer appearance-none py-3 pl-4 pr-10 ${fieldClasses}`}
-        >
-          <option value="">All categories</option>
-          {sectors.map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={1.75}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-          className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-light"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="relative w-full sm:max-w-xs">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.75}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-light"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.5-3.5" />
+          </svg>
+          <input
+            type="search"
+            placeholder="Search by title…"
+            defaultValue={query}
+            onChange={(e) => updateParams({ q: e.target.value || null, page: null })}
+            className={`w-full py-3 pl-11 pr-4 ${fieldClasses}`}
+          />
+        </div>
+        {(query || sector) && (
+          <button
+            type="button"
+            onClick={() => updateParams({ q: null, sector: null, page: null })}
+            className="text-small font-medium text-muted underline-offset-2 hover:text-ink hover:underline"
+          >
+            Clear filters
+          </button>
+        )}
       </div>
-      {(query || sector) && (
-        <button
-          type="button"
-          onClick={() => updateParams({ q: null, sector: null, page: null })}
-          className="text-small font-medium text-muted underline-offset-2 hover:text-ink hover:underline"
-        >
-          Clear filters
-        </button>
-      )}
     </div>
   );
 }
