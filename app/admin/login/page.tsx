@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { InputField } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
-import { adminFetch, setToken, getToken } from "../_lib/adminApi";
+import { adminFetch, setToken, getToken, clearToken } from "../_lib/adminApi";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -13,9 +13,15 @@ export default function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // Already logged in — skip the form.
+  // Already logged in — skip the form. Verify the token against the server
+  // rather than trusting its mere presence: a stale/expired token in
+  // localStorage would otherwise bounce us to /admin/projects and fail
+  // there instead of showing the login form.
   useEffect(() => {
-    if (getToken()) router.replace("/admin/projects");
+    if (!getToken()) return;
+    adminFetch("/auth/me")
+      .then(() => router.replace("/admin/projects"))
+      .catch(() => clearToken());
   }, [router]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
