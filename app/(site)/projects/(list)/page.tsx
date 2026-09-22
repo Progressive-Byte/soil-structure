@@ -157,7 +157,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
             </div>
           ) : (
             <ul className="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-              {gridProjects.map((project, i) => (
+              {projects.map((project, i) => (
                 <li key={project._id}>
                   <Reveal delay={(i % 3) * 90}>
                     <ProjectCard project={project} />
