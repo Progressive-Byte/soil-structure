@@ -3,18 +3,23 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { getToken, clearToken } from "../_lib/adminApi";
+import { adminFetch, getToken, clearToken } from "../_lib/adminApi";
 
 export default function AdminProtectedLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [ready, setReady] = useState(false);
 
+  // Presence of a token isn't enough — verify it against the server so a
+  // stale/expired token redirects back to /admin/login instead of rendering
+  // protected content that then fails every data fetch with 401s.
   useEffect(() => {
     if (!getToken()) {
       router.replace("/admin/login");
       return;
     }
-    setReady(true);
+    adminFetch("/auth/me")
+      .then(() => setReady(true))
+      .catch(() => router.replace("/admin/login"));
   }, [router]);
 
   function handleLogout() {
