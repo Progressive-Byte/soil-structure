@@ -25,6 +25,11 @@ export function ProjectCard({ project, tone = "bone" }: ProjectCardProps) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
           className="object-cover transition-transform duration-[600ms] ease-smooth group-hover:scale-[1.06]"
         />
+        {project.featured && (
+          <Tag variant="solid" className="absolute left-4 top-4">
+            Featured
+          </Tag>
+        )}
       </div>
       <div className="mt-4">
         <Tag variant={tone === "ink" ? "solid" : "muted"}>{project.sector}</Tag>
