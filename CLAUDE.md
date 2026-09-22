@@ -81,7 +81,10 @@ Two top-level groups under `app/`, both part of the same single Next.js app
   `RouteProgress` chrome. `app/layout.tsx` (the true root, outside the group)
   is deliberately minimal — just `<html>`/`<body>`/fonts — specifically so
   `/admin/*` (a sibling segment, not inside `(site)`) doesn't inherit the
-  public site's header/footer.
+  public site's header/footer. The projects list lives under its own
+  `app/(site)/projects/(list)/` group (`page.tsx` + `loading.tsx` +
+  `_components/ProjectsFilters.tsx`), a sibling of `projects/[slug]/`, so the
+  list gets its own loading state without one leaking into the detail route.
 - `app/admin/` — the Projects admin panel. `login/` is the public login page;
   everything under `(protected)/` is gated by that group's `layout.tsx`,
   which checks for a token in `localStorage` on mount and redirects to
@@ -89,12 +92,14 @@ Two top-level groups under `app/`, both part of the same single Next.js app
   `app/admin/_lib/adminApi.ts` is the fetch wrapper every admin page uses:
   it injects the bearer token and clears it on a 401.
 
-`app/(site)/projects/page.tsx` and `app/admin/(protected)/projects/page.tsx`
-both use query-string state (`?q=`, `?page=`, `?sort=`) rather than component
-state — the public list via the Server Component's `searchParams` prop, the
-admin list via `useSearchParams`/`router.replace` (wrapped in `Suspense`,
-which `useSearchParams` requires). `sitemap.ts` and `robots.ts` sit outside
-the `(site)` group at the true `app/` root (Next.js special-cases these).
+`app/(site)/projects/(list)/page.tsx` and
+`app/admin/(protected)/projects/page.tsx` both use query-string state (`?q=`,
+`?page=`, `?sort=`/`?sector=`) rather than component state — the public list
+via the Server Component's `searchParams` prop (filter UI split out into the
+client component `ProjectsFilters`), the admin list via
+`useSearchParams`/`router.replace` (wrapped in `Suspense`, which
+`useSearchParams` requires). `sitemap.ts` and `robots.ts` sit outside the
+`(site)` group at the true `app/` root (Next.js special-cases these).
 
 ### Backend (`server/`, plain CommonJS — no `"type": "module"` in package.json)
 
