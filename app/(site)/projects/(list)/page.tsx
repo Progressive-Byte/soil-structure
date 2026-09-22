@@ -103,28 +103,13 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
   const q = searchParams.q ?? "";
   const sector = searchParams.sector ?? "";
   const isFiltered = Boolean(q || sector);
-  // Dynamic: projects come from the MongoDB-backed API (paginated, search/category-filterable).
+  // Dynamic: projects come from the MongoDB-backed API (paginated, search/category-filterable,
+  // sorted by the admin-set `order` field — a featured project appears first by giving it the
+  // lowest order, and carries a "Featured" badge on its card, same as every other project).
   const [{ projects, meta }, categoryOptions] = await Promise.all([
     getPaginatedProjects(page, PAGE_SIZE, { q, sector }),
     getProjectSectors(),
   ]);
-
-  // While searching/filtering, show every match in the grid instead of pulling
-  // one out as "featured" — that read as a broken/unrelated result above an
-  // empty "no matches" grid.
-  const firstProject = isFiltered ? undefined : projects[0];
-  const gridProjects = isFiltered ? projects : projects.slice(1);
-
-  const featured = firstProject
-    ? {
-        title: firstProject.title,
-        summary: firstProject.summary,
-        client: firstProject.client,
-        scope: firstProject.sector,
-        image: firstProject.coverImage,
-        detailsHref: `/projects/${firstProject.slug}`,
-      }
-    : fallbackFeatured;
 
   return (
     <>
