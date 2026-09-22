@@ -144,7 +144,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
             <ProjectsFilters sectors={categoryOptions} />
           </Suspense>
 
-          {gridProjects.length === 0 ? (
+          {projects.length === 0 ? (
             <div className="mt-10">
               <EmptyState
                 title={isFiltered ? "No projects match your search" : "More case studies coming soon"}
