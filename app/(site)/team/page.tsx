@@ -53,7 +53,7 @@ export default async function TeamPage() {
             </p>
           </div>
 
-          <p className="mt-8 max-w-4xl text-base leading-relaxed text-muted md:text-lg">
+          <p className="mt-8 text-base leading-relaxed text-muted md:text-lg">
             In order to achieve our mission, vision and values we believe we have to
             recruit the best talent in the technical fields. This experience has been
             acquired through direct and active involvement on projects from inception
