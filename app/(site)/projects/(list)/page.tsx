@@ -24,20 +24,6 @@ type ProjectsPageProps = {
   searchParams: { page?: string; q?: string; sector?: string };
 };
 
-/** Static fallback used for the featured card until a project is published. */
-const fallbackFeatured = {
-  title: "Ground Improvement at Matarbari Road Project",
-  summary:
-    "Ground improvement works for the Matarbari road scheme, treating soft ground ahead of embankment construction. The scope drew on our geotechnical capability in stabilised earth solutions, vertical drainage and settlement control.",
-  client: "Roads and Highways Department (RHD)",
-  scope: "Ground improvement",
-  image: {
-    src: "/images/projects/matarbari-road-project.jpg",
-    alt: "Two engineers in hard hats reviewing plans inside a large industrial hall",
-  },
-  detailsHref: "/projects",
-};
-
 /** Sectors the practice works in. */
 const sectors = [
   {
