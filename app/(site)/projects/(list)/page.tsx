@@ -135,51 +135,6 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
         </Container>
       </section>
 
-      {/* Featured project (dynamic, with fallback) — hidden while searching/filtering */}
-      {!isFiltered && (
-      <section className="bg-bone py-8 md:py-10">
-        <Container>
-          <div className="overflow-hidden rounded-[1.75rem] bg-ink text-bone lg:grid lg:grid-cols-2">
-            <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[460px]">
-              <Image
-                src={featured.image.src}
-                alt={featured.image.alt}
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
-            </div>
-            <div className="flex flex-col justify-center p-8 md:p-12 lg:p-16">
-              <SectionEyebrow tone="bone">Featured project</SectionEyebrow>
-              <h2 className="mt-5 font-heading text-2xl font-bold tracking-tight md:text-3xl lg:text-display-sm">
-                {featured.title}
-              </h2>
-              <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-dark">
-                {featured.summary}
-              </p>
-              <dl className="mt-8 grid grid-cols-1 gap-6 border-t border-line-dark pt-6 sm:grid-cols-2">
-                <div>
-                  <dt className="text-eyebrow font-semibold uppercase text-muted-dark">Client</dt>
-                  <dd className="mt-2 font-medium text-bone">{featured.client}</dd>
-                </div>
-                <div>
-                  <dt className="text-eyebrow font-semibold uppercase text-muted-dark">Scope</dt>
-                  <dd className="mt-2 font-medium text-bone">{featured.scope}</dd>
-                </div>
-              </dl>
-              {firstProject && (
-                <div className="mt-8">
-                  <Button href={featured.detailsHref} variant="outline-light">
-                    See Details
-                  </Button>
-                </div>
-              )}
-            </div>
-          </div>
-        </Container>
-      </section>
-      )}
-
       {/* Dynamic projects grid — always shown (projects come from the API) */}
       <section id="all-projects" className="bg-bone py-8 md:py-12">
         <Container>
