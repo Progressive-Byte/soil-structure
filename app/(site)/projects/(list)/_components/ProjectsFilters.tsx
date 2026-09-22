@@ -36,7 +36,7 @@ export function ProjectsFilters({ sectors }: ProjectsFiltersProps) {
       <div
         role="tablist"
         aria-label="Filter by category"
-        className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1"
+        className="flex flex-wrap justify-center gap-2"
       >
         {tabs.map((s) => {
           const active = sector === s;
