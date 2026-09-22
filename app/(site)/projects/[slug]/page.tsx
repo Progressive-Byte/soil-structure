@@ -116,16 +116,12 @@ export default async function ProjectDetailPage({ params }: Params) {
             <h2 className="text-eyebrow font-semibold uppercase text-muted">Project facts</h2>
             <dl className="mt-5 divide-y divide-line">
               <div className="flex justify-between gap-4 py-3">
-                <dt className="text-muted">Client</dt>
-                <dd className="text-right font-medium text-ink">{project.client}</dd>
-              </div>
-              <div className="flex justify-between gap-4 py-3">
                 <dt className="text-muted">Location</dt>
                 <dd className="text-right font-medium text-ink">{project.location}</dd>
               </div>
               <div className="flex justify-between gap-4 py-3">
-                <dt className="text-muted">Completed</dt>
-                <dd className="text-right font-medium text-ink">{project.year}</dd>
+                <dt className="text-muted">Client</dt>
+                <dd className="text-right font-medium text-ink">{project.client}</dd>
               </div>
               {project.stats.map((stat) => (
                 <div key={stat.label} className="flex justify-between gap-4 py-3">
@@ -133,6 +129,14 @@ export default async function ProjectDetailPage({ params }: Params) {
                   <dd className="text-right font-medium text-ink">{stat.value}</dd>
                 </div>
               ))}
+              <div className="flex justify-between gap-4 py-3">
+                <dt className="text-muted">Category</dt>
+                <dd className="text-right font-medium text-ink">{project.sector}</dd>
+              </div>
+              <div className="flex justify-between gap-4 py-3">
+                <dt className="text-muted">Completed</dt>
+                <dd className="text-right font-medium text-ink">{project.year}</dd>
+              </div>
             </dl>
           </aside>
         </div>
