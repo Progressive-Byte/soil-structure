@@ -23,6 +23,9 @@ const projectSchema = new mongoose.Schema(
     slug: { type: String, required: true, unique: true, trim: true, lowercase: true },
     title: { type: String, required: true, trim: true },
     sector: { type: String, required: true, trim: true },
+    // Mirrors PROJECT_STATUSES in lib/data/projects.ts. Projects saved before
+    // this field existed read back as "completed" via the default.
+    status: { type: String, enum: ["ongoing", "completed"], default: "completed" },
     summary: { type: String, required: true },
     description: { type: String, required: true },
     location: { type: String, default: "" },
