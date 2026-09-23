@@ -29,11 +29,11 @@ export async function getProjects(): Promise<Project[]> {
 export async function getPaginatedProjects(
   page = 1,
   limit = 9,
-  filters: { q?: string; sector?: string } = {},
+  filters: { q?: string; status?: string } = {},
 ): Promise<{ projects: Project[]; meta: PaginationMeta }> {
   const params = new URLSearchParams({ page: String(page), limit: String(limit) });
   if (filters.q) params.set("q", filters.q);
-  if (filters.sector) params.set("sector", filters.sector);
+  if (filters.status) params.set("status", filters.status);
   return fetchAPI<{ projects: Project[]; meta: PaginationMeta }>(`/public/projects?${params}`);
 }
 
