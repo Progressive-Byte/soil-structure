@@ -44,8 +44,9 @@ before finishing a session, run `npm run build`, which type-checks and lints.
 **Two halves, one `.env`.** The root `.env` (copy from `.env.example`) is
 loaded by both: Next.js reads it natively (it lives next to `next.config.mjs`
 and `package.json`), and `server/bootstrap.js` loads it explicitly via
-`dotenv`. `NEXT_PUBLIC_API_URL` is the frontend's only link to the backend —
-everything else backend-related (`MONGODB_URI`, `JWT_SECRET`, `ADMIN_EMAIL`/
+`dotenv`. `NEXT_PUBLIC_API_URL` is the frontend's only link to the backend
+(it already ends in `/api`, so frontend paths are written as
+`/public/projects`, not `/api/public/projects`) — everything else backend-related (`MONGODB_URI`, `JWT_SECRET`, `ADMIN_EMAIL`/
 `ADMIN_PASSWORD`, `CORS_ORIGIN`, `CLOUDINARY_*`) is read only by `server/`.
 
 ### Frontend data layer
