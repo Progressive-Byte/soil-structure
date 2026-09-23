@@ -23,6 +23,9 @@ function validateProjectPayload(body, { partial = false } = {}) {
       return `${field} is required`;
     }
   }
+  if (body.status !== undefined && !["ongoing", "completed"].includes(body.status)) {
+    return "status must be ongoing or completed";
+  }
   if (!partial || body.coverImage !== undefined) {
     if (!body.coverImage?.src || !body.coverImage?.alt) {
       return "coverImage.src and coverImage.alt are required";

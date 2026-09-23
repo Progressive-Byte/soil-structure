@@ -4,7 +4,7 @@ const { parsePagination, buildMeta } = require("../utils/pagination");
 
 const router = express.Router();
 
-// GET /api/public/projects[?sector=][?q=][?page=&limit=]
+// GET /api/public/projects[?sector=][?status=][?q=][?page=&limit=]
 // Pagination is opt-in: no page/limit means "everything" (used by the
 // homepage, sitemap, and sector list) — the /projects page passes page/limit
 // explicitly and gets a `meta` block back.
