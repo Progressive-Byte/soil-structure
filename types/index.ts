@@ -45,6 +45,7 @@ export interface Project extends BaseDocument {
   slug: string;
   title: string;
   sector: ProjectSector;
+  status: ProjectStatus;
   /** Short one-line summary used on cards. */
   summary: string;
   /** Longer body copy for the detail page. */
