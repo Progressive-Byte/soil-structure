@@ -33,6 +33,9 @@ export interface ImageAsset {
  * panel), not a fixed set — see server/models/Project.js. */
 export type ProjectSector = string;
 
+/** Fixed two-value lifecycle — mirrors the enum in server/models/Project.js. */
+export type ProjectStatus = "ongoing" | "completed";
+
 export interface ProjectStat {
   label: string;
   value: string;
