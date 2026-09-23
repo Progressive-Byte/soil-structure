@@ -86,7 +86,8 @@ Two top-level groups under `app/`, both part of the same single Next.js app
   `app/(site)/projects/(list)/` group (`page.tsx` + `loading.tsx` +
   `_components/ProjectsFilters.tsx`), a sibling of `projects/[slug]/`, so the
   list gets its own loading state without one leaking into the detail route.
-- `app/admin/` — the Projects admin panel. `login/` is the public login page;
+- `app/admin/` — the Projects admin panel. `/admin` itself (`page.tsx`) just
+  redirects to `/admin/projects` or `/admin/login`. `login/` is the public login page;
   everything under `(protected)/` is gated by that group's `layout.tsx`,
   which checks for a token in `localStorage` on mount and redirects to
   `/admin/login` if missing (real enforcement is server-side — see below).
