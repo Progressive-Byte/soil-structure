@@ -105,9 +105,14 @@ client component `ProjectsFilters`), the admin list via
 
 ### Backend (`server/`, plain CommonJS — no `"type": "module"` in package.json)
 
+- `server/bootstrap.js` — must be the **first** `require` in `server/index.js`
+  and in any standalone Node script (e.g. `scripts/seed.js`): it loads the
+  root `.env`, and calls `net.setDefaultAutoSelectFamily(false)` on purpose
+  (the host's resolver returns unreachable NAT64 IPv6 addresses that break
+  Cloudinary/SMTP calls otherwise) — don't remove it.
 - `server/index.js` — Express app: CORS (multi-origin via comma-separated
-  `CORS_ORIGIN`), `express.json()`, mounts the routers below, one generic
-  error handler, listens on `PORT`.
+  `CORS_ORIGIN`), `express.json()`, mounts the routers below under `/api/*`
+  (plus `GET /api/health`), one generic error handler, listens on `PORT`.
 - `server/config/db.js` — `mongoose.connect()`, exits the process on failure
   (fail-fast, no retry loop). `server/config/mailer.js` and
   `server/config/cloudinary.js` lazily build their respective clients from env
