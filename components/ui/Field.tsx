@@ -64,7 +64,8 @@ export function InputField({
 }
 
 type SelectFieldProps = BaseFieldProps & {
-  options: string[];
+  /** Plain strings use the same text for value and label. */
+  options: (string | { value: string; label: string })[];
   placeholder?: string;
 } & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "name" | "className" | "id">;
 
@@ -97,11 +98,14 @@ export function SelectField({
         <option value="" disabled>
           {placeholder}
         </option>
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
-          </option>
-        ))}
+        {options.map((opt) => {
+          const { value, label } = typeof opt === "string" ? { value: opt, label: opt } : opt;
+          return (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          );
+        })}
       </select>
     </FieldShell>
   );
