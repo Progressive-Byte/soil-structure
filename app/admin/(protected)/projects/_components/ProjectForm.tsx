@@ -1,16 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { InputField, TextareaField } from "@/components/ui/Field";
+import { InputField, SelectField, TextareaField } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
 import { getServices } from "@/lib/data/services";
-import type { Project, Service } from "@/types";
+import { PROJECT_CATEGORIES, PROJECT_STATUSES } from "@/lib/data/projects";
+import type { Project, ProjectStatus, Service } from "@/types";
 import { adminFetch } from "../../../_lib/adminApi";
 
 export type ProjectFormValues = {
   title: string;
   slug: string;
   sector: string;
+  status: ProjectStatus;
   summary: string;
   description: string;
   location: string;
@@ -28,6 +30,7 @@ const emptyValues: ProjectFormValues = {
   title: "",
   slug: "",
   sector: "",
+  status: "ongoing",
   summary: "",
   description: "",
   location: "",
@@ -68,6 +71,7 @@ export function ProjectForm({ initial, onSubmit, submitLabel, defaultOrder }: Pr
           title: initial.title,
           slug: initial.slug,
           sector: initial.sector,
+          status: initial.status ?? "completed",
           summary: initial.summary,
           description: initial.description,
           location: initial.location,
@@ -92,9 +96,18 @@ export function ProjectForm({ initial, onSubmit, submitLabel, defaultOrder }: Pr
   const [submitting, setSubmitting] = useState(false);
   const [uploading, setUploading] = useState<string | null>(null);
 
-  const sectorSuggestions = sectors.filter(
-    (s) => s !== values.sector && s.toLowerCase().includes(values.sector.toLowerCase()),
+  // Presets first, then any custom categories already used on other projects (deduped case-insensitively).
+  const allSectors = [...PROJECT_CATEGORIES, ...sectors].filter(
+    (s, i, list) => list.findIndex((x) => x.toLowerCase() === s.toLowerCase()) === i,
   );
+  const typedSector = values.sector.trim().toLowerCase();
+  const isKnownSector = allSectors.some((s) => s.toLowerCase() === typedSector);
+  // Show the full list when empty or when an existing option is already chosen (so it can be
+  // switched); only narrow it down while the admin is typing something new.
+  const sectorSuggestions =
+    !typedSector || isKnownSector
+      ? allSectors
+      : allSectors.filter((s) => s.toLowerCase().includes(typedSector));
 
   useEffect(() => {
     getServices().then(setServices);
@@ -220,51 +233,101 @@ export function ProjectForm({ initial, onSubmit, submitLabel, defaultOrder }: Pr
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="relative flex flex-col gap-2">
-          <label htmlFor="sector" className="text-sm font-semibold text-ink">
-            Sector / category<span className="ml-0.5 text-lime-600">*</span>
+          <label htmlFor="sector" className="text-eyebrow font-semibold uppercase text-muted">
+            Sector / category<span className="ml-0.5 text-lime-700" aria-hidden="true">*</span>
           </label>
-          <input
-            id="sector"
-            name="sector"
-            required
-            autoComplete="off"
-            placeholder="e.g. Healthcare — type a new one or pick an existing category"
-            value={values.sector}
-            onChange={(e) => updateField("sector", e.target.value)}
-            onFocus={() => setSectorMenuOpen(true)}
-            // Delay so a click on a suggestion below registers before the blur closes the menu.
-            onBlur={() => setTimeout(() => setSectorMenuOpen(false), 150)}
-            className={inputClasses}
-          />
-          {sectorMenuOpen && sectorSuggestions.length > 0 && (
-            <ul className="absolute top-full z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-line bg-bone-50 shadow-card">
-              {sectorSuggestions.map((s) => (
-                <li key={s}>
-                  <button
-                    type="button"
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => {
-                      updateField("sector", s);
-                      setSectorMenuOpen(false);
-                    }}
-                    className="block w-full px-4 py-2 text-left text-sm text-ink hover:bg-bone-200"
-                  >
-                    {s}
-                  </button>
+          <div className="relative">
+            <input
+              id="sector"
+              name="sector"
+              required
+              autoComplete="off"
+              role="combobox"
+              aria-expanded={sectorMenuOpen}
+              aria-controls="sector-options"
+              placeholder="Pick a category or type a new one"
+              value={values.sector}
+              onChange={(e) => {
+                updateField("sector", e.target.value);
+                setSectorMenuOpen(true);
+              }}
+              onFocus={() => setSectorMenuOpen(true)}
+              // Delay so a click on a suggestion below registers before the blur closes the menu.
+              onBlur={() => setTimeout(() => setSectorMenuOpen(false), 150)}
+              onKeyDown={(e) => e.key === "Escape" && setSectorMenuOpen(false)}
+              className={`${inputClasses} pr-10`}
+            />
+            <button
+              type="button"
+              tabIndex={-1}
+              aria-label="Show categories"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => setSectorMenuOpen((open) => !open)}
+              className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-muted hover:text-ink"
+            >
+              <svg
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                className={`h-4 w-4 transition-transform ${sectorMenuOpen ? "rotate-180" : ""}`}
+              >
+                <path d="M4 6l4 4 4-4" />
+              </svg>
+            </button>
+          </div>
+          {sectorMenuOpen && (sectorSuggestions.length > 0 || typedSector) && (
+            <ul
+              id="sector-options"
+              role="listbox"
+              className="absolute top-full z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-lg border border-line bg-bone-50 py-1 shadow-card"
+            >
+              {sectorSuggestions.map((s) => {
+                const selected = s.toLowerCase() === typedSector;
+                return (
+                  <li key={s} role="option" aria-selected={selected}>
+                    <button
+                      type="button"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => {
+                        updateField("sector", s);
+                        setSectorMenuOpen(false);
+                      }}
+                      className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm hover:bg-bone-200 ${
+                        selected ? "font-semibold text-ink" : "text-ink"
+                      }`}
+                    >
+                      {s}
+                      {selected && <span aria-hidden="true">✓</span>}
+                    </button>
+                  </li>
+                );
+              })}
+              {typedSector && !isKnownSector && (
+                <li className="border-t border-line px-4 py-2 text-xs text-muted">
+                  Saving will add &ldquo;{values.sector.trim()}&rdquo; as a new category.
                 </li>
-              ))}
+              )}
             </ul>
           )}
         </div>
+        <SelectField
+          label="Status"
+          name="status"
+          required
+          options={PROJECT_STATUSES}
+          value={values.status}
+          onChange={(e) => updateField("status", e.target.value as ProjectStatus)}
+        />
         <InputField
           label="Location"
           name="location"
           value={values.location}
           onChange={(e) => updateField("location", e.target.value)}
         />
-      </div>
-
-      <div className="grid gap-5 sm:grid-cols-2">
         <InputField
           label="Year"
           name="year"
