@@ -1,23 +1,22 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { PROJECT_STATUSES } from "@/lib/data/projects";
 
 const fieldClasses =
   "rounded-lg border border-line bg-white text-ink placeholder:text-muted-light focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600";
 
-type ProjectsFiltersProps = {
-  sectors: string[];
-};
+const tabs = [{ value: "", label: "All Projects" }, ...PROJECT_STATUSES];
 
-/** Search-by-title + category filter for the public projects list, mirroring the
- * admin projects list's query-string-driven pattern (?q=, ?sector=, resets ?page=). */
-export function ProjectsFilters({ sectors }: ProjectsFiltersProps) {
+/** Search-by-title + status filter for the public projects list, mirroring the
+ * admin projects list's query-string-driven pattern (?q=, ?status=, resets ?page=). */
+export function ProjectsFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const query = searchParams.get("q") ?? "";
-  const sector = searchParams.get("sector") ?? "";
+  const status = searchParams.get("status") ?? "";
 
   function updateParams(next: Record<string, string | null>) {
     const params = new URLSearchParams(searchParams.toString());
@@ -29,31 +28,29 @@ export function ProjectsFilters({ sectors }: ProjectsFiltersProps) {
     router.replace(qs ? `${pathname}?${qs}` : pathname);
   }
 
-  const tabs = ["", ...sectors];
-
   return (
     <div className="mt-10 flex flex-col gap-6">
       <div
         role="tablist"
-        aria-label="Filter by category"
+        aria-label="Filter by status"
         className="flex flex-wrap justify-center gap-2"
       >
-        {tabs.map((s) => {
-          const active = sector === s;
+        {tabs.map((tab) => {
+          const active = status === tab.value;
           return (
             <button
-              key={s || "all"}
+              key={tab.value || "all"}
               type="button"
               role="tab"
               aria-selected={active}
-              onClick={() => updateParams({ sector: s || null, page: null })}
+              onClick={() => updateParams({ status: tab.value || null, page: null })}
               className={`shrink-0 whitespace-nowrap rounded-pill px-5 py-2.5 text-small font-semibold transition-colors ${
                 active
                   ? "bg-ink text-bone"
                   : "border border-ink/25 text-ink hover:border-ink hover:bg-ink/5"
               }`}
             >
-              {s || "All projects"}
+              {tab.label}
             </button>
           );
         })}
@@ -82,10 +79,10 @@ export function ProjectsFilters({ sectors }: ProjectsFiltersProps) {
             className={`w-full py-3 pl-11 pr-4 ${fieldClasses}`}
           />
         </div>
-        {(query || sector) && (
+        {(query || status) && (
           <button
             type="button"
-            onClick={() => updateParams({ q: null, sector: null, page: null })}
+            onClick={() => updateParams({ q: null, status: null, page: null })}
             className="text-small font-medium text-muted underline-offset-2 hover:text-ink hover:underline"
           >
             Clear filters
