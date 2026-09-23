@@ -1,5 +1,23 @@
-import type { PaginationMeta, Project, ProjectSector } from "@/types";
+import type { PaginationMeta, Project, ProjectSector, ProjectStatus } from "@/types";
 import { fetchAPI } from "./_client";
+
+/** Project lifecycle options — the admin form's select and the public list's filter tabs. */
+export const PROJECT_STATUSES: { value: ProjectStatus; label: string }[] = [
+  { value: "ongoing", label: "Ongoing" },
+  { value: "completed", label: "Completed" },
+];
+
+/** Preset categories always offered in the admin form (admins can still type a custom one). */
+export const PROJECT_CATEGORIES: ProjectSector[] = [
+  "Commercial",
+  "Residential",
+  "Industrial",
+  "Garments",
+  "Mixed used building complex",
+  "Steel structure",
+  "ETP project",
+  "Geotechnical and structural works",
+];
 
 /** All projects, ordered by their `order` field (the API already sorts this way). */
 export async function getProjects(): Promise<Project[]> {
