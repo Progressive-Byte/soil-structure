@@ -12,6 +12,9 @@ router.get("/", async (req, res) => {
   try {
     const filter = {};
     if (req.query.sector) filter.sector = req.query.sector;
+    // "completed" also matches older documents saved before `status` existed.
+    if (req.query.status === "ongoing") filter.status = "ongoing";
+    if (req.query.status === "completed") filter.status = { $ne: "ongoing" };
     if (req.query.q) filter.title = { $regex: String(req.query.q), $options: "i" };
 
     if (!req.query.page && !req.query.limit) {
