@@ -167,7 +167,9 @@ Pushing to the `deploy` branch (not `master`) triggers
 `.github/workflows/deploy.yml`: it SSHes into the production host, does a hard
 reset to that branch, `npm install && npm run build`, then restarts both PM2
 processes defined in `ecosystem.config.js` (`soilstructurebd-web` running
-`next start`, `soilstructurebd-api` running `server/index.js`). There's no
+`next start -p 2000` — port 2000 in production, not 3000 —
+`soilstructurebd-api` running `server/index.js` on 4000). Production runs
+Node 24 via nvm. There's no
 staging environment — merging to `deploy` ships straight to production.
 
 ### Admin auth is intentionally minimal
