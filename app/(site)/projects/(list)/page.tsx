@@ -7,7 +7,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { ProjectCard } from "@/components/sections/ProjectCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { CtaBand } from "@/components/sections/CtaBand";
-import { getPaginatedProjects, getProjectSectors } from "@/lib/data/projects";
+import { getPaginatedProjects } from "@/lib/data/projects";
 import { buildMetadata } from "@/lib/seo";
 import { ProjectsFilters } from "./_components/ProjectsFilters";
 
@@ -21,7 +21,7 @@ export const metadata: Metadata = buildMetadata({
 const PAGE_SIZE = 9;
 
 type ProjectsPageProps = {
-  searchParams: { page?: string; q?: string; sector?: string };
+  searchParams: { page?: string; q?: string; status?: string };
 };
 
 /** Sectors the practice works in. */
@@ -71,11 +71,11 @@ const sectorIcons: Record<string, React.ReactNode> = {
   "environmental-works": <path d="M4 20c0-8 6-14 16-14 0 10-6 16-16 14ZM4 20c4-6 8-8 12-9" />,
 };
 
-/** Builds a /projects pagination link that keeps the current search/category filters. */
-function buildPageHref(page: number, filters: { q?: string; sector?: string }) {
+/** Builds a /projects pagination link that keeps the current search/status filters. */
+function buildPageHref(page: number, filters: { q?: string; status?: string }) {
   const params = new URLSearchParams();
   if (filters.q) params.set("q", filters.q);
-  if (filters.sector) params.set("sector", filters.sector);
+  if (filters.status) params.set("status", filters.status);
   if (page > 1) params.set("page", String(page));
   const qs = params.toString();
   return qs ? `/projects?${qs}` : "/projects";
@@ -101,15 +101,12 @@ function SectorIcon({ slug }: { slug: string }) {
 export default async function ProjectsPage({ searchParams }: ProjectsPageProps) {
   const page = Math.max(1, Number(searchParams.page) || 1);
   const q = searchParams.q ?? "";
-  const sector = searchParams.sector ?? "";
-  const isFiltered = Boolean(q || sector);
-  // Dynamic: projects come from the MongoDB-backed API (paginated, search/category-filterable,
+  const status = searchParams.status ?? "";
+  const isFiltered = Boolean(q || status);
+  // Dynamic: projects come from the MongoDB-backed API (paginated, search/status-filterable,
   // sorted by the admin-set `order` field — a featured project appears first by giving it the
   // lowest order, and carries a "Featured" badge on its card, same as every other project).
-  const [{ projects, meta }, categoryOptions] = await Promise.all([
-    getPaginatedProjects(page, PAGE_SIZE, { q, sector }),
-    getProjectSectors(),
-  ]);
+  const { projects, meta } = await getPaginatedProjects(page, PAGE_SIZE, { q, status });
 
   return (
     <>
@@ -141,7 +138,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
           <SectionEyebrow>All projects</SectionEyebrow>
 
           <Suspense fallback={null}>
-            <ProjectsFilters sectors={categoryOptions} />
+            <ProjectsFilters />
           </Suspense>
 
           {projects.length === 0 ? (
@@ -150,7 +147,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                 title={isFiltered ? "No projects match your search" : "More case studies coming soon"}
                 description={
                   isFiltered
-                    ? "Try a different title or category filter."
+                    ? "Try a different title or status filter."
                     : "Published projects appear here automatically. Add them from the admin panel to populate this list."
                 }
               />
@@ -178,7 +175,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                 <div className="flex gap-3">
                   {meta.hasPrev ? (
                     <Link
-                      href={buildPageHref(meta.page - 1, { q, sector })}
+                      href={buildPageHref(meta.page - 1, { q, status })}
                       className="rounded-pill border border-ink/25 px-4 py-2 font-medium text-ink transition-colors hover:border-ink"
                     >
                       Previous
@@ -190,7 +187,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
                   )}
                   {meta.hasNext ? (
                     <Link
-                      href={buildPageHref(meta.page + 1, { q, sector })}
+                      href={buildPageHref(meta.page + 1, { q, status })}
                       className="rounded-pill border border-ink/25 px-4 py-2 font-medium text-ink transition-colors hover:border-ink"
                     >
                       Next
