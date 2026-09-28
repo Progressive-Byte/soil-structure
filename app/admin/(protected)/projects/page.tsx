@@ -117,7 +117,7 @@ function ProjectsListInner() {
           aria-label="Filter by category"
         >
           <option value="">All categories</option>
-          {sectors.map((s) => (
+          {allSectors.map((s) => (
             <option key={s} value={s}>
               {s}
             </option>
