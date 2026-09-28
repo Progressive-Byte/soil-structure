@@ -37,6 +37,11 @@ function ProjectsListInner() {
   const [error, setError] = useState<string | null>(null);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
+  // Presets first, then any custom categories already used on projects (deduped case-insensitively).
+  const allSectors = [...PROJECT_CATEGORIES, ...sectors].filter(
+    (s, i, list) => list.findIndex((x) => x.toLowerCase() === s.toLowerCase()) === i,
+  );
+
   // Keeps search/sort/page all in the URL — same query-string-driven pattern
   // impact-reports uses for its admin list (shareable/bookmarkable, survives
   // a refresh).
