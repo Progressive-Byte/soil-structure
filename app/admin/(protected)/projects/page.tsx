@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
+import { PROJECT_CATEGORIES } from "@/lib/data/projects";
 import { adminFetch } from "../../_lib/adminApi";
 import type { PaginationMeta, Project } from "@/types";
 
