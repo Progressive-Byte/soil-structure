@@ -24,6 +24,19 @@ jobs:
             nvm use 24
 
             git fetch origin deploy
+
+            # Keep repo-only files (docs, CI config, dev scripts) out of the
+            # server's working tree. Git still tracks them; they're just never
+            # written here. Re-applied every deploy, so edit this list freely.
+            git sparse-checkout set --no-cone \
+              '/*' \
+              '!/.github/' \
+              '!/.gitignore' \
+              '!/.env.example' \
+              '!/CLAUDE.md' \
+              '!/CONTINUE_HERE.md' \
+              '!/scripts/'
+
             git reset --hard origin/deploy
 
             npm install
