@@ -132,9 +132,13 @@ client component `ProjectsFilters`), the admin list via
 - `server/routes/publicProjects.js` — `GET /api/public/projects` (no
   `page`/`limit` → returns everything, used by the homepage/sitemap/sector
   filter; pass `page`/`limit` → paginated with a `meta` block, used by the
-  public `/projects` list) and `GET /api/public/projects/:slug`.
+  public `/projects` list; optional `sector`/`status`/`q` filters) and
+  `GET /api/public/projects/:slug`. `status=completed` matches
+  `{ $ne: "ongoing" }` on purpose, so older documents saved before the
+  `status` field existed still count as completed.
 - `server/routes/adminProjects.js` — protected CRUD: paginated `GET /`
-  (`page`, `limit`, `q` search, `sort` = `recent`/`oldest`/`az`/`za`, default
+  (`page`, `limit`, `q` search, `sector` filter,
+  `sort` = `recent`/`oldest`/`az`/`za`, default
   is the manual `order` field), `GET /sectors` (distinct values, feeds the
   admin form's category-suggestion dropdown), `GET/POST/PUT/DELETE /:id`.
 - `server/routes/upload.js` — protected, `multer` + `multer-storage-cloudinary`
