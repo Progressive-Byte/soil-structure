@@ -56,7 +56,11 @@ and `package.json`), and `server/bootstrap.js` loads it explicitly via
   `getProjectsBySector`, `getProjectSectors`, `getPaginatedProjects`) calls
   `fetchAPI()` (in `lib/data/_client.ts`) against the Express API's
   `/public/projects*` routes, `cache: "no-store"` so admin edits show up
-  immediately.
+  immediately. It also exports `PROJECT_STATUSES` (`ongoing`/`completed`,
+  feeds the admin form's select and the public list's filter tabs) and
+  `PROJECT_CATEGORIES` (preset sectors, merged with the DB's distinct
+  sectors in the admin form/list dropdowns — admins can still type a custom
+  one). The admin pages import these constants from here too.
 - `lib/data/{services,team,testimonials,company}.ts` — static content,
   authored as typed array/object constants directly in these files (no JSON,
   no fetch). Each still returns a Promise (via `_client.ts`'s `read()`, a thin
