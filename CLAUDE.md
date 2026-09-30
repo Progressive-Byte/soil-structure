@@ -95,8 +95,9 @@ Two top-level groups under `app/`, both part of the same single Next.js app
   it injects the bearer token and clears it on a 401.
 
 `app/(site)/projects/(list)/page.tsx` and
-`app/admin/(protected)/projects/page.tsx` both use query-string state (`?q=`,
-`?page=`, `?sort=`/`?sector=`) rather than component state — the public list
+`app/admin/(protected)/projects/page.tsx` both use query-string state rather
+than component state — public: `?q=`/`?status=`/`?page=`; admin:
+`?q=`/`?sort=`/`?sector=`/`?page=` — the public list
 via the Server Component's `searchParams` prop (filter UI split out into the
 client component `ProjectsFilters`), the admin list via
 `useSearchParams`/`router.replace` (wrapped in `Suspense`, which
