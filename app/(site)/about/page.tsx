@@ -17,7 +17,7 @@ export const metadata: Metadata = buildMetadata({
 
 const blocks = [
   {
-    title: "Who is Soil & Structure",
+    title: "What is Soil & Structure",
     paragraphs: [
       "Soil & Structure is a newly formed multi-discipline engineering company. It was formed in 2017. Since then it has been giving consultancy service to many industrial clients.",
       "The company fosters an innovative problem-solving environment that presents fast and flexible responses to client needs. The highly qualified team at Soil & Structure can offer complete engineering services from the project feasibility phase through to detailed design and construction management.",
