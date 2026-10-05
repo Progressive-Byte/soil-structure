@@ -44,6 +44,10 @@ const siteConfig: SiteConfig = {
         { label: "Our Team", href: "/team" },
       ],
     },
+    {
+      label: "Careers",
+      href: "/careers",
+    }
   ],
   footerColumns: [
     {
@@ -55,6 +59,7 @@ const siteConfig: SiteConfig = {
         { label: "Our Team", href: "/team" },
         { label: "Projects", href: "/projects" },
         { label: "Contact", href: "/contact" },
+        { label: "Careers", href: "/careers" },
       ],
     },
     {
