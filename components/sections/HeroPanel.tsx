@@ -16,6 +16,7 @@ type HeroPanelProps = {
   stats?: CompanyStat[];
   /** CTAs rendered under the intro, inside the panel. */
   actions?: React.ReactNode;
+  compact?: boolean;
 };
 
 /**
@@ -33,13 +34,14 @@ export function HeroPanel({
   image,
   stats,
   actions,
+  compact=false,
 }: HeroPanelProps) {
   return (
     <section className="bg-bone pb-16 md:pb-22">
       <Container>
         {/* Photo panel with all hero copy overlaid at the left */}
         <div
-          className="relative mt-6 overflow-hidden rounded-image bg-ink shadow-card-dark motion-safe:animate-rise md:mt-8"
+          className={`relative mt-6 overflow-hidden rounded-image bg-ink shadow-card-dark motion-safe:animate-rise md:mt-8`}
           style={{ animationDelay: "60ms" }}
         >
           <Image
@@ -57,7 +59,13 @@ export function HeroPanel({
             aria-hidden="true"
           />
 
-          <div className="relative flex min-h-[440px] flex-col justify-center p-6 md:min-h-[560px] md:p-12 lg:min-h-[600px] lg:p-16">
+          <div
+            className={`relative flex flex-col justify-center p-6 md:p-12 lg:p-16 ${
+              compact
+                ? "min-h-[360px] md:min-h-[430px] lg:min-h-[480px]"
+                : "min-h-[440px] md:min-h-[560px] lg:min-h-[600px]"
+            }`}
+          >
             <div className="max-w-2xl">
               <div
                 className="motion-safe:animate-rise"
@@ -66,13 +74,13 @@ export function HeroPanel({
                 <SectionEyebrow tone="bone">{eyebrow}</SectionEyebrow>
               </div>
               <h1
-                className="mt-6 font-heading text-display-sm font-extrabold tracking-tight text-bone motion-safe:animate-rise md:text-display-md lg:text-display-lg"
+                className={`mt-6 font-heading text-display-sm font-extrabold tracking-tight text-bone motion-safe:animate-rise md:text-display-md ${compact ? 'lg:text-display-md' : 'lg:text-display-lg'}`}
                 style={{ animationDelay: "260ms" }}
               >
                 {title}
               </h1>
               <p
-                className="mt-6 max-w-xl text-base leading-relaxed text-bone/80 motion-safe:animate-rise md:text-lg"
+                className={`mt-6 max-w-xl text-base leading-relaxed text-bone/80 motion-safe:animate-rise  ${compact ? 'md:text-md' : 'md:text-lg'}`}
                 style={{ animationDelay: "360ms" }}
               >
                 {intro}

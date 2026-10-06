@@ -98,6 +98,20 @@ export interface Service extends BaseDocument {
   order: number;
 }
 
+// Vacancies
+
+export interface Vacancy extends BaseDocument {
+  slug: string;
+  title: string;
+  location: string;
+  description: string;
+  responsibilities: string[];
+  requirements: string[];
+  benefits?: string[];
+  featured: boolean;
+  order: number;  
+}
+
 /* -------------------------------------------------------------------------- */
 /*  Testimonials                                                                */
 /* -------------------------------------------------------------------------- */

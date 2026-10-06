@@ -3,9 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { CtaBand } from "@/components/sections/CtaBand";
-
 import { buildMetadata } from "@/lib/seo";
 import { getVacancies, getVacancyBySlug } from "@/lib/data/vacancies";
+import JobApplicationFormModal from "@/components/sections/JobApplicationFormModal";
 
 type Params = { params: { slug: string } };
 
@@ -108,28 +108,44 @@ export default async function VacancyDetailPage({
             </svg>
           </span>
 
-          <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span className="font-heading text-xs font-bold text-lime-700">
-              {vacancy.number}
-            </span>
-
+          {/* <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
             <span
               aria-hidden="true"
-              className="h-1 w-1 rounded-full bg-line"
+              className="h-2 w-2 rounded-full bg-line"
             />
 
             <span className="text-sm font-medium text-muted">
               {vacancy.department}
             </span>
+          </div> */}
+          <div className="mt-6 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-4xl">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                <span
+                  aria-hidden="true"
+                  className="h-2 w-2 rounded-full bg-line"
+                />
+
+                <span className="text-sm font-medium text-muted">
+                  {vacancy.department}
+                </span>
+              </div>
+
+              <h1 className="mt-4 font-heading text-display-sm font-bold tracking-tight text-ink md:text-display-xs">
+                {vacancy.title}
+              </h1>
+
+              <p className="mt-4 max-w-sm md:max-w-2xl text-md leading-relaxed text-muted md:text-lg">
+                {vacancy.summary}
+              </p>
+            </div>
+
+            <div className="shrink-0 md:pb-1">
+              <JobApplicationFormModal vacancy={vacancy} />
+            </div>
           </div>
 
-          <h1 className="mt-4 font-heading text-display-sm font-bold tracking-tight text-ink md:text-display-md">
-            {vacancy.title}
-          </h1>
-
-          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-muted md:text-2xl">
-            {vacancy.summary}
-          </p>
+          
 
           {/* Vacancy information */}
           <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
@@ -137,6 +153,7 @@ export default async function VacancyDetailPage({
               <p className="text-eyebrow font-semibold uppercase text-muted">
                 Department
               </p>
+
               <p className="mt-2 font-medium text-ink">
                 {vacancy.department}
               </p>
@@ -146,6 +163,7 @@ export default async function VacancyDetailPage({
               <p className="text-eyebrow font-semibold uppercase text-muted">
                 Location
               </p>
+
               <p className="mt-2 font-medium text-ink">
                 {vacancy.location}
               </p>
@@ -155,6 +173,7 @@ export default async function VacancyDetailPage({
               <p className="text-eyebrow font-semibold uppercase text-muted">
                 Employment
               </p>
+
               <p className="mt-2 font-medium text-ink">
                 {vacancy.employmentType}
               </p>
@@ -164,6 +183,7 @@ export default async function VacancyDetailPage({
               <p className="text-eyebrow font-semibold uppercase text-muted">
                 Experience
               </p>
+
               <p className="mt-2 font-medium text-ink">
                 {vacancy.experience}
               </p>
@@ -176,6 +196,7 @@ export default async function VacancyDetailPage({
       <section className="bg-bone py-14 md:py-20">
         <Container>
           <div className="divide-y divide-line">
+
             {/* Job Description */}
             <div className="grid gap-8 py-12 first:pt-0 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
               <div>
@@ -310,7 +331,23 @@ export default async function VacancyDetailPage({
         </Container>
       </section>
 
-      <CtaBand />
+      {/* Application */}
+      <section className="bg-bone pt-4 pb-16 md:pb-24">
+        <Container>
+          <div className="rounded-card bg-lime px-6 py-12 md:px-12 md:py-16">
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+              <div className="max-w-2xl">
+                <h2 className="font-heading text-display-sm font-bold tracking-tight leading- text-ink">
+                  Become a part of our team and help us shape the future of engineering.
+                </h2>
+              </div>
+
+              {/* Bottom Apply Button */}
+              <JobApplicationFormModal vacancy={vacancy} />
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

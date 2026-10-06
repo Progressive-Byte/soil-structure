@@ -1,13 +1,17 @@
 import { HeroPanel } from '@/components/sections/HeroPanel';
 import { VacancyCard } from '@/components/sections/VacancyCard';
+import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { Reveal } from '@/components/ui/Reveal';
 import { getCompanyStats } from '@/lib/data/company';
-import { getFeaturedVacancies, getVacancies } from '@/lib/data/vacancies';
+import { getFeaturedVacancies, getVacancies, Vacancy } from '@/lib/data/vacancies';
 import Link from 'next/link';
 import React from 'react';
+import { BiArrowToBottom } from 'react-icons/bi';
 
-
+type VacancyProps = {
+    vacancies: Vacancy[];
+};
 
 const page = async () => {
     const [stats, vacancies] = await Promise.all([
@@ -34,19 +38,25 @@ const page = async () => {
                     src: "/images/team-group.jpg",
                     alt: "Modern multi-storey building at dusk reflected in a still pool",
                 }}
+                actions={
+                    <>
+                        <Button href="#vacancies" variant="lime" className="motion-safe:animate-btn-pulse">
+                            See Open Positions <span><BiArrowToBottom></BiArrowToBottom></span>
+                        </Button>
+                    </>     
+                }
+                compact
             />
+
 
             {/* Vacancies */}
             <section className="bg-bone py-14 md:py-20">
                 <Container>
                     <div className="max-w-3xl">
-                        <h2 className=" text-3xl font-semibold uppercase  text-lime">Current Openings</h2>
+                        <h2 className="font-heading text-display-sm font-bold tracking-tight text-ink md:text-display-md">Current Vacancies</h2>
 
-                        <p className="mt-4 text-sm text-base-content">
-                            We are currently seeking talented individuals to join our team. If you are interested in any of the positions below, please submit your application.
-                        </p>
                     </div>
-                    <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3 md:gap-8">
+                    <div id='vacancies' className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3 md:gap-8">
                         {
                             vacancies.map((vacancy, i) => (
                                 <Reveal key={vacancy._id} delay={(i % 3) * 100}>
