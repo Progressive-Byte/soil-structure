@@ -78,21 +78,21 @@ const JobApplicationForm = ({
         formData.append("vacancyTitle", vacancy.title);
 
         try {
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/applications`,
-                {
-                    method: "POST",
-                    body: formData,
-                }
-            );
+            // const response = await fetch(
+            //     `${process.env.NEXT_PUBLIC_API_URL}/api/applications`,
+            //     {
+            //         method: "POST",
+            //         body: formData,
+            //     }
+            // );
 
-            const data = await response.json();
+            // const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error(
-                    data.message || "Failed to submit application."
-                );
-            }
+            // if (!response.ok) {
+            //     throw new Error(
+            //         data.message || "Failed to submit application."
+            //     );
+            // }
 
             setSuccess(true);
             setFileName("");
