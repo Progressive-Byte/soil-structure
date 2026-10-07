@@ -8,6 +8,8 @@ const adminProjectsRoutes = require("./routes/adminProjects");
 const publicProjectsRoutes = require("./routes/publicProjects");
 const uploadRoutes = require("./routes/upload");
 const contactRoutes = require("./routes/contact");
+const adminCareersRoutes = require("./routes/adminCareers");
+const publicCareersRoutes = require("./routes/publicCareers");
 
 connectDB();
 
@@ -24,6 +26,8 @@ app.use("/api/admin/projects", adminProjectsRoutes);
 app.use("/api/public/projects", publicProjectsRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/admin/careers", adminCareersRoutes);
+app.use("/api/public/careers", publicCareersRoutes);
 
 app.get("/api/health", (_req, res) => res.json({ status: "ok", timestamp: new Date() }));
 

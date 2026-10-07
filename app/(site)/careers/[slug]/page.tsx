@@ -6,35 +6,36 @@ import { CtaBand } from "@/components/sections/CtaBand";
 import { buildMetadata } from "@/lib/seo";
 import { getVacancies, getVacancyBySlug } from "@/lib/data/vacancies";
 import JobApplicationFormModal from "@/components/sections/JobApplicationFormModal";
+import DOMPurify from "isomorphic-dompurify";
 
 type Params = { params: { slug: string } };
 
 /** Line icons keyed by vacancy slug. */
-const icons: Record<string, React.ReactNode> = {
-  "senior-structural-engineer": (
-    <path d="M4 21h16M6 21V10m4 11V10m4 11V10m4 11V10M4 10h16L12 4 4 10Z" />
-  ),
+// const icons: Record<string, React.ReactNode> = {
+//   "senior-structural-engineer": (
+//     <path d="M4 21h16M6 21V10m4 11V10m4 11V10m4 11V10M4 10h16L12 4 4 10Z" />
+//   ),
 
-  "geotechnical-engineer": (
-    <path d="M3 18a9 9 0 0 1 18 0M3 18h18" />
-  ),
+//   "geotechnical-engineer": (
+//     <path d="M3 18a9 9 0 0 1 18 0M3 18h18" />
+//   ),
 
-  "architectural-engineer": (
-    <path d="M5 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16M5 21h14M15 21V10h4v11M8 8h2M8 12h2M8 16h2" />
-  ),
+//   "architectural-engineer": (
+//     <path d="M5 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16M5 21h14M15 21V10h4v11M8 8h2M8 12h2M8 16h2" />
+//   ),
 
-  "electrical-engineer": (
-    <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" />
-  ),
+//   "electrical-engineer": (
+//     <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" />
+//   ),
 
-  "mechanical-engineer": (
-    <path d="M6 3v6a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V3M9 12v9M15 12v9M6 21h6M12 21h6" />
-  ),
+//   "mechanical-engineer": (
+//     <path d="M6 3v6a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V3M9 12v9M15 12v9M6 21h6M12 21h6" />
+//   ),
 
-  "project-engineer": (
-    <path d="M9 5H8a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1M9 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5ZM9 13l2 2 4-4" />
-  ),
-};
+//   "project-engineer": (
+//     <path d="M9 5H8a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1M9 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5ZM9 13l2 2 4-4" />
+//   ), 
+// };
 
 export async function generateStaticParams() {
   const vacancies = await getVacancies();
@@ -91,7 +92,7 @@ export default async function VacancyDetailPage({
             <span className="text-ink">{vacancy.title}</span>
           </p>
 
-          <span className="mt-8 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-line bg-white text-lime-700 shadow-sm">
+          {/* <span className="mt-8 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-line bg-white text-lime-700 shadow-sm">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -106,7 +107,7 @@ export default async function VacancyDetailPage({
                 <circle cx="12" cy="12" r="8" />
               )}
             </svg>
-          </span>
+          </span> */}
 
           {/* <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
             <span
@@ -145,7 +146,7 @@ export default async function VacancyDetailPage({
             </div>
           </div>
 
-          
+
 
           {/* Vacancy information */}
           <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
@@ -185,7 +186,7 @@ export default async function VacancyDetailPage({
               </p>
 
               <p className="mt-2 font-medium text-ink">
-                {vacancy.experience}
+                {vacancy.experience} Years
               </p>
             </div>
           </div>
@@ -198,7 +199,7 @@ export default async function VacancyDetailPage({
           <div className="divide-y divide-line">
 
             {/* Job Description */}
-            <div className="grid gap-8 py-12 first:pt-0 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
+            {/* <div className="grid gap-8 py-12 first:pt-0 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
               <div>
                 <h2 className="font-heading text-2xl font-bold tracking-tight text-ink md:text-3xl">
                   Job Description
@@ -212,10 +213,49 @@ export default async function VacancyDetailPage({
                     <p key={index}>{para}</p>
                   ))}
               </div>
-            </div>
+            </div> */}
+            <div
+              className="
+    text-base leading-relaxed text-muted md:text-lg text-justify
+    [&_p]:mb-4
+    [&_p:last-child]:mb-0
+    [&_h2]:mb-4
+    [&_h2]:mt-6
+    [&_h2]:font-heading
+    [&_h2]:text-2xl
+    [&_h2]:font-bold
+    [&_h2]:text-ink
+    [&_h3]:mb-3
+    [&_h3]:mt-5
+    [&_h3]:font-heading
+    [&_h3]:text-xl
+    [&_h3]:font-bold
+    [&_h3]:text-ink
+    [&_ul]:mb-5
+    [&_ul]:ml-6
+    [&_ul]:list-disc
+    [&_ol]:mb-5
+    [&_ol]:ml-6
+    [&_ol]:list-decimal
+    [&_li]:mb-2
+    [&_strong]:font-semibold
+    [&_strong]:text-ink
+    [&_a]:text-lime-700
+    [&_a]:underline
+    [&_a]:underline-offset-2
+    [&_blockquote]:my-5
+    [&_blockquote]:border-l-2
+    [&_blockquote]:border-lime-600
+    [&_blockquote]:pl-4
+    [&_blockquote]:italic
+  "
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(vacancy.description),
+              }}
+            />
 
             {/* Responsibilities */}
-            <div className="grid gap-8 py-12 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
+            {/* <div className="grid gap-8 py-12 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
               <div>
                 <h2 className="font-heading text-2xl font-bold tracking-tight text-ink md:text-3xl">
                   Responsibilities
@@ -239,10 +279,10 @@ export default async function VacancyDetailPage({
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
 
             {/* Requirements */}
-            <div className="grid gap-8 py-12 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
+            {/* <div className="grid gap-8 py-12 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
               <div>
                 <h2 className="font-heading text-2xl font-bold tracking-tight text-ink md:text-3xl">
                   Requirements
@@ -266,10 +306,10 @@ export default async function VacancyDetailPage({
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
 
             {/* Preferred Qualifications */}
-            {vacancy.preferredQualifications &&
+            {/* {vacancy.preferredQualifications &&
               vacancy.preferredQualifications.length > 0 && (
                 <div className="grid gap-8 py-12 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
                   <div>
@@ -296,10 +336,10 @@ export default async function VacancyDetailPage({
                     ))}
                   </ul>
                 </div>
-              )}
+              )} */}
 
             {/* Benefits */}
-            {vacancy.benefits &&
+            {/* {vacancy.benefits &&
               vacancy.benefits.length > 0 && (
                 <div className="grid gap-8 py-12 last:pb-0 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
                   <div>
@@ -326,7 +366,7 @@ export default async function VacancyDetailPage({
                     ))}
                   </ul>
                 </div>
-              )}
+              )} */}
           </div>
         </Container>
       </section>

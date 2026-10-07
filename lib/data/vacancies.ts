@@ -1,5 +1,5 @@
 
-import { read } from "./_client";
+import { fetchAPI, read } from "./_client";
 
 export interface Vacancy {
   _id: string;
@@ -272,8 +272,13 @@ const vacancies: Vacancy[] = [
 
 /** All vacancies, ordered by their `order` field. */
 export async function getVacancies(): Promise<Vacancy[]> {
-  const all = await read(vacancies);
-  return all.sort((a, b) => a.order - b.order);
+  try {
+    const { vacancies: live } = await fetchAPI<{ vacancies: Vacancy[] }>("/public/careers");
+    return live.sort((a, b) => a.order - b.order);
+  } catch {
+    const all = await read(vacancies);
+    return all.sort((a, b) => a.order - b.order);
+  }
 }
 
 /** Featured vacancies for the careers page. */
@@ -286,6 +291,11 @@ export async function getFeaturedVacancies(): Promise<Vacancy[]> {
 export async function getVacancyBySlug(
   slug: string
 ): Promise<Vacancy | null> {
+  try {
+    const { vacancy } = await fetchAPI<{ vacancy: Vacancy }>(`/public/careers/${encodeURIComponent(slug)}`);
+    return vacancy;
+  } catch {
   const all = await getVacancies();
   return all.find((vacancy) => vacancy.slug === slug) ?? null;
+  }
 }

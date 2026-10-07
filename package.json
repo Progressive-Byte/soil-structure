@@ -14,10 +14,14 @@
     "dev:all": "concurrently \"npm:dev\" \"npm:server:dev\""
   },
   "dependencies": {
+    "@tiptap/extension-link": "^3.31.4",
+    "@tiptap/react": "^3.31.4",
+    "@tiptap/starter-kit": "^3.31.4",
     "cloudinary": "^1.41.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "isomorphic-dompurify": "^3.19.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.3",
     "multer": "^2.1.1",
