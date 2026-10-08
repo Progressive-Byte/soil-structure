@@ -124,9 +124,17 @@ router.get("/", async (req, res) => {
       }));
     if (req.query.status) filter.status = String(req.query.status);
     if (req.query.department) filter.department = String(req.query.department);
+    const sortFields = {
+      recent: { createdAt: -1 },
+      oldest: { createdAt: 1 },
+      az: { title: 1 },
+      za: { title: -1 },
+    };
+    const requestedSort = sortFields[String(req.query.sort)] || { order: 1, createdAt: -1 };
+    const sort = { status: -1, ...requestedSort };
     const [vacancies, total] = await Promise.all([
       Vacancy.find(filter)
-        .sort({ order: 1, createdAt: -1 })
+        .sort(sort)
         .skip(skip)
         .limit(limit),
       Vacancy.countDocuments(filter),

@@ -24,6 +24,14 @@ type Vacancy = {
 const control =
   "rounded-lg border border-line bg-bone-50 px-4 py-2 text-sm text-ink placeholder:text-muted-light focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600";
 
+const SORT_OPTIONS = [
+  { value: "", label: "Open positions first" },
+  { value: "recent", label: "Newest first" },
+  { value: "oldest", label: "Oldest first" },
+  { value: "az", label: "Title A–Z" },
+  { value: "za", label: "Title Z–A" },
+];
+
 function CareerList() {
   const router = useRouter();
   const pathname = usePathname();
@@ -33,6 +41,7 @@ function CareerList() {
   const query = search.get("q") ?? "";
   const status = search.get("status") ?? "";
   const department = search.get("department") ?? "";
+  const sort = search.get("sort") ?? "";
 
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [meta, setMeta] = useState<PaginationMeta | null>(null);
@@ -63,6 +72,7 @@ function CareerList() {
     if (query) p.set("q", query);
     if (status) p.set("status", status);
     if (department) p.set("department", department);
+    if (sort) p.set("sort", sort);
 
     adminFetch<{
       vacancies: Vacancy[];
@@ -83,7 +93,7 @@ function CareerList() {
     return () => {
       active = false;
     };
-  }, [page, query, status, department]);
+  }, [page, query, status, department, sort]);
 
   async function remove(id: string) {
     if (!window.confirm("Delete this vacancy?")) return;
@@ -120,13 +130,13 @@ function CareerList() {
         </h1>
 
         <div className="flex gap-3">
-          <Button
+          {/* <Button
             href="/admin/career/applications"
             variant="dark"
             size="sm"
           >
             Applications
-          </Button>
+          </Button> */}
 
           <Button
             href="/admin/career/new"
@@ -170,6 +180,19 @@ function CareerList() {
         </select>
 
         <select
+          value={sort}
+          onChange={(e) => update({ sort: e.target.value || null, page: null })}
+          className={control}
+          aria-label="Sort vacancies"
+        >
+          {SORT_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        <select
           value={status}
           onChange={(e) =>
             update({
@@ -202,6 +225,7 @@ function CareerList() {
               <th className="px-4 py-3">Position</th>
               <th className="px-4 py-3">Department</th>
               <th className="px-4 py-3">Location</th>
+              <th className="px-4 py-3">Applications</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3 text-right">Actions</th>
             </tr>
@@ -243,6 +267,10 @@ function CareerList() {
                   <td className="px-4 py-4 text-muted-dark">
                     {v.location}
                   </td>
+                  <td className="px-4 py-4 text-muted-dark">
+                  <Button size="xs" variant="light" href={`/admin/career/applications?vacancy=${v._id}`}>View Applications</Button>
+                  </td>
+                  
 
                   <td className="px-4 py-4">
                     <span

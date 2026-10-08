@@ -9,6 +9,7 @@ import {
 import { adminFetch, getToken } from "../../../_lib/adminApi";
 import type { PaginationMeta } from "@/types";
 import { ApplicationCard, type Application } from "../_components/ApplicationCard";
+import Link from "next/link";
 
 const control =
   "rounded-lg border border-line bg-bone-50 px-4 py-2 text-sm text-ink placeholder:text-muted-light focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600";
@@ -20,10 +21,12 @@ function ApplicationsList() {
 
   const page = Math.max(1, Number(search.get("page")) || 1),
     q = search.get("q") ?? "",
-    status = search.get("status") ?? "";
+    status = search.get("status") ?? "",
+    vacancy = search.get("vacancy") ?? "";
 
   const [rows, setRows] = useState<Application[]>([]),
     [meta, setMeta] = useState<PaginationMeta | null>(null),
+    [vacancyTitle, setVacancyTitle] = useState(""),
     [error, setError] = useState(""),
     [loading, setLoading] = useState(true);
 
@@ -49,6 +52,7 @@ function ApplicationsList() {
 
     if (q) p.set("q", q);
     if (status) p.set("status", status);
+    if (vacancy) p.set("vacancy", vacancy);
 
     adminFetch<{
       applications: Application[];
@@ -67,7 +71,23 @@ function ApplicationsList() {
     return () => {
       active = false;
     };
-  }, [page, q, status]);
+  }, [page, q, status, vacancy]);
+
+  useEffect(() => {
+    if (!vacancy) {
+      setVacancyTitle("");
+      return;
+    }
+
+    let active = true;
+    adminFetch<{ vacancy: { title: string } }>(`/admin/careers/${vacancy}`)
+      .then(({ vacancy: selected }) => active && setVacancyTitle(selected.title))
+      .catch((e) => active && setError(e.message));
+
+    return () => {
+      active = false;
+    };
+  }, [vacancy]);
 
   async function change(
     id: string,
@@ -136,18 +156,22 @@ function ApplicationsList() {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <a
+          <Link
             href="/admin/career"
             className="text-sm text-muted hover:underline"
           >
             ← Career
-          </a>
+          </Link>
 
           <h1 className="mt-2 font-heading text-2xl font-bold tracking-tight text-ink">
-            Applications
+            {vacancy ? (vacancyTitle || "Position applications") : "Applications"}
           </h1>
         </div>
       </div>
+
+      {vacancy && (
+        <p className="mt-2 text-sm text-muted">Applications for this vacancy</p>
+      )}
 
       <div className="mt-6 flex flex-wrap gap-4">
         <input
