@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Vacancy } from "@/types";
+import type { Vacancy } from "@/lib/data/vacancies";
 
 type VacancyCardProps = {
   vacancy: Vacancy;
