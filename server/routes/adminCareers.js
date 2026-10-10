@@ -229,10 +229,10 @@ router.put("/:id", async (req, res) => {
 });
 router.delete("/:id", async (req, res) => {
   try {
-    if (await Application.exists({ vacancy: req.params.id }))
-      return res.status(409).json({
-        message: "This vacancy has applications and cannot be deleted.",
-      });
+    // if (await Application.exists({ vacancy: req.params.id }))
+    //   return res.status(409).json({
+    //     message: "This vacancy has applications and cannot be deleted.",
+    //   });
     const vacancy = await Vacancy.findByIdAndDelete(req.params.id);
     if (!vacancy) return res.status(404).json({ message: "Vacancy not found" });
     res.json({ message: "Vacancy deleted" });
