@@ -106,6 +106,9 @@ function ApplicationsList() {
       setRows((old) =>
         old.map((a) => (a._id === id ? application : a))
       );
+      if (status && next !== status) {
+        setRefreshKey((key) => key + 1);
+      }
     } catch (e) {
       setError(
         e instanceof Error
@@ -180,7 +183,8 @@ function ApplicationsList() {
       <div className="mt-6 flex flex-wrap gap-4">
         <input
           type="search"
-          placeholder="Search applicants or roles…"
+          placeholder="Search by name, phone, or email…"
+          aria-label="Search applications by name, phone, or email"
           defaultValue={q}
           onChange={(e) =>
             update({
@@ -200,7 +204,7 @@ function ApplicationsList() {
             })
           }
           className={control}
-          aria-label="Filter by application status"
+          aria-label="Filter applications by status"
         >
           <option value="">All statuses</option>
           <option value="new">New</option>

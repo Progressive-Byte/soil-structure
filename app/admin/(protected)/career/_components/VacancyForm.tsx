@@ -44,6 +44,8 @@ const blank: VacancyValues = {
 
 const field =
   "w-full rounded-lg border border-line bg-bone-50 px-4 py-3 text-sm text-ink focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600";
+const summaryField =
+  "w-full h-36 rounded-lg border border-line bg-bone-50 px-4 py-3 text-sm text-ink focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600";
 
 export function VacancyForm({
   initial,
@@ -188,7 +190,7 @@ export function VacancyForm({
         </label>
       </div>
 
-      <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-wide text-muted">
+      <label className="flex flex-col gap-2 text-xs  font-semibold uppercase tracking-wide text-muted">
         Short summary (Card)
 
         <textarea
@@ -196,7 +198,7 @@ export function VacancyForm({
           rows={2}
           value={v.summary}
           onChange={(e) => set("summary", e.target.value)}
-          className={field}
+          className={summaryField}
         />
       </label>
 

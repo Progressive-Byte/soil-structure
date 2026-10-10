@@ -18,11 +18,20 @@ router.get("/applications", async (req, res) => {
       maxLimit: 100,
     });
     const filter = {};
-    if (req.query.q)
-      filter.$or = ["name", "email", "vacancyTitle", "$oid"].map((key) => ({
-        [key]: { $regex: String(req.query.q), $options: "i" },
+    const query = String(req.query.q || "").trim();
+    if (query) {
+      const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      filter.$or = ["name", "phone", "email"].map((key) => ({
+        [key]: { $regex: escapedQuery, $options: "i" },
       }));
-    if (req.query.status) filter.status = String(req.query.status);
+    }
+    if (req.query.status) {
+      const statuses = ["new", "reviewing", "shortlisted", "rejected"];
+      if (!statuses.includes(String(req.query.status))) {
+        return res.status(400).json({ message: "Invalid application status filter" });
+      }
+      filter.status = String(req.query.status);
+    }
     if (req.query.vacancy) filter.vacancy = String(req.query.vacancy);
     const [applications, total] = await Promise.all([
       Application.find(filter)
