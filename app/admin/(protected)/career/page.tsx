@@ -8,6 +8,7 @@ import {
   useSearchParams,
 } from "next/navigation";
 import { Button } from "@/components/ui/Button";
+import { AdminTableSkeleton } from "../../_components/AdminSkeletons";
 import { adminFetch } from "../../_lib/adminApi";
 import type { PaginationMeta } from "@/types";
 
@@ -259,14 +260,7 @@ function CareerList() {
 
           <tbody className="divide-y divide-line">
             {loading ? (
-              <tr>
-                <td
-                  colSpan={6}
-                  className="px-4 py-10 text-center text-muted"
-                >
-                  Loading vacancies…
-                </td>
-              </tr>
+              <AdminTableSkeleton columns={6} rows={7} />
             ) : vacancies.length === 0 ? (
               <tr>
                 <td

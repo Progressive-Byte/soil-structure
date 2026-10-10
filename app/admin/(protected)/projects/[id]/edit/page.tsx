@@ -6,6 +6,7 @@ import Link from "next/link";
 import { adminFetch } from "../../../../_lib/adminApi";
 import type { Project } from "@/types";
 import { ProjectForm, type ProjectFormValues } from "../../_components/ProjectForm";
+import { AdminFormSkeleton } from "../../../../_components/AdminSkeletons";
 
 export default function EditProjectPage() {
   const router = useRouter();
@@ -42,7 +43,7 @@ export default function EditProjectPage() {
           <ProjectForm initial={project} onSubmit={handleSubmit} submitLabel="Save changes" />
         </div>
       ) : (
-        !error && <p className="mt-8 text-muted">Loading…</p>
+        !error && <div className="mt-8"><AdminFormSkeleton /></div>
       )}
     </div>
   );

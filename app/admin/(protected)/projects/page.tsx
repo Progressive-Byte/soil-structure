@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
+import { AdminTableSkeleton } from "../../_components/AdminSkeletons";
 import { PROJECT_CATEGORIES } from "@/lib/data/projects";
 import { adminFetch } from "../../_lib/adminApi";
 import type { PaginationMeta, Project } from "@/types";
@@ -157,11 +158,7 @@ function ProjectsListInner() {
           </thead>
           <tbody className="divide-y divide-line">
             {loading ? (
-              <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-muted">
-                  Loading…
-                </td>
-              </tr>
+              <AdminTableSkeleton columns={5} rows={7} />
             ) : projects.length === 0 ? (
               <tr>
                 <td colSpan={5} className="px-4 py-8 text-center text-muted">

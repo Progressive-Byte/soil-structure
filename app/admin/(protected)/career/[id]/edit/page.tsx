@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { adminFetch } from "../../../../_lib/adminApi";
+import { AdminFormSkeleton } from "../../../../_components/AdminSkeletons";
 import {
   VacancyForm,
   type VacancyValues,
@@ -56,6 +57,7 @@ export default function EditVacancyPage() {
             />
           )
         )}
+        {!error && !vacancy && <AdminFormSkeleton vacancy />}
       </div>
     </div>
   );
