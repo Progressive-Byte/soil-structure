@@ -28,7 +28,9 @@ function ApplicationsList() {
     [meta, setMeta] = useState<PaginationMeta | null>(null),
     [vacancyTitle, setVacancyTitle] = useState(""),
     [error, setError] = useState(""),
-    [loading, setLoading] = useState(true);
+    [loading, setLoading] = useState(true),
+    [confirmingId, setConfirmingId] = useState<string | null>(null),
+    [refreshKey, setRefreshKey] = useState(0);
 
   function update(vals: Record<string, string | null>) {
     const p = new URLSearchParams(search.toString());
@@ -71,7 +73,7 @@ function ApplicationsList() {
     return () => {
       active = false;
     };
-  }, [page, q, status, vacancy]);
+  }, [page, q, status, vacancy, refreshKey]);
 
   useEffect(() => {
     if (!vacancy) {
@@ -132,19 +134,16 @@ function ApplicationsList() {
   }
 
   async function deleteApplication(application: Application) {
-    const confirmed = window.confirm(
-      `Delete ${application.name}'s application for ${application.vacancyTitle}? This also deletes their CV.`,
-    );
-    if (!confirmed) return;
-
     try {
       await adminFetch(`/admin/careers/applications/${application._id}`, {
         method: "DELETE",
       });
-      setRows((old) => old.filter((row) => row._id !== application._id));
-      setMeta((old) =>
-        old ? { ...old, total: Math.max(0, old.total - 1) } : old,
-      );
+      setConfirmingId(null);
+      if (rows.length === 1 && page > 1) {
+        update({ page: String(page - 1) });
+      } else {
+        setRefreshKey((key) => key + 1);
+      }
     } catch (e) {
       setError(
         e instanceof Error ? e.message : "Could not delete application",
@@ -232,6 +231,11 @@ function ApplicationsList() {
               onStatusChange={change}
               onDownloadCv={downloadCv}
               onDelete={deleteApplication}
+              confirmingDelete={confirmingId === application._id}
+              onConfirmDelete={() => {
+                setConfirmingId(application._id);
+              }}
+              onCancelDelete={() => setConfirmingId(null)}
             />
           ))
         )}

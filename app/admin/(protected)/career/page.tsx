@@ -21,6 +21,11 @@ type Vacancy = {
   createdAt: string;
 };
 
+type ApplicationCount = {
+  vacancy: string;
+  count: number;
+};
+
 const control =
   "rounded-lg border border-line bg-bone-50 px-4 py-2 text-sm text-ink placeholder:text-muted-light focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600";
 
@@ -48,6 +53,9 @@ function CareerList() {
   const [departments, setDepartments] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [applicationCounts, setApplicationCounts] = useState<ApplicationCount[]>([]);
 
   function update(values: Record<string, string | null>) {
     const p = new URLSearchParams(search.toString());
@@ -66,7 +74,7 @@ function CareerList() {
 
     const p = new URLSearchParams({
       page: String(page),
-      limit: "10",
+      limit: "7",
     });
 
     if (query) p.set("q", query);
@@ -93,28 +101,46 @@ function CareerList() {
     return () => {
       active = false;
     };
-  }, [page, query, status, department, sort]);
+  }, [page, query, status, department, sort, refreshKey]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function fetchApplicationCounts() {
+      try {
+        const data = await adminFetch<{
+          counts: ApplicationCount[];
+        }>("/admin/careers/applications/new-counts");
+
+        if (active) {
+          setApplicationCounts(data.counts);
+        }
+      } catch (error) {
+        console.error("Failed to fetch application counts:", error);
+      }
+    }
+
+    fetchApplicationCounts();
+
+    const interval = setInterval(fetchApplicationCounts, 30_000);
+
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, []);
 
   async function remove(id: string) {
-    if (!window.confirm("Delete this vacancy?")) return;
-
     try {
       await adminFetch(`/admin/careers/${id}`, {
         method: "DELETE",
       });
-
-      setVacancies((old) =>
-        old.filter((v) => v._id !== id)
-      );
-
-      setMeta((old) =>
-        old
-          ? {
-              ...old,
-              total: Math.max(0, old.total - 1),
-            }
-          : old
-      );
+      setConfirmingId(null);
+      if (vacancies.length === 1 && page > 1) {
+        update({ page: String(page - 1) });
+      } else {
+        setRefreshKey((key) => key + 1);
+      }
     } catch (e) {
       setError(
         e instanceof Error ? e.message : "Delete failed"
@@ -235,7 +261,7 @@ function CareerList() {
             {loading ? (
               <tr>
                 <td
-                  colSpan={5}
+                  colSpan={6}
                   className="px-4 py-10 text-center text-muted"
                 >
                   Loading vacancies…
@@ -244,7 +270,7 @@ function CareerList() {
             ) : vacancies.length === 0 ? (
               <tr>
                 <td
-                  colSpan={5}
+                  colSpan={6}
                   className="px-4 py-10 text-center text-muted"
                 >
                   No vacancies found.
@@ -267,37 +293,72 @@ function CareerList() {
                   <td className="px-4 py-4 text-muted-dark">
                     {v.location}
                   </td>
-                  <td className="px-4 py-4 text-muted-dark">
-                  <Button size="xs" variant="light" href={`/admin/career/applications?vacancy=${v._id}`}>View Applications</Button>
+                  <td className="px-4 py-4  text-muted-dark">
+                    <Button size="xs" withArrow variant="lime" href={`/admin/career/applications?vacancy=${v._id}`}>View Applications</Button>
+                    {(() => {
+                      const newCount = applicationCounts.find((item) => item.vacancy === v._id)?.count ?? 0;
+                      return (
+                        <p className="px-4 pt-1 flex items-start justify-start text-sm text-muted-dark">
+                          <span
+                            className={`inline-flex items-center gap-1.5 ${newCount > 0 ? "text-lime-700" : ""
+                              }`}
+                          >
+                            <span className="font-bold">{newCount}</span>
+                            {newCount === 1 ? "New Application" : "New Applications"}
+                          </span>
+                        </p>
+                      );
+                    })()}
                   </td>
-                  
+
 
                   <td className="px-4 py-4">
                     <span
-                      className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                        v.status === "open"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-stone-200 text-stone-700"
-                      }`}
+                      className={`rounded-full px-2.5 py-1 text-xs font-medium ${v.status === "open"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-stone-200 text-stone-700"
+                        }`}
                     >
                       {v.status}
                     </span>
                   </td>
 
+                  {/* Action Button */}
                   <td className="px-4 py-4 text-right">
-                    <Link
-                      className="font-medium text-ink hover:underline"
-                      href={`/admin/career/${v._id}/edit`}
-                    >
-                      Edit
-                    </Link>
-
-                    <button
-                      className="ml-4 text-red-700 hover:underline"
-                      onClick={() => remove(v._id)}
-                    >
-                      Delete
-                    </button>
+                    <div className="flex items-center justify-end gap-4">
+                      {confirmingId === v._id ? (
+                        <>
+                          <span className="text-muted">Delete?</span>
+                          <button
+                            onClick={() => remove(v._id)}
+                            className="font-semibold text-red-700 hover:underline"
+                          >
+                            Confirm
+                          </button>
+                          <button
+                            onClick={() => setConfirmingId(null)}
+                            className="text-muted hover:underline"
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <Link
+                            className="font-medium text-ink hover:underline"
+                            href={`/admin/career/${v._id}/edit`}
+                          >
+                            Edit
+                          </Link>
+                          <button
+                            onClick={() => setConfirmingId(v._id)}
+                            className="font-medium text-red-700 hover:underline"
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))

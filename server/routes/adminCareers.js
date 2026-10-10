@@ -17,7 +17,7 @@ router.get("/applications", async (req, res) => {
     });
     const filter = {};
     if (req.query.q)
-      filter.$or = ["name", "email", "vacancyTitle"].map((key) => ({
+      filter.$or = ["name", "email", "vacancyTitle", "$oid"].map((key) => ({
         [key]: { $regex: String(req.query.q), $options: "i" },
       }));
     if (req.query.status) filter.status = String(req.query.status);
@@ -33,6 +33,38 @@ router.get("/applications", async (req, res) => {
     res.json({ applications, meta: buildMeta({ page, limit, total }) });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+// getting applications with status 'new'
+router.get("/applications/new-counts", async (req, res) => {
+  try {
+    const counts = await Application.aggregate([
+      {
+        $match: {
+          status: "new",
+        },
+      },
+      {
+        $group: {
+          _id: "$vacancy",
+          count: {
+            $sum: 1,
+          },
+        },
+      },
+    ]);
+
+    res.json({
+      counts: counts.map((item) => ({
+        vacancy: String(item._id),
+        count: item.count,
+      })),
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
   }
 });
 
@@ -100,7 +132,9 @@ router.delete("/applications/:id", async (req, res) => {
         resource_type: "raw",
       });
       if (result.result !== "ok" && result.result !== "not found") {
-        return res.status(502).json({ message: "Could not delete the CV from Cloudinary" });
+        return res
+          .status(502)
+          .json({ message: "Could not delete the CV from Cloudinary" });
       }
     }
 
@@ -130,13 +164,13 @@ router.get("/", async (req, res) => {
       az: { title: 1 },
       za: { title: -1 },
     };
-    const requestedSort = sortFields[String(req.query.sort)] || { order: 1, createdAt: -1 };
+    const requestedSort = sortFields[String(req.query.sort)] || {
+      order: 1,
+      createdAt: -1,
+    };
     const sort = { status: -1, ...requestedSort };
     const [vacancies, total] = await Promise.all([
-      Vacancy.find(filter)
-        .sort(sort)
-        .skip(skip)
-        .limit(limit),
+      Vacancy.find(filter).sort(sort).skip(skip).limit(limit),
       Vacancy.countDocuments(filter),
     ]);
     const departments = await Vacancy.distinct("department");
@@ -196,11 +230,9 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     if (await Application.exists({ vacancy: req.params.id }))
-      return res
-        .status(409)
-        .json({
-          message: "This vacancy has applications and cannot be deleted.",
-        });
+      return res.status(409).json({
+        message: "This vacancy has applications and cannot be deleted.",
+      });
     const vacancy = await Vacancy.findByIdAndDelete(req.params.id);
     if (!vacancy) return res.status(404).json({ message: "Vacancy not found" });
     res.json({ message: "Vacancy deleted" });

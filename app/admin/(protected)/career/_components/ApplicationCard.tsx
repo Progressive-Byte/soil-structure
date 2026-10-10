@@ -29,6 +29,9 @@ type ApplicationCardProps = {
   onStatusChange: (id: string, status: Application["status"]) => void;
   onDownloadCv: (application: Application) => void;
   onDelete: (application: Application) => void;
+  confirmingDelete: boolean;
+  onConfirmDelete: () => void;
+  onCancelDelete: () => void;
 };
 
 export function ApplicationCard({
@@ -36,6 +39,9 @@ export function ApplicationCard({
   onStatusChange,
   onDownloadCv,
   onDelete,
+  confirmingDelete,
+  onConfirmDelete,
+  onCancelDelete,
 }: ApplicationCardProps) {
   return (
     <article className="w-full min-w-0 max-w-5xl overflow-hidden rounded-card border border-line bg-bone-50 shadow-card">
@@ -114,13 +120,33 @@ export function ApplicationCard({
           >
             <span className="truncate">Download CV · {application.cvName}</span>
           </button>
-          <button
-            type="button"
-            onClick={() => onDelete(application)}
-            className="inline-flex items-center rounded-pill border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 transition-colors hover:bg-red-50"
-          >
-            Delete application
-          </button>
+          {confirmingDelete ? (
+            <div className="flex flex-wrap items-center gap-3 text-sm">
+              <span className="text-muted">Delete this application and its CV?</span>
+              <button
+                type="button"
+                onClick={() => onDelete(application)}
+                className="font-semibold text-red-700 hover:underline"
+              >
+                Confirm
+              </button>
+              <button
+                type="button"
+                onClick={onCancelDelete}
+                className="text-muted hover:underline"
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={onConfirmDelete}
+              className="inline-flex items-center rounded-pill border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 transition-colors hover:bg-red-50"
+            >
+              Delete application
+            </button>
+          )}
         </div>
       </div>
     </article>
