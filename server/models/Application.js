@@ -15,6 +15,7 @@ const applicationSchema = new mongoose.Schema(
     coverLetter: { type: String, required: true },
     cvUrl: { type: String },
     cvPublicId: { type: String },
+    cvDeliveryType: { type: String, default: "upload" },
     cvName: { type: String, required: true },
     cvData: { type: Buffer },
     cvMimeType: { type: String },

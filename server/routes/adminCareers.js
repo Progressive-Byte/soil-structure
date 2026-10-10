@@ -1,4 +1,6 @@
 const express = require("express");
+const path = require("path");
+const mongoose = require("mongoose");
 const Vacancy = require("../models/Vacancy");
 const Application = require("../models/Application");
 const cloudinary = require("../config/cloudinary");
@@ -69,6 +71,10 @@ router.get("/applications/new-counts", async (req, res) => {
 });
 
 router.get("/applications/:id/cv", async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    return res.status(400).json({ message: "Invalid application id" });
+  }
+
   try {
     const application = await Application.findById(req.params.id).select(
       "+cvData +cvMimeType",
@@ -77,9 +83,32 @@ router.get("/applications/:id/cv", async (req, res) => {
       return res.status(404).json({ message: "Application not found" });
     }
     if (!application.cvData && application.cvUrl) {
-      const fileResponse = await fetch(application.cvUrl);
+      let fileResponse;
+
+      if (application.cvPublicId) {
+        const format = path.extname(application.cvName).slice(1).toLowerCase();
+        const downloadUrl = cloudinary.utils.private_download_url(
+          application.cvPublicId,
+          format,
+          {
+            resource_type: "raw",
+            type: application.cvDeliveryType || "upload",
+            expires_at: Math.floor(Date.now() / 1000) + 120,
+            attachment: true,
+          },
+        );
+        fileResponse = await fetch(downloadUrl);
+      }
+
+      // Older applications may not have a Cloudinary public ID saved.
+      if (!fileResponse || !fileResponse.ok) {
+        fileResponse = await fetch(application.cvUrl);
+      }
       if (!fileResponse.ok || !fileResponse.body) {
-        return res.status(502).json({ message: "Unable to retrieve CV file" });
+        console.error(
+          `CV download failed for application ${application._id}: storage returned ${fileResponse.status}`,
+        );
+        return res.status(502).json({ message: "Unable to retrieve CV file from storage" });
       }
       const safeName = application.cvName.replace(/[\r\n"\\]/g, "_");
       res.set(
@@ -96,8 +125,9 @@ router.get("/applications/:id/cv", async (req, res) => {
     res.set("Content-Type", application.cvMimeType);
     res.set("Content-Disposition", `attachment; filename="${safeName}"`);
     res.send(application.cvData);
-  } catch {
-    res.status(400).json({ message: "Invalid application id" });
+  } catch (err) {
+    console.error(`CV download failed for application ${req.params.id}:`, err);
+    res.status(502).json({ message: "Unable to retrieve CV file from storage" });
   }
 });
 

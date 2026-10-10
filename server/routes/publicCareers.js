@@ -27,6 +27,7 @@ async function uploadCv(file) {
   );
   uploadForm.set("folder", "soil-structure/cvs");
   uploadForm.set("public_id", publicId);
+  uploadForm.set("type", "private");
 
   const response = await fetch(
     `https://api.cloudinary.com/v1_1/${encodeURIComponent(config.cloud_name)}/raw/upload`,
@@ -129,6 +130,7 @@ router.post(
         coverLetter,
         cvUrl: file.secure_url,
         cvPublicId: file.public_id,
+        cvDeliveryType: file.type || "private",
         cvName: req.file.originalname,
       });
 

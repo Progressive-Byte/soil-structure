@@ -121,13 +121,18 @@ function ApplicationsList() {
         `${process.env.NEXT_PUBLIC_API_URL ?? ""}/admin/careers/applications/${application._id}/cv`,
         { headers: { Authorization: `Bearer ${getToken()}` } },
       );
-      if (!response.ok) throw new Error("Unable to download this CV.");
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body.message || "Unable to download this CV.");
+      }
       const fileUrl = URL.createObjectURL(await response.blob());
       const link = document.createElement("a");
       link.href = fileUrl;
       link.download = application.cvName;
+      document.body.appendChild(link);
       link.click();
-      URL.revokeObjectURL(fileUrl);
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(fileUrl), 1000);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Unable to download this CV.");
     }
