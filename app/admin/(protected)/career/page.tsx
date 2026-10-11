@@ -249,10 +249,10 @@ function CareerList() {
         <table className="w-full min-w-[700px] text-left text-sm">
           <thead>
             <tr className="border-b border-line text-xs font-semibold uppercase tracking-wide text-muted">
-              <th className="px-4 py-3">Position</th>
+              <th className="min-w-[170px] px-4 py-3">Position</th>
               <th className="px-4 py-3">Department</th>
               <th className="px-4 py-3">Location</th>
-              <th className="px-4 py-3">Applications</th>
+              <th className="min-w-[190px] px-4 py-3">Applications</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3 text-right">Actions</th>
             </tr>
@@ -273,8 +273,10 @@ function CareerList() {
             ) : (
               vacancies.map((v) => (
                 <tr key={v._id}>
-                  <td className="px-4 py-4 font-medium text-ink">
-                    {v.title}
+                  <td className="max-w-[240px] px-4 py-4 font-medium text-ink">
+                    <span className="block [overflow-wrap:anywhere]">
+                      {v.title}
+                    </span>
                     <span className="mt-1 block text-xs text-muted">
                       {v.employmentType}
                     </span>
@@ -287,20 +289,31 @@ function CareerList() {
                   <td className="px-4 py-4 text-muted-dark">
                     {v.location}
                   </td>
-                  <td className="px-4 py-4  text-muted-dark">
-                    <Button size="xs" withArrow variant="lime" href={`/admin/career/applications?vacancy=${v._id}`}>View Applications</Button>
+                  <td className="px-4 py-4 text-muted-dark">
                     {(() => {
                       const newCount = applicationCounts.find((item) => item.vacancy === v._id)?.count ?? 0;
                       return (
-                        <p className="px-4 pt-1 flex items-start justify-start text-sm text-muted-dark">
+                        <div className="flex min-w-[190px] flex-col items-start gap-2">
+                          <Button
+                            size="xs"
+                            withArrow
+                            variant="lime"
+                            href={`/admin/career/applications?vacancy=${v._id}`}
+                            className="whitespace-nowrap"
+                          >
+                            View Applications
+                          </Button>
                           <span
-                            className={`inline-flex items-center gap-1.5 ${newCount > 0 ? "text-lime-700" : ""
-                              }`}
+                            className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-pill px-2.5 py-1 text-xs font-medium ${
+                              newCount > 0
+                                ? "bg-lime/30 text-lime-700"
+                                : "bg-stone-100 text-muted"
+                            }`}
                           >
                             <span className="font-bold">{newCount}</span>
                             {newCount === 1 ? "New Application" : "New Applications"}
                           </span>
-                        </p>
+                        </div>
                       );
                     })()}
                   </td>
