@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo, Instrument_Sans } from "next/font/google";
+import "swiper/css";
+import "swiper/css/pagination";
 import "../styles/globals.css";
 import { defaults, siteUrl } from "@/lib/seo";
 
