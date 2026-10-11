@@ -5,6 +5,7 @@ import { ContactForm } from "@/components/sections/ContactForm";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { getSiteConfig } from "@/lib/data/company";
 import { buildMetadata } from "@/lib/seo";
+import { BiLogoFacebook, BiLogoLinkedin } from "react-icons/bi";
 
 export const metadata: Metadata = buildMetadata({
   title: "Contact",
@@ -122,6 +123,34 @@ export default function ContactPage() {
                       className="mt-1 block break-all text-small text-bone hover:text-lime"
                     >
                       {config.contact.email}
+                    </a>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <span className="inline-flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-white/10 text-lime">
+                    <BiLogoFacebook size={20}/>
+                  </span>
+                  <div>
+                    <p className="text-eyebrow font-semibold uppercase text-muted-dark">Facebook</p>
+                    <a
+                      href={config.social[1].href}
+                      className="mt-1 block break-all text-small text-bone hover:text-lime"
+                    >
+                      {config.social[1].label}
+                    </a>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <span className="inline-flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-white/10 text-lime">
+                    <BiLogoLinkedin size={20}/>
+                  </span>
+                  <div>
+                    <p className="text-eyebrow font-semibold uppercase text-muted-dark">Linkedin</p>
+                    <a
+                      href={config.social[0].href}
+                      className="mt-1 block break-all text-small text-bone hover:text-lime"
+                    >
+                      {config.social[0].label}
                     </a>
                   </div>
                 </li>

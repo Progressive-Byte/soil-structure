@@ -11,7 +11,7 @@ const services: Service[] = [
     description:
       "Our structural practice covers new build and existing structures across the industrial sector, transport infrastructure and marine works. Design is carried out with both hand calculation and software analysis using StaadPro, Etabs, SAP2000, Safe and RAM Connection.",
     capabilities: [
-      "RC Building Structure",
+      "RCC Building Structure",
       "Steel Structures",
       "Garments, Bitumen and Cement Factories",
       "Road, Culvert, Bridges",
@@ -374,7 +374,7 @@ const serviceAreas: ServiceArea[] = [
     slug: "structural-design",
     title: "Structural Design",
     capabilities: [
-      "RC Building Structure",
+      "RCC Building Structure",
       "Steel Structures",
       "Garments, Bitumen and Cement Factories",
       "Road, Culvert, Bridges",

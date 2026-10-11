@@ -28,9 +28,9 @@ export function Team({ members }: TeamProps) {
         <h2 className="font-heading text-display-sm font-bold tracking-tight text-ink md:text-display-md">
           The people behind the work.
         </h2>
-        <Button href="/team" variant="outline" className="justify-self-start lg:justify-self-end">
+        {/* <Button href="/team" variant="outline" className="justify-self-start lg:justify-self-end">
           Meet the Team
-        </Button>
+        </Button> */}
       </div>
 
       <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -55,6 +55,8 @@ export function Team({ members }: TeamProps) {
                   {member.name}
                 </h3>
                 <p className="mt-1 text-small text-muted">{member.role}</p>
+                <p className="mt-1 text-small text-muted">{member.education}</p>
+                <p className="mt-1 text-small text-muted">{member.professionalMembership}</p>
                 <span className="mt-6 inline-flex w-fit items-center rounded-full border border-ink/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-lime-700">
                   {member.discipline}
                 </span>

@@ -6,7 +6,9 @@ const team: TeamMember[] = [
     _id: "65f1d0000000000000000401",
     slug: "khandaker-khairul-alam",
     name: "Khandaker Khairul Alam",
-    role: "BSc Engineering (Civil), BUET",
+    role: "Managing Director",
+    education: "B.Sc in civil Engg(BUET)",
+    professionalMembership:"FIEB, DMINB",
     discipline: "Structural & Geotechnical",
     bio: "Over twenty years of experience in Structural and Geotechnical Engineering.",
     bioParagraphs: [

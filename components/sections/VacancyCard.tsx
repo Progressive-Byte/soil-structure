@@ -38,7 +38,7 @@ export function VacancyCard({ vacancy }: VacancyCardProps) {
       className="group flex h-full flex-col rounded-[1.75rem] bg-bone-200 p-8 shadow-sm transition-all duration-300 ease-smooth hover:-translate-y-1 hover:shadow-card focus-visible:outline-none md:p-10"
     >
       {/* Icon */}
-      <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white text-lime-700 shadow-sm">
+      {/* <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white text-lime-700 shadow-sm">
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -53,7 +53,7 @@ export function VacancyCard({ vacancy }: VacancyCardProps) {
             <circle cx="12" cy="12" r="8" />
           )}
         </svg>
-      </span>
+      </span> */}
 
       {/* Number + Title */}
       <div className="mt-8 flex items-baseline gap-3">

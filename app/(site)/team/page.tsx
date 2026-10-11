@@ -42,7 +42,7 @@ export default async function TeamPage() {
             <span className="text-ink">Team</span>
           </p>
 
-          <div className="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr] lg:items-start lg:gap-12">
+          {/* <div className="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr] lg:items-start lg:gap-12">
             <h1 className="font-heading text-display-sm font-bold tracking-tight text-ink md:text-display-md">
               Key personnel.
             </h1>
@@ -71,7 +71,7 @@ export default async function TeamPage() {
               sizes="(max-width: 1400px) 100vw, 1400px"
               className="object-cover"
             />
-          </div>
+          </div> */}
         </Container>
       </section>
 
@@ -104,6 +104,8 @@ export default async function TeamPage() {
                     {member.name}
                   </h2>
                   <p className="mt-1 text-small text-muted">{member.role}</p>
+                  <p className="mt-1 text-small text-muted">{member.education}</p>
+                  <p className="mt-1 text-small text-muted">{member.professionalMembership}</p>
                   <span className="mt-4 inline-flex w-fit items-center rounded-full border border-ink/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-lime-700">
                     {member.discipline}
                   </span>

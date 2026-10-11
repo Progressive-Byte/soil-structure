@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-type Variant = "lime" | "dark" | "light" | "outline" | "outline-light";
+type Variant = "lime" | "dark" | "light" | "outline" | "outline-light"| "outline-lime";
 type Size = "xs"|"sm" | "md" | "lg";
 
 const base =
@@ -35,6 +35,8 @@ const variants: Record<Variant, string> = {
   // Outline on dark backgrounds.
   "outline-light":
     "border border-bone/30 text-bone hover:border-bone hover:bg-bone/10 ring-offset-ink",
+  "outline-lime":
+    "border border-lime text-bone hover:text-ink hover:border-lime hover:bg-lime ring-offset-ink",
 };
 
 const sizes: Record<Size, string> = {

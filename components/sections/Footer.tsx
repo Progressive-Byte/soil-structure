@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import type { SiteConfig } from "@/types";
+import { BiLogoFacebook, BiLogoLinkedin } from "react-icons/bi";
 
 type FooterProps = {
   config: SiteConfig;
@@ -35,16 +36,24 @@ export function Footer({ config }: FooterProps) {
               <div className="mt-5 space-y-1 text-small">
                 <a
                   href={`tel:${config.contact.phone.replace(/[^\d+]/g, "")}`}
-                  className="block font-semibold text-bone hover:text-lime"
+                  className="block text-muted-dark hover:text-bone"
                 >
                   {config.contact.phone}
                 </a>
                 <a
                   href={`mailto:${config.contact.email}`}
-                  className="block text-muted-dark hover:text-bone"
+                  className="block "
                 >
                   {config.contact.email}
                 </a>
+                <li className="flex items-center gap-4">
+                  <a href={config.social[1].href} className="inline-flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-white/10 text-lime">
+                    <BiLogoFacebook size={22} />
+                  </a>
+                  <a href={config.social[1].href} className="inline-flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-white/10 text-lime">
+                    <BiLogoLinkedin size={22} />
+                  </a>
+                </li>
               </div>
             </div>
 

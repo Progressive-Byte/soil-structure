@@ -133,6 +133,8 @@ export interface TeamMember extends BaseDocument {
   slug: string;
   name: string;
   role: string;
+  education: string;
+  professionalMembership: string;
   /** e.g. "Geotechnical", "Structural", "Leadership". */
   discipline: string;
   bio: string;
