@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-type Variant = "lime" | "dark" | "light" | "outline" | "outline-light"| "outline-lime";
-type Size = "xs"|"sm" | "md" | "lg";
+type Variant = "lime" | "dark" | "light" | "outline" | "outline-light" | "outline-lime";
+type Size = "xs" | "sm" | "md" | "lg";
 
 const base =
   "group/btn inline-flex items-center justify-center gap-2 rounded-pill font-semibold transition-[color,background-color,border-color,transform] duration-200 ease-smooth hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transform-none motion-reduce:transition-colors";
