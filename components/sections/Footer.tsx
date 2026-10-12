@@ -41,7 +41,7 @@ export function Footer({ config }: FooterProps) {
                   {config.contact.phone}
                 </a>
                 <a
-                  href={`tel:${config.contact.phone.replace(/[^\d+]/g, "")}`}
+                  href={`tel:${config.contact.phone2.replace(/[^\d+]/g, "")}`}
                   className="block text-muted-dark hover:text-bone"
                 >
                   {config.contact.phone2}
