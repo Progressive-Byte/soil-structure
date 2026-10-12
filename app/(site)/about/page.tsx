@@ -117,7 +117,7 @@ export default async function AboutPage() {
         title="We get things done through people."
         intro="Formed in 2017 on the initiative of a few BUET graduates, with the aim of providing quality consultancy services."
         image={{
-          src: "/images/about-us-hero.webp",
+          src: "/images/about-us-hero.jpeg",
           alt: "Modern multi-storey building at dusk reflected in a still pool",
         }}
         stats={stats}

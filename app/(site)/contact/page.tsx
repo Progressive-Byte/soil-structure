@@ -107,8 +107,11 @@ export default function ContactPage() {
                   </span>
                   <div>
                     <p className="text-eyebrow font-semibold uppercase text-muted-dark">Phone</p>
-                    <a href={`tel:${tel}`} className="mt-1 block text-small text-bone hover:text-lime">
+                    <a href={`tel:${config.contact.phone.replace(/[^\d+]/g, "")}`} className="mt-1 block text-small text-bone hover:text-lime">
                       {config.contact.phone}
+                    </a>
+                    <a href={`tel:${config.contact.phone2.replace(/[^\d+]/g, "")}`} className="mt-1 block text-small text-bone hover:text-lime">
+                      {config.contact.phone2}
                     </a>
                   </div>
                 </li>

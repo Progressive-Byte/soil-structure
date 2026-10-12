@@ -41,6 +41,12 @@ export function Footer({ config }: FooterProps) {
                   {config.contact.phone}
                 </a>
                 <a
+                  href={`tel:${config.contact.phone2.replace(/[^\d+]/g, "")}`}
+                  className="block text-muted-dark hover:text-bone"
+                >
+                  {config.contact.phone2}
+                </a>
+                <a
                   href={`mailto:${config.contact.email}`}
                   className="block "
                 >
@@ -51,8 +57,8 @@ export function Footer({ config }: FooterProps) {
                     <BiLogoFacebook size={22} />
                   </a>
                   <a
-                    // href={config.social[1].href}
-                    className="inline-flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-white/10 text-lime">
+                  //  href={config.social[1].href} 
+                   className="inline-flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-white/10 text-lime">
                     <BiLogoLinkedin size={22} />
                   </a>
                 </li>

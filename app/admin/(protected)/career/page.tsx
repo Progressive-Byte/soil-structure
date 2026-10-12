@@ -1,0 +1,418 @@
+"use client";
+
+import { Suspense, useEffect, useState } from "react";
+import Link from "next/link";
+import {
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
+import { Button } from "@/components/ui/Button";
+import { AdminTableSkeleton } from "../../_components/AdminSkeletons";
+import { adminFetch } from "../../_lib/adminApi";
+import type { PaginationMeta } from "@/types";
+
+type Vacancy = {
+  _id: string;
+  title: string;
+  department: string;
+  location: string;
+  employmentType: string;
+  status: "open" | "closed";
+  createdAt: string;
+};
+
+type ApplicationCount = {
+  vacancy: string;
+  count: number;
+};
+
+const control =
+  "rounded-lg border border-line bg-bone-50 px-4 py-2 text-sm text-ink placeholder:text-muted-light focus-visible:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600";
+
+const SORT_OPTIONS = [
+  { value: "", label: "Open positions first" },
+  { value: "recent", label: "Newest first" },
+  { value: "oldest", label: "Oldest first" },
+  { value: "az", label: "Title A–Z" },
+  { value: "za", label: "Title Z–A" },
+];
+
+function CareerList() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const search = useSearchParams();
+
+  const page = Math.max(1, Number(search.get("page")) || 1);
+  const query = search.get("q") ?? "";
+  const status = search.get("status") ?? "";
+  const department = search.get("department") ?? "";
+  const sort = search.get("sort") ?? "";
+
+  const [vacancies, setVacancies] = useState<Vacancy[]>([]);
+  const [meta, setMeta] = useState<PaginationMeta | null>(null);
+  const [departments, setDepartments] = useState<string[]>([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [applicationCounts, setApplicationCounts] = useState<ApplicationCount[]>([]);
+
+  function update(values: Record<string, string | null>) {
+    const p = new URLSearchParams(search.toString());
+
+    Object.entries(values).forEach(([k, v]) =>
+      v ? p.set(k, v) : p.delete(k)
+    );
+
+    router.replace(`${pathname}?${p}`);
+  }
+
+  useEffect(() => {
+    let active = true;
+
+    setLoading(true);
+
+    const p = new URLSearchParams({
+      page: String(page),
+      limit: "7",
+    });
+
+    if (query) p.set("q", query);
+    if (status) p.set("status", status);
+    if (department) p.set("department", department);
+    if (sort) p.set("sort", sort);
+
+    adminFetch<{
+      vacancies: Vacancy[];
+      meta: PaginationMeta;
+      departments: string[];
+    }>(`/admin/careers?${p}`)
+      .then((d) => {
+        if (active) {
+          setVacancies(d.vacancies);
+          setMeta(d.meta);
+          setDepartments(d.departments);
+          setError("");
+        }
+      })
+      .catch((e) => active && setError(e.message))
+      .finally(() => active && setLoading(false));
+
+    return () => {
+      active = false;
+    };
+  }, [page, query, status, department, sort, refreshKey]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function fetchApplicationCounts() {
+      try {
+        const data = await adminFetch<{
+          counts: ApplicationCount[];
+        }>("/admin/careers/applications/new-counts");
+
+        if (active) {
+          setApplicationCounts(data.counts);
+        }
+      } catch (error) {
+        console.error("Failed to fetch application counts:", error);
+      }
+    }
+
+    fetchApplicationCounts();
+
+    const interval = setInterval(fetchApplicationCounts, 30_000);
+
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+  async function remove(id: string) {
+    try {
+      await adminFetch(`/admin/careers/${id}`, {
+        method: "DELETE",
+      });
+      setConfirmingId(null);
+      if (vacancies.length === 1 && page > 1) {
+        update({ page: String(page - 1) });
+      } else {
+        setRefreshKey((key) => key + 1);
+      }
+    } catch (e) {
+      setError(
+        e instanceof Error ? e.message : "Delete failed"
+      );
+    }
+  }
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="font-heading text-2xl font-bold tracking-tight text-ink">
+          Career
+        </h1>
+
+        <div className="flex gap-3">
+          {/* <Button
+            href="/admin/career/applications"
+            variant="dark"
+            size="sm"
+          >
+            Applications
+          </Button> */}
+
+          <Button
+            href="/admin/career/new"
+            variant="lime"
+            size="sm"
+          >
+            + New vacancy
+          </Button>
+        </div>
+      </div>
+
+      <div className="mt-6 flex flex-wrap items-center gap-4">
+        <input
+          type="search"
+          placeholder="Search vacancies…"
+          defaultValue={query}
+          onChange={(e) =>
+            update({
+              q: e.target.value || null,
+              page: null,
+            })
+          }
+          className={`w-full max-w-sm ${control}`}
+        />
+
+        <select
+          value={department}
+          onChange={(e) =>
+            update({
+              department: e.target.value || null,
+              page: null,
+            })
+          }
+          className={control}
+          aria-label="Filter by department"
+        >
+          <option value="">All departments</option>
+          {departments.map((d) => (
+            <option key={d}>{d}</option>
+          ))}
+        </select>
+
+        <select
+          value={sort}
+          onChange={(e) => update({ sort: e.target.value || null, page: null })}
+          className={control}
+          aria-label="Sort vacancies"
+        >
+          {SORT_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={status}
+          onChange={(e) =>
+            update({
+              status: e.target.value || null,
+              page: null,
+            })
+          }
+          className={control}
+          aria-label="Filter by status"
+        >
+          <option value="">All status</option>
+          <option value="open">Open</option>
+          <option value="closed">Closed</option>
+        </select>
+      </div>
+
+      {error && (
+        <p
+          role="alert"
+          className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-800"
+        >
+          {error}
+        </p>
+      )}
+
+      <div className="mt-6 overflow-x-auto rounded-card border border-line bg-bone-50">
+        <table className="w-full min-w-[700px] text-left text-sm">
+          <thead>
+            <tr className="border-b border-line text-xs font-semibold uppercase tracking-wide text-muted">
+              <th className="min-w-[170px] px-4 py-3">Position</th>
+              <th className="px-4 py-3">Department</th>
+              <th className="px-4 py-3">Location</th>
+              <th className="min-w-[190px] px-4 py-3">Applications</th>
+              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y divide-line">
+            {loading ? (
+              <AdminTableSkeleton columns={6} rows={7} />
+            ) : vacancies.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={6}
+                  className="px-4 py-10 text-center text-muted"
+                >
+                  No vacancies found.
+                </td>
+              </tr>
+            ) : (
+              vacancies.map((v) => (
+                <tr key={v._id}>
+                  <td className="max-w-[240px] px-4 py-4 font-medium text-ink">
+                    <span className="block [overflow-wrap:anywhere]">
+                      {v.title}
+                    </span>
+                    <span className="mt-1 block text-xs text-muted">
+                      {v.employmentType}
+                    </span>
+                  </td>
+
+                  <td className="px-4 py-4 text-muted-dark">
+                    {v.department}
+                  </td>
+
+                  <td className="px-4 py-4 text-muted-dark">
+                    {v.location}
+                  </td>
+                  <td className="px-4 py-4 text-muted-dark">
+                    {(() => {
+                      const newCount = applicationCounts.find((item) => item.vacancy === v._id)?.count ?? 0;
+                      return (
+                        <div className="flex min-w-[190px] flex-col items-start gap-2">
+                          <Button
+                            size="xs"
+                            withArrow
+                            variant="lime"
+                            href={`/admin/career/applications?vacancy=${v._id}`}
+                            className="whitespace-nowrap"
+                          >
+                            View Applications
+                          </Button>
+                          <span
+                            className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-pill px-2.5 py-1 text-xs font-medium ${
+                              newCount > 0
+                                ? "bg-lime/30 text-lime-700"
+                                : "bg-stone-100 text-muted"
+                            }`}
+                          >
+                            <span className="font-bold">{newCount}</span>
+                            {newCount === 1 ? "New Application" : "New Applications"}
+                          </span>
+                        </div>
+                      );
+                    })()}
+                  </td>
+
+
+                  <td className="px-4 py-4">
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-xs font-medium ${v.status === "open"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-stone-200 text-stone-700"
+                        }`}
+                    >
+                      {v.status}
+                    </span>
+                  </td>
+
+                  {/* Action Button */}
+                  <td className="px-4 py-4 text-right">
+                    <div className="flex items-center justify-end gap-4">
+                      {confirmingId === v._id ? (
+                        <>
+                          <span className="text-muted">Delete?</span>
+                          <button
+                            onClick={() => remove(v._id)}
+                            className="font-semibold text-red-700 hover:underline"
+                          >
+                            Confirm
+                          </button>
+                          <button
+                            onClick={() => setConfirmingId(null)}
+                            className="text-muted hover:underline"
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <Link
+                            className="font-medium text-ink hover:underline"
+                            href={`/admin/career/${v._id}/edit`}
+                          >
+                            Edit
+                          </Link>
+                          <button
+                            onClick={() => setConfirmingId(v._id)}
+                            className="font-medium text-red-700 hover:underline"
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {meta && meta.pages > 1 && (
+        <div className="mt-5 flex items-center justify-between text-sm text-muted">
+          <span>{meta.total} vacancies</span>
+
+          <div className="flex gap-2">
+            <button
+              disabled={!meta.hasPrev}
+              onClick={() =>
+                update({ page: String(page - 1) })
+              }
+              className="rounded-lg border border-line px-3 py-2 disabled:opacity-40"
+            >
+              Previous
+            </button>
+
+            <span className="px-2 py-2">
+              {page} / {meta.pages}
+            </span>
+
+            <button
+              disabled={!meta.hasNext}
+              onClick={() =>
+                update({ page: String(page + 1) })
+              }
+              className="rounded-lg border border-line px-3 py-2 disabled:opacity-40"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function CareerPage() {
+  return (
+    <Suspense fallback={null}>
+      <CareerList />
+    </Suspense>
+  );
+}

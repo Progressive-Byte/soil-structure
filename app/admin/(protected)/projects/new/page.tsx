@@ -6,6 +6,7 @@ import Link from "next/link";
 import { adminFetch } from "../../../_lib/adminApi";
 import { ProjectForm, type ProjectFormValues } from "../_components/ProjectForm";
 import type { PaginationMeta } from "@/types";
+import { AdminFormSkeleton } from "../../../_components/AdminSkeletons";
 
 export default function NewProjectPage() {
   const router = useRouter();
@@ -31,13 +32,13 @@ export default function NewProjectPage() {
       </Link>
       <h1 className="mt-4 font-heading text-2xl font-bold tracking-tight text-ink">New project</h1>
       <div className="mt-8 max-w-3xl">
-        {defaultOrder !== null && (
+        {defaultOrder !== null ? (
           <ProjectForm
             onSubmit={handleSubmit}
             submitLabel="Create project"
             defaultOrder={defaultOrder}
           />
-        )}
+        ) : <AdminFormSkeleton />}
       </div>
     </div>
   );

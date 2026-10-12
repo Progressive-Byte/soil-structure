@@ -34,7 +34,7 @@ export default function AdminLoginPage() {
         body: JSON.stringify(form),
       });
       setToken(token);
-      router.replace("/admin/projects");
+      router.replace("/admin");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {

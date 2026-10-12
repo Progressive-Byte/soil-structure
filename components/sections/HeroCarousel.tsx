@@ -33,7 +33,7 @@ export function HeroCarousel({
 
   return (
     <div
-      className="hero-copy-carousel relative mt-4 overflow-hidden rounded-image bg-ink shadow-card-dark motion-safe:animate-rise md:mt-8"
+      className="hero-copy-carousel relative mt-6 overflow-hidden rounded-image bg-ink shadow-card-dark motion-safe:animate-rise md:mt-8"
       style={{ animationDelay: "60ms" }}
     >
       <Swiper
@@ -60,7 +60,7 @@ export function HeroCarousel({
         {slides.map((slide, index) => (
           <SwiperSlide key={`${slide.title}-${index}`}>
             <div
-              className={`relative flex flex-col justify-center p-4 md:p-12 lg:p-16 ${compact
+              className={`relative flex flex-col justify-center p-6 md:p-12 lg:p-16 ${compact
                   ? "min-h-[360px] md:min-h-[430px] lg:min-h-[480px]"
                   : "min-h-[540px] md:min-h-[560px] lg:min-h-[600px]"
                 }`}

@@ -13,7 +13,7 @@ export function Hero({ eyebrow, stats }: HeroProps) {
   const slides: HeroSlide[] = [
     {
       image: {
-        src: "/images/slide-1.webp",
+        src: "/images/slide-1.png",
         alt: "Modern multi-storey building at dusk reflected in a still pool",
       },
       title: "We are here to solve your problems.",
@@ -22,7 +22,7 @@ export function Hero({ eyebrow, stats }: HeroProps) {
     },
     {
       image: {
-        src: "/images/slide-2.webp",
+        src: "/images/slide-2.png",
         alt: "Steel frame structure during construction",
       },
       title: "Engineering that builds with confidence.",
@@ -31,7 +31,7 @@ export function Hero({ eyebrow, stats }: HeroProps) {
     },
     {
       image: {
-        src: "/images/slide-3.webp",
+        src: "/images/slide-3.png",
         alt: "University campus buildings surrounded by greenery",
       },
       title: "From the ground up, we make it work.",
