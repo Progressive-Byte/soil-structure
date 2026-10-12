@@ -196,6 +196,7 @@ export interface SiteConfig {
   contact: {
     addressLines: string[];
     phone: string;
+    phone2: string;
     email: string;
   };
 }

@@ -110,6 +110,9 @@ export default function ContactPage() {
                     <a href={`tel:${tel}`} className="mt-1 block text-small text-bone hover:text-lime">
                       {config.contact.phone}
                     </a>
+                    <a href={`tel:${tel}`} className="mt-1 block text-small text-bone hover:text-lime">
+                      {config.contact.phone2}
+                    </a>
                   </div>
                 </li>
                 <li className="flex gap-4">
