@@ -50,7 +50,9 @@ export function Footer({ config }: FooterProps) {
                   <a href={config.social[1].href} className="inline-flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-white/10 text-lime">
                     <BiLogoFacebook size={22} />
                   </a>
-                  <a href={config.social[1].href} className="inline-flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-white/10 text-lime">
+                  <a
+                  //  href={config.social[1].href} 
+                   className="inline-flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-white/10 text-lime">
                     <BiLogoLinkedin size={22} />
                   </a>
                 </li>

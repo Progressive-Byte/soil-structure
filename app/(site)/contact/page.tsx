@@ -147,7 +147,7 @@ export default function ContactPage() {
                   <div>
                     <p className="text-eyebrow font-semibold uppercase text-muted-dark">Linkedin</p>
                     <a
-                      href={config.social[0].href}
+                      // href={config.social[0].href}
                       className="mt-1 block break-all text-small text-bone hover:text-lime"
                     >
                       {config.social[0].label}

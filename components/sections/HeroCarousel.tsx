@@ -62,7 +62,7 @@ export function HeroCarousel({
             <div
               className={`relative flex flex-col justify-center p-6 md:p-12 lg:p-16 ${compact
                   ? "min-h-[360px] md:min-h-[430px] lg:min-h-[480px]"
-                  : "min-h-[440px] md:min-h-[560px] lg:min-h-[600px]"
+                  : "min-h-[540px] md:min-h-[560px] lg:min-h-[600px]"
                 }`}
             >
               <Image
