@@ -59,7 +59,7 @@ export function HeroCarousel({
         {slides.map((slide, index) => (
           <SwiperSlide key={`${slide.title}-${index}`}>
             <div
-              className={`relative flex flex-col justify-end items-start p-6 md:p-12 lg:p-16 ${compact
+              className={`relative flex flex-col justify-end items-start p-6 pb-20 md:p-12 md:pb-12 lg:p-16 ${compact
                 ? "min-h-[360px] md:min-h-[430px] lg:min-h-[480px]"
                 : "min-h-[540px] md:min-h-[560px] lg:min-h-[600px]"
                 }`}
@@ -74,7 +74,7 @@ export function HeroCarousel({
               />
 
               <div
-                className="absolute inset-0 bg-gradient-to-r md:from-ink/80 md:via-ink/60 md:to-ink/35 from-ink/70 via-ink/50 to-ink/25"
+                className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/50 to-ink/25 md:bg-gradient-to-r md:from-ink/80 md:via-ink/60 md:to-ink/35"
                 aria-hidden="true"
               />
 
