@@ -5,14 +5,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 Soil & Structure — a marketing site for a geotechnical and structural
-engineering consultancy, plus an admin panel for managing its Projects.
-Next.js 14 (App Router) + TypeScript + Tailwind CSS at the repo root, backed
-by a separate Node/Express + MongoDB API in `server/`.
+engineering consultancy, plus an admin panel for managing its Projects and
+Careers (job vacancies + incoming applications). Next.js 14 (App Router) +
+TypeScript + Tailwind CSS at the repo root, backed by a separate
+Node/Express + MongoDB API in `server/`.
 
-**Projects are dynamic** (stored in MongoDB, managed through the admin panel
-at `/admin`); every other content type (services, team, testimonials, site
-config, stats, process steps) is still static, authored directly as
-TypeScript constants in `lib/data/*.ts` — there is no `/data` JSON directory.
+**Projects and Careers are dynamic** (stored in MongoDB, managed through the
+admin panel at `/admin`); every other content type (services, team,
+testimonials, site config, stats, process steps) is still static, authored
+directly as TypeScript constants in `lib/data/*.ts` — there is no `/data`
+JSON directory.
 
 There is no README.md. `CONTINUE_HERE.md` is a handoff/setup guide (moving the
 project to a new machine, getting a database running, git push workflow) — read
