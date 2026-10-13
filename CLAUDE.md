@@ -90,7 +90,10 @@ in `server/models/Project.js` and the shape is mirrored in `types/index.ts`'s
 Two top-level groups under `app/`, both part of the same single Next.js app
 (one build, one port):
 - `app/(site)/` — the public marketing site (home, about, projects, services,
-  team, contact, terms, privacy). Its `layout.tsx` renders the Header/Footer/
+  team, careers, contact, terms, privacy). `careers/[slug]` renders the
+  vacancy's rich-text `description` as HTML via `isomorphic-dompurify`'s
+  `sanitize()` and opens `components/sections/JobApplicationFormModal.tsx`
+  to apply. Its `layout.tsx` renders the Header/Footer/
   `RouteProgress` chrome. `app/layout.tsx` (the true root, outside the group)
   is deliberately minimal — just `<html>`/`<body>`/fonts — specifically so
   `/admin/*` (a sibling segment, not inside `(site)`) doesn't inherit the
