@@ -101,11 +101,16 @@ Two top-level groups under `app/`, both part of the same single Next.js app
   `app/(site)/projects/(list)/` group (`page.tsx` + `loading.tsx` +
   `_components/ProjectsFilters.tsx`), a sibling of `projects/[slug]/`, so the
   list gets its own loading state without one leaking into the detail route.
-- `app/admin/` — the Projects admin panel. `/admin` itself (`page.tsx`) just
+- `app/admin/` — the admin panel. `/admin` itself (`page.tsx`) just
   redirects to `/admin/projects` or `/admin/login`. `login/` is the public login page;
   everything under `(protected)/` is gated by that group's `layout.tsx`,
-  which checks for a token in `localStorage` on mount and redirects to
-  `/admin/login` if missing (real enforcement is server-side — see below).
+  which checks for a token in `localStorage` and verifies it against
+  `GET /auth/me` on mount, redirecting to `/admin/login` if either fails
+  (real enforcement is server-side — see below). The layout also renders
+  `components/admin/AdminSidebar.tsx` (nav between sections — add new admin
+  sections there). Sections: `(protected)/projects/` and
+  `(protected)/career/` (vacancy CRUD, with a TipTap `RichTextEditor` for the
+  description, plus `career/applications/` for reviewing applications).
   `app/admin/_lib/adminApi.ts` is the fetch wrapper every admin page uses:
   it injects the bearer token and clears it on a 401.
 
