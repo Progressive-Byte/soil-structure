@@ -29,14 +29,14 @@ export default async function HomePage() {
   const [stats, services, projects, team, steps] = await Promise.all([
     getCompanyStats(),
     getFeaturedServices(),
-    getFeaturedProjects(4),
+    getFeaturedProjects(),
     getTeam(),
     getProcessSteps(),
   ]);
 
   return (
     <>
-      <Hero eyebrow={config.tagline} stats={stats} />
+      <Hero eyebrow={config.tagline} stats={stats} projects={projects} />
       <Reveal><AboutIntro /></Reveal>
       <Reveal><IntegratedPractice /></Reveal>
       <ServicesGrid services={services} />
