@@ -139,9 +139,11 @@ client component `ProjectsFilters`), the admin list via
   `server/config/cloudinary.js` lazily build their respective clients from env
   on first use, so missing SMTP/Cloudinary config only breaks the feature that
   needs it, not server startup.
-- `server/models/Project.js` — the only Mongoose model. `toJSON` transform
-  reshapes `_id`/`createdAt`/`updatedAt` to match `types/index.ts`'s `Project`
-  exactly, so the frontend needs zero mapping.
+- `server/models/` — `Project`, `Vacancy`, `Application`. Each `toJSON`
+  transform stringifies `_id`/`createdAt`/`updatedAt` so the frontend needs
+  zero mapping. `Application`'s transform also strips `cvData`/`cvMimeType`/
+  `cvUrl` — CV files are never exposed directly, only streamed through the
+  protected download route below.
 - `server/middleware/auth.js` — `protect()` just verifies the JWT; there's no
   `Admin` collection to look up (see auth below).
 - `server/routes/auth.js` — `POST /api/auth/login`, `GET /api/auth/me`.
