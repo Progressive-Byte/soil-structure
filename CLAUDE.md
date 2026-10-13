@@ -159,6 +159,22 @@ client component `ProjectsFilters`), the admin list via
   `sort` = `recent`/`oldest`/`az`/`za`, default
   is the manual `order` field), `GET /sectors` (distinct values, feeds the
   admin form's category-suggestion dropdown), `GET/POST/PUT/DELETE /:id`.
+- `server/routes/publicCareers.js` — `GET /api/public/careers` (open
+  vacancies only, by `order`), `GET /api/public/careers/:slug`, and
+  `POST /api/public/careers/applications` (public, multipart: `multer`
+  memory storage, PDF/DOC/DOCX ≤ 5MB, uploaded to Cloudinary as a
+  **private raw** asset under `soil-structure/cvs` via a direct REST call,
+  not `multer-storage-cloudinary`).
+- `server/routes/adminCareers.js` — protected. Vacancy CRUD on `/`/`/:id`
+  (paginated list also returns distinct `departments`; same `sort` options
+  as projects, always with open vacancies first). Applications under
+  `/applications*`: paginated list (`q`/`status`/`vacancy`), `new-counts`
+  (unread badge per vacancy), `PATCH /:id` (status `new`/`reviewing`/
+  `shortlisted`/`rejected`), `DELETE /:id` (also destroys the Cloudinary
+  file), and `GET /:id/cv`, which proxies the file through a short-lived
+  `private_download_url` (falls back to `cvUrl`, or to legacy in-DB
+  `cvData`). The `/applications` routes are declared before `/:id` on
+  purpose — keep that order.
 - `server/routes/upload.js` — protected, `multer` + `multer-storage-cloudinary`
   (`cloudinary@1.x` — pinned to v1 because `multer-storage-cloudinary@4` peer-
   depends on it; the `.v2` promise API is still used). Only the resulting
