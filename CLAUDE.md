@@ -53,7 +53,7 @@ and `package.json`), and `server/bootstrap.js` loads it explicitly via
 
 ### Frontend data layer
 
-- `lib/data/projects.ts` — the one dynamic content type. Every getter
+- `lib/data/projects.ts` — dynamic, API-only. Every getter
   (`getProjects`, `getFeaturedProjects`, `getProjectBySlug`,
   `getProjectsBySector`, `getProjectSectors`, `getPaginatedProjects`) calls
   `fetchAPI()` (in `lib/data/_client.ts`) against the Express API's
