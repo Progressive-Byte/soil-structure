@@ -40,7 +40,7 @@ export async function getPaginatedProjects(
 /** Featured projects for the home "Selected work" grid. */
 export async function getFeaturedProjects(limit = 4): Promise<Project[]> {
   const all = await getProjects();
-  return all.filter((p) => p.featured).slice(0, limit);
+  return all.filter((p) => p.featured);
 }
 
 /** A single project by slug, or null if not found. */
