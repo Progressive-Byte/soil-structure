@@ -18,6 +18,7 @@ export type HeroSlide = {
 type HeroCarouselProps = {
   eyebrow: React.ReactNode;
   slides: HeroSlide[];
+  actions?: React.ReactNode;
   compact?: boolean;
 };
 
