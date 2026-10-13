@@ -63,6 +63,12 @@ and `package.json`), and `server/bootstrap.js` loads it explicitly via
   `PROJECT_CATEGORIES` (preset sectors, merged with the DB's distinct
   sectors in the admin form/list dropdowns — admins can still type a custom
   one). The admin pages import these constants from here too.
+- `lib/data/vacancies.ts` — dynamic, but unlike projects it **falls back to a
+  hard-coded seed list** in the same file if the `/public/careers*` fetch
+  throws (so `/careers` still renders with the API down). It also declares
+  the `Vacancy` interface that the careers pages/components actually import;
+  the `Vacancy` in `types/index.ts` is an older, incomplete copy. The schema
+  lives in `server/models/Vacancy.js`.
 - `lib/data/{services,team,testimonials,company}.ts` — static content,
   authored as typed array/object constants directly in these files (no JSON,
   no fetch). Each still returns a Promise (via `_client.ts`'s `read()`, a thin
