@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
+import { Button } from '../ui/Button';
 
 
 const NAV: { href: string; label: string; }[] = [
@@ -43,6 +44,7 @@ export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
                     </Link>
                 ))}
             </nav>
+            <Link href={'/'}><Button variant='outline-light' size='sm' className=' m-4'>Visit Site</Button></Link>
         </div>
     );
 }
