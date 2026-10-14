@@ -41,7 +41,7 @@ export default async function HomePage() {
       <Reveal><IntegratedPractice /></Reveal>
       <ServicesGrid services={services} />
       <Reveal><ValueApproach steps={steps} /></Reveal>
-      <SelectedWork projects={projects} />
+      {/* <SelectedWork projects={projects} /> */}
       <Reveal><Team members={team} /></Reveal>
       <Reveal><CtaBand /></Reveal>
     </>

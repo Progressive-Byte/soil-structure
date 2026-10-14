@@ -28,7 +28,7 @@ const fallback = {
  * the left and its details on the right.
  */
 export function SelectedWork({ projects }: SelectedWorkProps) {
-  const project = projects?.[0];
+  const project = projects?.[1];
   const data = project
     ? {
         title: project.title,

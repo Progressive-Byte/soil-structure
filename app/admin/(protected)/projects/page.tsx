@@ -38,6 +38,7 @@ function ProjectsListInner() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   // Presets first, then any custom categories already used on projects (deduped case-insensitively).
   const allSectors = [...PROJECT_CATEGORIES, ...sectors].filter(
@@ -83,13 +84,14 @@ function ProjectsListInner() {
     return () => {
       cancelled = true;
     };
-  }, [page, query, sort, sector]);
+  }, [page, query, sort, sector, refreshKey]);
 
   async function handleDelete(id: string) {
     try {
       await adminFetch(`/admin/projects/${id}`, { method: "DELETE" });
       setProjects((prev) => prev.filter((p) => p._id !== id));
       setConfirmingId(null);
+      setRefreshKey((key) => key + 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Delete failed");
     }
