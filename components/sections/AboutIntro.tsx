@@ -47,7 +47,7 @@ export function AboutIntro() {
 
             <div className="relative aspect-[4/3] overflow-hidden rounded-image">
               <Image
-                src="/images/about-campus.jpg"
+                src="/images/about-us-hero.webp"
                 alt="A completed campus building lit warmly at dusk"
                 fill
                 sizes="(max-width: 1024px) 100vw, 600px"

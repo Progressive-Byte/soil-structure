@@ -23,7 +23,6 @@ export type ProjectFormValues = {
   gallery: { src: string; alt: string }[];
   stats: { label: string; value: string }[];
   featured: boolean;
-  order: number;
 };
 
 const emptyValues: ProjectFormValues = {
@@ -41,7 +40,6 @@ const emptyValues: ProjectFormValues = {
   gallery: [],
   stats: [],
   featured: false,
-  order: 0,
 };
 
 function slugify(input: string) {
@@ -59,12 +57,10 @@ type ProjectFormProps = {
   initial?: Project;
   onSubmit: (values: ProjectFormValues) => Promise<void>;
   submitLabel: string;
-  /** Display-order value to pre-fill when creating a new project (ignored when editing). */
-  defaultOrder?: number;
 };
 
 /** Shared create/edit form for the Projects admin panel. */
-export function ProjectForm({ initial, onSubmit, submitLabel, defaultOrder }: ProjectFormProps) {
+export function ProjectForm({ initial, onSubmit, submitLabel }: ProjectFormProps) {
   const [values, setValues] = useState<ProjectFormValues>(() =>
     initial
       ? {
@@ -82,9 +78,8 @@ export function ProjectForm({ initial, onSubmit, submitLabel, defaultOrder }: Pr
           gallery: initial.gallery.map((g) => ({ src: g.src, alt: g.alt })),
           stats: initial.stats,
           featured: initial.featured,
-          order: initial.order,
         }
-      : { ...emptyValues, order: defaultOrder ?? emptyValues.order },
+      : emptyValues,
   );
   // Starts false even when editing — the slug keeps following the title
   // until the admin manually edits the slug field themselves.
@@ -540,13 +535,6 @@ export function ProjectForm({ initial, onSubmit, submitLabel, defaultOrder }: Pr
           />
           Featured on homepage
         </label>
-        <InputField
-          label="Display order"
-          name="order"
-          type="number"
-          value={values.order}
-          onChange={(e) => updateField("order", Number(e.target.value))}
-        />
       </div>
 
       <div>

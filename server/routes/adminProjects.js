@@ -66,6 +66,49 @@ router.get("/sectors", async (_req, res) => {
   }
 });
 
+// PUT /api/admin/projects/reorder — reorder the supplied projects while keeping
+// them in the same positions in the complete project list.
+router.put("/reorder", async (req, res) => {
+  try {
+    const { orderedIds } = req.body;
+    if (
+      !Array.isArray(orderedIds) ||
+      orderedIds.length === 0 ||
+      orderedIds.some((id) => typeof id !== "string") ||
+      new Set(orderedIds).size !== orderedIds.length
+    ) {
+      return res.status(400).json({ message: "orderedIds must be a non-empty list of unique project ids" });
+    }
+
+    const projects = await Project.find().sort({ order: 1, createdAt: -1 });
+    const positions = orderedIds
+      .map((id) => projects.findIndex((project) => project._id.toString() === id))
+      .sort((a, b) => a - b);
+    if (positions.some((position) => position < 0)) {
+      return res.status(400).json({ message: "One or more projects could not be found" });
+    }
+
+    const reordered = [...projects];
+    orderedIds.forEach((id, index) => {
+      const project = projects.find((item) => item._id.toString() === id);
+      reordered[positions[index]] = project;
+    });
+
+    await Project.bulkWrite(
+      reordered.map((project, index) => ({
+        updateOne: { filter: { _id: project._id }, update: { $set: { order: index } } },
+      })),
+    );
+    const orderById = new Map(reordered.map((project, index) => [project._id.toString(), index]));
+    res.json({
+      message: "Project order updated",
+      projects: orderedIds.map((id) => ({ _id: id, order: orderById.get(id) })),
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
@@ -82,7 +125,12 @@ router.post("/", async (req, res) => {
     if (error) return res.status(400).json({ message: error });
 
     const slug = await uniqueSlug(Project, req.body.slug || req.body.title);
-    const project = await Project.create({ ...req.body, slug });
+    const lastProject = await Project.findOne().sort({ order: -1 }).select("order");
+    const project = await Project.create({
+      ...req.body,
+      slug,
+      order: (lastProject?.order ?? -1) + 1,
+    });
     res.status(201).json({ project });
   } catch (err) {
     res.status(500).json({ message: err.message });

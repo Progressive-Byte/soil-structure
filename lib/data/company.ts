@@ -91,7 +91,7 @@ const siteConfig: SiteConfig = {
     { platform: "facebook", href: "https://www.facebook.com/soilandstructurebd", label: "Soil & Structure on Facebook" },
   ],
   contact: {
-    addressLines: [`House # 583 & 585, Road # 9, Avenue – 3, 3ʳᵈ Floor`, "Dhaka, Bangladesh"],
+    addressLines: [`House # 583 & 585, Road # 9, Avenue – 4, 3ʳᵈ Floor`, "Dhaka, Bangladesh"],
     phone: "+880 1771 965563",
     phone2: " +880 1894 298265",
     email: "soilandstructure.bd@gmail.com",
