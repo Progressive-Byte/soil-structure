@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react";
@@ -111,7 +111,6 @@ function ProjectsListInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const page = Math.max(1, Number(searchParams.get("page")) || 1);
   const query = searchParams.get("q") ?? "";
   const sort = searchParams.get("sort") ?? "";
   const sector = searchParams.get("sector") ?? "";
@@ -120,21 +119,22 @@ function ProjectsListInner() {
   const [meta, setMeta] = useState<PaginationMeta | null>(null);
   const [sectors, setSectors] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const [savingOrder, setSavingOrder] = useState(false);
+  const listRequestId = useRef(0);
 
   // Presets first, then any custom categories already used on projects (deduped case-insensitively).
   const allSectors = [...PROJECT_CATEGORIES, ...sectors].filter(
     (s, i, list) => list.findIndex((x) => x.toLowerCase() === s.toLowerCase()) === i,
   );
 
-  // Keeps search/sort/page all in the URL — same query-string-driven pattern
-  // impact-reports uses for its admin list (shareable/bookmarkable, survives
-  // a refresh).
+  // Search and sort stay in the URL so filters are shareable and survive refresh.
   function updateParams(next: Record<string, string | null>) {
     const params = new URLSearchParams(searchParams.toString());
+    params.delete("page");
     for (const [key, value] of Object.entries(next)) {
       if (value) params.set(key, value);
       else params.delete(key);
@@ -150,8 +150,12 @@ function ProjectsListInner() {
 
   useEffect(() => {
     let cancelled = false;
+    const requestId = ++listRequestId.current;
     setLoading(true);
-    const params = new URLSearchParams({ page: String(page), limit: String(PAGE_SIZE) });
+    setLoadingMore(false);
+    setProjects([]);
+    setMeta(null);
+    const params = new URLSearchParams({ page: "1", limit: String(PAGE_SIZE) });
     if (query) params.set("q", query);
     if (sort) params.set("sort", sort);
     if (sector) params.set("sector", sector);
@@ -169,7 +173,37 @@ function ProjectsListInner() {
     return () => {
       cancelled = true;
     };
-  }, [page, query, sort, sector, refreshKey]);
+  }, [query, sort, sector, refreshKey]);
+
+  async function handleLoadMore() {
+    if (!meta?.hasNext || loadingMore || loading) return;
+
+    const requestId = listRequestId.current;
+    const params = new URLSearchParams({ page: String(meta.page + 1), limit: String(PAGE_SIZE) });
+    if (query) params.set("q", query);
+    if (sort) params.set("sort", sort);
+    if (sector) params.set("sector", sector);
+
+    setLoadingMore(true);
+    setError(null);
+    try {
+      const data = await adminFetch<{ projects: Project[]; meta: PaginationMeta }>(
+        `/admin/projects?${params}`,
+      );
+      if (requestId !== listRequestId.current) return;
+      setProjects((current) => {
+        const existingIds = new Set(current.map((project) => project._id));
+        return [...current, ...data.projects.filter((project) => !existingIds.has(project._id))];
+      });
+      setMeta(data.meta);
+    } catch (err) {
+      if (requestId === listRequestId.current) {
+        setError(err instanceof Error ? err.message : "Failed to load more projects");
+      }
+    } finally {
+      if (requestId === listRequestId.current) setLoadingMore(false);
+    }
+  }
 
   async function handleDelete(id: string) {
     try {
@@ -191,6 +225,7 @@ function ProjectsListInner() {
     if (from < 0 || to < 0 || to >= projects.length || from === to) return;
 
     const previous = projects;
+    const requestId = listRequestId.current;
     const reordered = [...projects];
     const [moved] = reordered.splice(from, 1);
     reordered.splice(to, 0, moved);
@@ -198,14 +233,28 @@ function ProjectsListInner() {
     setSavingOrder(true);
     setError(null);
     try {
-      await adminFetch("/admin/projects/reorder", {
-        method: "PUT",
-        body: JSON.stringify({ orderedIds: reordered.map((project) => project._id) }),
-      });
-      setRefreshKey((key) => key + 1);
+      const data = await adminFetch<{ projects: { _id: string; order: number }[] }>(
+        "/admin/projects/reorder",
+        {
+          method: "PUT",
+          body: JSON.stringify({ orderedIds: reordered.map((project) => project._id) }),
+        },
+      );
+      if (requestId !== listRequestId.current) return;
+      const orders = new Map(
+        data.projects.map((project): [string, number] => [project._id, project.order]),
+      );
+      setProjects(
+        reordered.map((project) => ({
+          ...project,
+          order: orders.get(project._id) ?? project.order,
+        })),
+      );
     } catch (err) {
-      setProjects(previous);
-      setError(err instanceof Error ? err.message : "Unable to update project order");
+      if (requestId === listRequestId.current) {
+        setProjects(previous);
+        setError(err instanceof Error ? err.message : "Unable to update project order");
+      }
     } finally {
       setSavingOrder(false);
     }
@@ -225,12 +274,12 @@ function ProjectsListInner() {
           type="search"
           placeholder="Search by title…"
           defaultValue={query}
-          onChange={(e) => updateParams({ q: e.target.value || null, page: null })}
+          onChange={(e) => updateParams({ q: e.target.value || null })}
           className={`w-full max-w-sm ${controlClasses}`}
         />
         <select
           value={sector}
-          onChange={(e) => updateParams({ sector: e.target.value || null, page: null })}
+          onChange={(e) => updateParams({ sector: e.target.value || null })}
           className={controlClasses}
           aria-label="Filter by category"
         >
@@ -243,7 +292,7 @@ function ProjectsListInner() {
         </select>
         <select
           value={sort}
-          onChange={(e) => updateParams({ sort: e.target.value || null, page: null })}
+          onChange={(e) => updateParams({ sort: e.target.value || null })}
           className={controlClasses}
           aria-label="Sort projects"
         >
@@ -294,7 +343,7 @@ function ProjectsListInner() {
                     key={project._id}
                     project={project}
                     index={index}
-                    enabled={!loading && !savingOrder && !sort}
+                    enabled={!loading && !loadingMore && !savingOrder && !sort}
                     confirming={confirmingId === project._id}
                     onConfirm={() => setConfirmingId(project._id)}
                     onCancel={() => setConfirmingId(null)}
@@ -307,27 +356,21 @@ function ProjectsListInner() {
         </DragDropProvider>
       </div>
 
-      {meta && meta.pages > 1 && (
-        <div className="mt-6 flex items-center justify-between text-sm">
-          <p className="text-muted">
-            Page {meta.page} of {meta.pages} — {meta.total} project{meta.total === 1 ? "" : "s"}
+      {meta && meta.total > 0 && (
+        <div className="mt-6 flex flex-col items-center gap-3">
+          <p className="text-sm text-muted">
+            Showing {projects.length} of {meta.total} project{meta.total === 1 ? "" : "s"}
           </p>
-          <div className="flex gap-2">
+          {meta.hasNext && (
             <button
-              onClick={() => updateParams({ page: String(page - 1) })}
-              disabled={!meta.hasPrev}
-              className="rounded-lg border border-line px-3 py-1.5 font-medium text-ink disabled:opacity-40"
+              type="button"
+              onClick={handleLoadMore}
+              disabled={loadingMore || savingOrder}
+              className="rounded-lg border border-line bg-bone-50 px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-bone-200 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Previous
+              {loadingMore ? "Loading…" : "Load more projects"}
             </button>
-            <button
-              onClick={() => updateParams({ page: String(page + 1) })}
-              disabled={!meta.hasNext}
-              className="rounded-lg border border-line px-3 py-1.5 font-medium text-ink disabled:opacity-40"
-            >
-              Next
-            </button>
-          </div>
+          )}
         </div>
       )}
     </div>

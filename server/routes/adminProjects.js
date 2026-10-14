@@ -99,7 +99,11 @@ router.put("/reorder", async (req, res) => {
         updateOne: { filter: { _id: project._id }, update: { $set: { order: index } } },
       })),
     );
-    res.json({ message: "Project order updated" });
+    const orderById = new Map(reordered.map((project, index) => [project._id.toString(), index]));
+    res.json({
+      message: "Project order updated",
+      projects: orderedIds.map((id) => ({ _id: id, order: orderById.get(id) })),
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
