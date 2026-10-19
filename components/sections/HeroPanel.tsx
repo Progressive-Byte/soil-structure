@@ -14,6 +14,7 @@ type HeroPanelBaseProps = {
   /** CTAs rendered under the intro, inside the panel. */
   actions?: React.ReactNode;
   compact?: boolean;
+  contentAtBottom?: boolean;
 };
 
 type HeroPanelProps = HeroPanelBaseProps & (
@@ -26,8 +27,8 @@ type HeroPanelProps = HeroPanelBaseProps & (
   | {
       slides?: never;
       /** Headline. Pass a fragment with <br /> to control the line break. */
-      title: React.ReactNode;
-      intro: string;
+      title?: React.ReactNode;
+      intro?: string;
       image: { src: string; alt: string };
     }
 );
@@ -41,7 +42,13 @@ type HeroPanelProps = HeroPanelBaseProps & (
  * the two stay identical — see Figma "Hero home page".
  */
 export function HeroPanel(props: HeroPanelProps) {
-  const { eyebrow, stats, actions, compact = false } = props;
+  const {
+    eyebrow,
+    stats,
+    actions,
+    compact = false,
+    contentAtBottom = false,
+  } = props;
 
   return (
     <section className="bg-bone pb-16 md:pb-22">
@@ -64,15 +71,17 @@ export function HeroPanel(props: HeroPanelProps) {
               fill
               priority
               sizes="(max-width: 1200px) 100vw, 1200px"
-              className="object-cover"
+              className="object-bottom object-cover"
             />
             <div
-              className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/70 to-ink/45"
+              className="absolute inset-0 bg-gradient-to-tr from-ink/80 via-ink/7 to-ink/0"
               aria-hidden="true"
             />
 
             <div
-              className={`relative flex flex-col justify-center p-6 md:p-12 lg:p-16 ${
+              className={`relative flex flex-col p-6 md:p-12 lg:p-16 ${
+                contentAtBottom ? "justify-end" : "justify-start"
+              } ${
                 compact
                   ? "min-h-[360px] md:min-h-[430px] lg:min-h-[480px]"
                   : "min-h-[440px] md:min-h-[560px] lg:min-h-[600px]"
@@ -85,18 +94,21 @@ export function HeroPanel(props: HeroPanelProps) {
                 >
                   <SectionEyebrow tone="bone">{eyebrow}</SectionEyebrow>
                 </div>
+                {props.title && (
                 <h1
                   className={`mt-6 font-heading text-display-sm font-extrabold tracking-tight text-bone motion-safe:animate-rise md:text-display-md ${compact ? 'lg:text-display-md' : 'lg:text-display-lg'}`}
                   style={{ animationDelay: "260ms" }}
                 >
                   {props.title}
-                </h1>
+                </h1>)}
+                {props.intro && (
                 <p
                   className={`mt-6 max-w-xl text-base leading-relaxed text-bone/80 motion-safe:animate-rise ${compact ? 'md:text-md' : 'md:text-lg'}`}
                   style={{ animationDelay: "360ms" }}
                 >
                   {props.intro}
                 </p>
+                )}
                 {actions && (
                   <div
                     className="mt-8 flex flex-wrap gap-3 motion-safe:animate-rise"

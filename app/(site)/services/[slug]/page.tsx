@@ -93,7 +93,7 @@ export default async function ServiceDetailPage({ params }: Params) {
             {service.summary}
           </p>
 
-          <div className="relative mt-10 aspect-[21/9] overflow-hidden rounded-image bg-ink">
+          {/* <div className="relative mt-10 aspect-[21/9] overflow-hidden rounded-image bg-ink">
             <Image
               src={service.image.src}
               alt={service.image.alt}
@@ -102,7 +102,7 @@ export default async function ServiceDetailPage({ params }: Params) {
               sizes="(max-width: 1400px) 100vw, 1400px"
               className="object-cover"
             />
-          </div>
+          </div> */}
         </Container>
       </section>
 
