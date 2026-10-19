@@ -77,12 +77,13 @@ export default async function ServicesPage() {
             <span>Services</span>
           </span>
         }
-        title="Twelve service areas across eight disciplines."
-        intro="We offer complete engineering services from project feasibility through to detailed design and construction management."
+        //title="Twelve service areas across eight disciplines."
+        //intro="We offer complete engineering services from project feasibility through to detailed design and construction management."
         image={{
-          src: "/images/hero-home.webp",
-          alt: "Modern multi-storey building at dusk reflected in a still pool",
+          src: "/images/services-hero.jpeg",
+          alt: "Modern multi-storey building",
         }}
+        contentAtBottom
         stats={stats}
       />
 
